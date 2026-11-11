@@ -15,12 +15,12 @@ python3 -m http.server 8000 --bind 0.0.0.0
 ## Jeu disponible
 
 - Accueil, noms des deux équipes, scores et compteurs de deux jokers par équipe.
-- Carnet des six manches : « L’apéro local » est jouable en cliquant sur son nom. Les manches 2 à 6 restent « À venir ». La démo est indépendante.
+- Carnet des six manches : « L’apéro local » et « À quelle sauce ? » sont jouables en cliquant sur leurs noms. Les manches 3 à 6 restent « À venir ». La démo est indépendante.
 - Démonstration : trois indices, une tentative par équipe à chaque indice. Le formateur valide la réponse orale. Les deux échecs ouvrent l’indice suivant ; une réussite termine le défi et attribue les points. Après six échecs, personne ne marque.
 - L’équipe 1 commence la première démonstration. L’équipe de départ alterne à chaque nouvelle démonstration ; elle commence aussi chaque indice de ce défi. Rejouer conserve les scores.
 - Correction et bouton de réinitialisation avec confirmation. Les données restent en mémoire : recharger ou fermer la page efface la partie.
 
-Les jokers sont des compteurs visuels, sans action. Les manches 2 à 6 ne sont pas développées. L’illustration d’accueil validée est conservée ; les logos officiels seront intégrés ultérieurement. Rien n’est publié automatiquement.
+Les jokers sont des compteurs visuels, sans action. Les manches 3 à 6 ne sont pas développées. L’illustration d’accueil validée est conservée ; les trois logos partenaires sont intégrés dans l’en-tête. Rien n’est publié automatiquement.
 
 ## Modifier le jeu
 
@@ -47,7 +47,7 @@ Vérification manuelle : démarrer deux équipes, tester une bonne réponse à c
 
 Le parcours comprend maintenant : accueil → équipes → règles → carnet de route → démonstration → correction. Les règles présentent les futurs « Plats piégés » et leur barème provisoire ; aucun joker ni nouvelle question n’est activé.
 
-Le personnage et le camion des pages intérieures sont des vignettes SVG réutilisant l’image d’accueil validée, sans modification de ce fichier. `assets/frites.svg` illustre la correction. Le carnet relie les six escales. `renderRoute({ current, completed })` dans `app.js` affiche les états (indices de manches de 0 à 5) et la position du camion ; seule la manche 1 fait progresser cet itinéraire. La démo ne change pas l’état des manches.
+Le personnage et le camion des pages intérieures sont des vignettes SVG réutilisant l’image d’accueil validée, sans modification de ce fichier. `assets/frites.svg` illustre la correction. Le carnet relie les six escales. `renderRoute({ current, completed })` dans `app.js` affiche les états (indices de manches de 0 à 5) et la position du camion ; les manches 1 et 2 font progresser cet itinéraire. La démo ne change pas l’état des manches.
 
 
 ## Manche 1 — L’apéro local
@@ -74,7 +74,7 @@ Depuis le bilan de L’apéro local : **Pause métier → Serveur / Serveuse →
 
 `careers.js` contient les cinq métiers, leurs textes validés, les positions des idées reçues (B, C, A, B, B) et un moteur indépendant des scores et de la progression. `careers-ui.js` affiche un écran réutilisable et conserve l’état de chaque pause dans `game.careerPauses`. La réinitialisation du jeu efface aussi ces états.
 
-Seule la pause serveur est reliée à la navigation publique. Les pauses cuisinier, réceptionniste, entretien hôtelier et restauration rapide sont prêtes dans les données et le composant, mais aucun bouton ne les débloque et aucune manche non développée n’est simulée. Lors du développement des manches suivantes, leur bilan pourra appeler `openCareerPause(index)` avec un indice de 0 à 4 ; l’appel ne termine aucune manche et ne lance pas la suivante. Le bouton de sortie rejoint le carnet.
+Les pauses serveur et cuisine sont reliées respectivement aux bilans des manches 1 et 2. Les pauses réceptionniste, entretien hôtelier et restauration rapide restent prêtes pour la suite, sans simuler l’achèvement des manches non développées. Lors du développement des manches suivantes, leur bilan pourra appeler `openCareerPause(index)` avec un indice de 0 à 4 ; l’appel ne termine aucune manche et ne lance pas la suivante. Le bouton de sortie rejoint le carnet.
 
 Vérifications : `node --test tests/*.test.cjs`. Tests navigateur facultatifs avec Playwright et Chromium : `CAREER_TEST_URL=http://127.0.0.1:8000 node tests/careers.browser.cjs`. Ils exercent les 15 choix possibles, les révélations, le clavier, la répétition, les scores/jokers et cinq tailles d’écran. Le test `tests/apero.browser.cjs` vérifie aussi la liaison réelle entre le bilan de la manche 1, la pause serveur et le carnet.
 
@@ -90,3 +90,20 @@ Logos officiels utilisés dans l’en-tête :
 - `assets/Copie de Gironde_1 (1).png` — E2C Gironde, PNG RGBA 2363×2363, accompagné de la mention « Site de Coutras ».
 
 Les fichiers des logos restent intacts. Les viewports SVG retirent uniquement l’excès de marge transparente pour les afficher à une taille lisible, sans redessiner ni déformer les marques. Le logo AFEPT transparent est repris de main sans remplacer les autres modifications de la branche. L’illustration d’accueil reste inchangée.
+
+
+## Manche 2 — À quelle sauce ?
+
+Depuis la deuxième escale : introduction → trois énigmes (foie gras, chocolatine/pain au chocolat, huîtres) → bilan → pause métier cuisine → carnet. Chaque équipe transmet ses réponses par écrit au formateur ; aucun champ de spécialité n’est affiché à l’écran. Les deux appellations de la viennoiserie sont acceptées par le formateur.
+
+`sauce.js` gère deux progressions indépendantes. Une erreur fait avancer seulement l’équipe concernée à l’indice suivant ; la troisième erreur termine sa recherche à zéro. Une réussite attribue 20, 15 ou 10 points selon son propre indice, une seule fois, puis désactive ses commandes. La correction attend la fin des deux recherches. Maximum : 60 points par équipe sur cette manche, ajoutés aux scores généraux.
+
+Chaque bouton de validation ouvre une confirmation annulable. Un jeton propre au jeu, à l’énigme, à l’équipe et à son état refuse les confirmations répétées ou périmées, même après une mauvaise réponse. Les validations n’affectent ni l’autre équipe ni les jokers. Revenir au carnet puis reprendre la manche conserve les indices et les résultats, sans réattribuer les points. La réinitialisation et le rechargement effacent la partie, comme auparavant.
+
+`sauce-ui.js` gère ces nouveaux écrans. Trois visuels fournis sont intégrés via `sauce-photos.js` : photographie de foie gras, illustration de boulangère et photographie d’huîtres. L’utilisateur a expressément demandé de conserver l’illustration IA pour la chocolatine : elle porte la mention « Illustration générée par intelligence artificielle », sans auteur ni licence Wikimedia attribués à tort. Les deux photographies reprennent les références Wikimedia fournies par l’utilisateur ; la comparaison avec les originaux reste bloquée par HTTP 403. Aucun réglage réseau n’a été modifié.
+
+Le lien « Crédits photos » du pied de page ouvre les auteurs, titres, sources et licences des énigmes déjà corrigées uniquement, afin de ne pas révéler les autres spécialités. Les trois visuels sont affichés entiers avec `object-fit: contain`, sans retouche ni recadrage par le jeu. Les chemins exacts et les informations de provenance sont documentés dans `assets/photos/SAUCE.md`. La configuration distingue `verified` (vérification externe) de `approvedForDisplay` (affichage explicitement confirmé par l’utilisateur) ; une future photo non approuvée doit avoir sa correspondance et ses droits vérifiés avant affichage.
+
+La carte des huîtres situe Arcachon au bord du bassin dans la région Nouvelle-Aquitaine, en reprenant les limites IGN 2018 et le contour communal. Sources dans `assets/maps/ATTRIBUTION.md` ; génération hors ligne avec `python3 tools/generate-arcachon-map.py`.
+
+Tests : `node --test tests/*.test.cjs`. Test navigateur facultatif : `SAUCE_TEST_URL=http://127.0.0.1:8000 node tests/sauce.browser.cjs`. Il vérifie les deux progressions, confirmation/annulation, correction différée, reprise, pause cuisine, fin de manche, réinitialisation et cinq tailles d’écran. Seules les deux premières escales sont jouables ; leur sélection depuis le carnet n’ajoute pas de condition de déblocage nouvelle.

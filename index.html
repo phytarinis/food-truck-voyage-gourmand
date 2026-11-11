@@ -14,6 +14,9 @@
   <script defer src="careers.js"></script>
   <script defer src="career-illustrations.js"></script>
   <script defer src="careers-ui.js"></script>
+  <script defer src="sauce.js"></script>
+  <script defer src="sauce-photos.js"></script>
+  <script defer src="sauce-ui.js"></script>
 </head>
 <body class="welcome-mode">
   <svg class="art-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -70,8 +73,8 @@
       <div id="journey-scores" class="scoreboard"></div>
       <p class="eyebrow">LE CARNET DE ROUTE</p>
       <h1 id="journey-title" tabindex="-1">Six manches. <em>Un grand voyage.</em></h1>
-      <p class="intro">Cliquez sur L’apéro local pour lancer la première manche. La démo reste disponible à part.</p>
-      <div class="route-map" aria-label="Itinéraire des six manches : L’apéro local est jouable">
+      <p class="intro">Choisissez L’apéro local ou À quelle sauce ? pour poursuivre le voyage. La démo reste disponible à part.</p>
+      <div class="route-map" aria-label="Itinéraire des six manches : les deux premières sont jouables">
         <svg class="board-art" viewBox="0 0 1200 440" preserveAspectRatio="none" aria-hidden="true">
           <path d="M0 0H400Q322 90 220 124T0 222Z" fill="#d9dfc8"/>
           <path d="M1200 0H855Q812 51 891 91T1200 185Z" fill="#e8dcc0"/>
@@ -92,7 +95,7 @@
       </div>
       <div class="route-legend" aria-label="États prévus des manches"><span class="pending">○ À venir</span><span class="active">◉ En cours</span><span class="complete">✓ Terminée</span></div>
       <div class="demo-launch"><div><span class="eyebrow">UNE ESCALE POUR ESSAYER</span><p>Un pays, une spécialité… à vous de jouer !</p></div><button class="primary" id="play">LANCER LA DÉMO <span>→</span></button></div>
-      <p class="tiny">Les manches 2 à 6 et les jokers sont à venir. La démo est une escale indépendante.</p>
+      <p class="tiny">Les manches 3 à 6 et les jokers sont à venir. La démo est une escale indépendante.</p>
     </section>
 
     <section id="apero-intro" class="screen compact apero-screen" hidden aria-labelledby="apero-intro-title">
@@ -132,6 +135,29 @@
       <div class="scoreboard"></div><p class="eyebrow">LES TROIS LIVRAISONS SONT ARRIVÉES !</p><h1 id="apero-end-title" tabindex="-1">L’apéro local : <em>manche terminée.</em></h1><p id="apero-totals" class="outcome"></p><p class="intro">Le bonus ne rapporte aucun point. La deuxième escale reste à venir.</p><button class="primary" id="career-start">PAUSE MÉTIER <span>→</span></button>
     </section>
 
+    <section id="sauce-intro" class="screen compact sauce-screen" hidden aria-labelledby="sauce-intro-title">
+      <div class="scoreboard"></div><p class="eyebrow">MANCHE 02 / NOUVELLE-AQUITAINE</p><h1 id="sauce-intro-title" tabindex="-1">À quelle <em>sauce ?</em></h1>
+      <p class="intro">Notre food truck poursuit sa route en Nouvelle-Aquitaine !</p>
+      <aside class="companion sauce-intro-scene"><svg aria-hidden="true"><use href="#companion-art"/></svg><p class="speech">On reste en Nouvelle-Aquitaine ! Mais cette fois, il va falloir reconnaître ce qu'on met dans les assiettes…</p></aside>
+      <p class="intro sauce-intro-principle">Trois spécialités à découvrir. Trois indices possibles. Plus vous trouvez tôt, plus vous gagnez de points !</p><p class="sauce-confidential">Chaque équipe progresse à son rythme et transmet sa réponse par écrit au formateur, sans l’annoncer à voix haute.</p>
+      <div class="result-actions"><button id="sauce-begin" class="primary">PREMIÈRE ÉNIGME <span>→</span></button><button class="text-button sauce-back">Le carnet de route</button></div>
+    </section>
+
+    <section id="sauce-search" class="screen compact sauce-screen" hidden aria-labelledby="sauce-search-title">
+      <div class="scoreboard"></div><div class="sauce-heading"><div><p id="sauce-progress" class="eyebrow"></p><h1 id="sauce-search-title" tabindex="-1">À quelle <em>sauce ?</em></h1></div><aside class="sauce-mini-companion"><svg aria-hidden="true"><use href="#companion-art"/></svg><p class="sauce-reminder">Chut… les réponses voyagent sur le papier !<br><small>Transmettez-les discrètement au formateur.</small></p></aside></div>
+      <div id="sauce-panels" class="sauce-panels"></div><p id="sauce-live" class="feedback" role="status"></p><button class="text-button sauce-back">Le carnet de route · progression conservée</button>
+    </section>
+
+    <section id="sauce-correction" class="screen compact sauce-screen" hidden aria-labelledby="sauce-correction-title">
+      <div class="scoreboard"></div><p id="sauce-correction-progress" class="eyebrow"></p><h1 id="sauce-correction-title" tabindex="-1"></h1><p id="sauce-solution" class="delivery-solution"></p><div id="sauce-awards" class="delivery-awards"></div>
+      <div class="sauce-discovery"><figure id="sauce-photo" class="sauce-photo"></figure><div><ul id="sauce-facts"></ul><p id="sauce-correction-quote" class="speech" hidden></p><figure id="sauce-map" hidden><a href="assets/maps/nouvelle-aquitaine-arcachon.svg" target="_blank" rel="noopener"><img src="assets/maps/nouvelle-aquitaine-arcachon.svg" alt="Carte de Nouvelle-Aquitaine avec la Gironde mise en évidence et Arcachon repéré au bord du bassin."></a><figcaption>Arcachon, au bord du bassin · IGN / Admin Express 2018 · <a href="assets/maps/ATTRIBUTION.md" target="_blank" rel="noopener">Sources et licence</a></figcaption></figure></div></div>
+      <div class="result-actions"><button id="sauce-next" class="primary">POURSUIVRE LE VOYAGE <span>→</span></button><button class="text-button sauce-back">Le carnet de route</button></div>
+    </section>
+
+    <section id="sauce-end" class="screen compact sauce-screen" hidden aria-labelledby="sauce-end-title">
+      <div class="scoreboard"></div><p class="eyebrow">TROIS SPÉCIALITÉS DÉCOUVERTES</p><h1 id="sauce-end-title" tabindex="-1">À quelle sauce ? <em>Manche terminée.</em></h1><p id="sauce-totals" class="outcome"></p><p class="intro">La troisième escale reste à venir. Avant de repartir, une pause avec les métiers de la cuisine !</p><button id="sauce-career" class="primary">PAUSE MÉTIER : CUISINE <span>→</span></button>
+    </section>
+
     <section id="career-pause" class="screen compact career-screen" hidden aria-labelledby="career-title">
       <div class="scoreboard"></div>
       <div class="career-layout">
@@ -165,7 +191,9 @@
       <p class="tiny">Rejouer conserve les scores et alterne l’équipe qui commence.</p>
     </section>
   </main>
-  <footer><span>LABO ÉPICÉ × E2C COUTRAS</span><span>LE SAVOIR A DU GOÛT.</span><span>VERSION DÉCOUVERTE · 01</span></footer>
+  <footer><span>LABO ÉPICÉ × E2C COUTRAS</span><span>LE SAVOIR A DU GOÛT.</span><button id="photo-credits-open" class="footer-credits" type="button">Crédits photos</button><span>VERSION DÉCOUVERTE · 01</span></footer>
+  <dialog id="photo-credits-dialog" aria-labelledby="photo-credits-title"><h2 id="photo-credits-title">Crédits photos</h2><p>Manche 2 — À quelle sauce ?</p><div id="photo-credits-content"></div><button class="secondary" id="photo-credits-close" type="button">Fermer</button></dialog>
+  <dialog id="sauce-confirm" aria-labelledby="sauce-confirm-title"><h2 id="sauce-confirm-title">Confirmer cette validation ?</h2><p id="sauce-confirm-text"></p><div><button type="button" class="secondary" id="sauce-cancel">Annuler</button><button type="button" class="primary" id="sauce-confirm-answer">Confirmer</button></div></dialog>
   <dialog id="reset-dialog" aria-labelledby="reset-title"><h2 id="reset-title">On repart de zéro ?</h2><p>Les noms, les scores et la progression seront effacés.</p><div><button class="secondary" id="cancel-reset">Continuer le voyage</button><button class="primary" id="confirm-reset">Réinitialiser</button></div></dialog>
 </body>
 </html>

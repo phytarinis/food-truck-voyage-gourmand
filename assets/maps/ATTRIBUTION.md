@@ -11,3 +11,7 @@ Fichiers d’origine : `departements.geojson` et `departements/{16-charente,17-c
 ## Cartes métropolitaines
 
 `mainland.geojson` conserve les 96 départements métropolitains du même jeu IGN Admin Express COG 2018 / france-geojson (y compris 2A et 2B). `python3 tools/generate-france-maps.py` produit les vues `france-16.svg`, `france-17.svg`, `france-24.svg` et `france-numeros.svg` sans réseau. Les limites et codes ne sont pas inventés : ils proviennent des propriétés INSEE et coordonnées source. Le zoom Île-de-France isole les départements très petits. Les cartes ont le nord en haut ; la précision d’affichage est pédagogique, non adaptée à la navigation.
+
+## Nouvelle-Aquitaine et bassin d’Arcachon
+
+`nouvelle-aquitaine-arcachon.svg` reprend les limites des 12 départements de la région dans `mainland.geojson` et le repère communal d’Arcachon (INSEE 33009). Son contour d’origine, sans modification, est conservé dans `arcachon.geojson` et provient du fichier `departements/33-gironde/communes-33-gironde.geojson` de france-geojson, même source IGN 2018 et Licence Ouverte. La carte localise Arcachon au bord du bassin ; elle ne prétend pas tracer le périmètre marin du bassin. Génération hors ligne : `python3 tools/generate-arcachon-map.py`.
