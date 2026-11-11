@@ -20,8 +20,10 @@ function show(id) {
   const heading = $(id).querySelector('h1');
   if (heading && heading.hasAttribute('tabindex')) heading.focus();
   window.scrollTo(0, 0);
+  if(typeof syncSpicyAccess==='function')syncSpicyAccess(id);
 }
 function scores() {
+  if(typeof spicyObserveProgress==='function')spicyObserveProgress();
   document.querySelectorAll('.scoreboard').forEach(board => {
     board.replaceChildren(...game.teams.map((team, index) => {
       const card = document.createElement('div');
@@ -46,7 +48,7 @@ function scores() {
         peppers.append(icon);
       }
       const label = document.createElement('span');
-      label.textContent = `${team.jokers} jokers disponibles · à venir`;
+      label.textContent = `${team.jokers} piment${team.jokers===1?'':'s'} restant${team.jokers===1?'':'s'}`;
       jokers.append(peppers, label);
       card.append(name, points, jokers);
       return card;
@@ -66,6 +68,7 @@ function renderChallenge(message = '') {
   $('feedback').textContent = message;
 }
 function launch() {
+  if(game?.spicy?.active||game?.spicy?.finale)return;
   startChallenge(game);
   renderChallenge();
   show('challenge');

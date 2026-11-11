@@ -1,3 +1,4 @@
+const continueTravel=require('./helpers/continue-travel.cjs');
 const {chromium}=require('playwright');
 const assert=require('node:assert/strict');
 (async()=>{
@@ -40,13 +41,13 @@ const assert=require('node:assert/strict');
  await p.locator('#sauce-photo>img').evaluate(i=>i.decode());assert.equal(await p.locator('#sauce-photo>img').evaluate(i=>getComputedStyle(i).objectFit),'contain');
  await back();await open();assert.deepEqual(await p.evaluate(()=>game.teams.map(t=>t.score)),[10,20]);
  // Une équipe trouve au premier indice, l’autre échoue aux trois.
- await p.locator('#sauce-next').click();await response(0,true);
+ await continueTravel(p,'#sauce-next');await response(0,true);
  for(let level=0;level<3;level++){await response(1,false);if(level<2){assert.equal(await p.evaluate(()=>game.sauce.clueIndex),level);await advance();}}
  assert.match(await p.locator('#sauce-solution').innerText(),/chocolatine \/ pain au chocolat/);
  assert.match(await p.locator('#sauce-photo figcaption').innerText(),/Illustration générée par intelligence artificielle/);assert.doesNotMatch(await p.locator('#sauce-photo figcaption').innerText(),/Ariane|CC BY-SA/);
  assert.deepEqual(await p.evaluate(()=>game.teams.map(t=>t.score)),[30,20]);
  // Deux équipes échouent : aucune révélation avant la deuxième réponse.
- await p.locator('#sauce-next').click();
+ await continueTravel(p,'#sauce-next');
  for(let level=0;level<3;level++){
   await response(0,false);assert.equal(await p.evaluate(()=>game.sauce.clueIndex),level);assert.equal(await p.locator('#sauce-next-clue').isVisible(),false);assert.equal(await p.locator('#sauce-correction').isVisible(),false);
   await response(1,false);if(level<2){assert.equal(await p.evaluate(()=>game.sauce.clueIndex),level);await advance();}
@@ -54,7 +55,7 @@ const assert=require('node:assert/strict');
  assert.equal(await p.locator('#sauce-map').isVisible(),true);await p.locator('#sauce-map img').evaluate(i=>i.decode());
  await p.locator('#photo-credits-open').click();const credits=await p.locator('#photo-credits-content').innerText();assert.match(credits,/Illustration générée par intelligence artificielle/);assert.match(credits,/Wilfredor/);assert.match(credits,/rhosoi/);assert.doesNotMatch(credits,/Ariane|CC BY-SA/);assert.equal(await p.locator('#photo-credits-content a').count(),4);await p.locator('#photo-credits-close').click();
  // Bonus et pause métier conservés.
- await p.locator('#sauce-next').click();assert.equal(await p.locator('#sauce-bonus').isVisible(),true);assert.equal(await p.locator('#sauce-bonus-reveal').isDisabled(),true);assert.equal(await p.locator('#sauce-bonus-discovery').isVisible(),false);
+ await continueTravel(p,'#sauce-next');assert.equal(await p.locator('#sauce-bonus').isVisible(),true);assert.equal(await p.locator('#sauce-bonus-reveal').isDisabled(),true);assert.equal(await p.locator('#sauce-bonus-discovery').isVisible(),false);
  await back();assert.equal(await p.locator('.route-stop:nth-child(2).complete').count(),0);await open();
  await p.locator('input[name="sauce-bonus-choice"][value="1"]').check();await p.locator('#sauce-bonus-reveal').click();assert.match(await p.locator('#sauce-bonus-solution').innerText(),/^A\./);await p.locator('#sauce-bonus-discovery img').evaluate(i=>i.decode());assert.deepEqual(await p.evaluate(()=>game.teams.map(t=>[t.score,t.jokers])),[[30,2],[20,2]]);
  await back();await open();assert.equal(await p.locator('#sauce-bonus-answer').isVisible(),true);await p.locator('#sauce-bonus-finish').click();assert.match(await p.locator('#sauce-totals').innerText(),/30 \/ 60/);
@@ -65,7 +66,7 @@ const assert=require('node:assert/strict');
   for(let puzzle=0;puzzle<3;puzzle++){
    await response(0,true);await response(1,false);await common();await advance();await response(1,false);await advance();
    assert.equal(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,`recherche ${puzzle} ${width}`);await response(1,true);
-   assert.equal(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,`correction ${puzzle} ${width}`);await p.locator('#sauce-photo>img').evaluate(i=>i.decode());await p.locator('#sauce-next').click();
+   assert.equal(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,`correction ${puzzle} ${width}`);await p.locator('#sauce-photo>img').evaluate(i=>i.decode());await continueTravel(p,'#sauce-next');
   }
   assert.equal(await p.locator('#sauce-bonus').isVisible(),true);const before=await p.evaluate(()=>game.teams.map(t=>[t.score,t.jokers]));await p.locator('input[name="sauce-bonus-choice"]').nth(width%3).focus();await p.keyboard.press('Space');await p.locator('#sauce-bonus-reveal').click();assert.deepEqual(await p.evaluate(()=>game.teams.map(t=>[t.score,t.jokers])),before);assert.equal(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);await p.locator('#sauce-bonus-finish').click();assert.equal(await p.locator('#sauce-end').isVisible(),true);
   console.log('Indices synchronisés + bonus :',width,height);

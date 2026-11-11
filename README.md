@@ -15,12 +15,12 @@ python3 -m http.server 8000 --bind 0.0.0.0
 ## Jeu disponible
 
 - Accueil, noms des deux équipes, scores et compteurs de deux jokers par équipe.
-- Carnet des six manches : « L’apéro local » et « À quelle sauce ? » sont jouables en cliquant sur leurs noms. Les manches 3 à 6 restent « À venir ». La démo est indépendante.
+- Carnet des six manches jouables, de « L’apéro local » à « Tour du monde ». La démo est indépendante.
 - Démonstration : trois indices, une tentative par équipe à chaque indice. Le formateur valide la réponse orale. Les deux échecs ouvrent l’indice suivant ; une réussite termine le défi et attribue les points. Après six échecs, personne ne marque.
 - L’équipe 1 commence la première démonstration. L’équipe de départ alterne à chaque nouvelle démonstration ; elle commence aussi chaque indice de ce défi. Rejouer conserve les scores.
 - Correction et bouton de réinitialisation avec confirmation. Les données restent en mémoire : recharger ou fermer la page efface la partie.
 
-Les jokers sont des compteurs visuels, sans action. Les manches 3 à 6 ne sont pas développées. L’illustration d’accueil validée est conservée ; les trois logos partenaires sont intégrés dans l’en-tête. Rien n’est publié automatiquement.
+Les deux piments de chaque équipe permettent maintenant de jouer aux « Plats piégés », entre les défis ou pendant la phase des derniers piments. L’illustration d’accueil validée est conservée ; les trois logos partenaires sont intégrés dans l’en-tête. Rien n’est publié automatiquement.
 
 ## Modifier le jeu
 
@@ -45,7 +45,7 @@ Vérification manuelle : démarrer deux équipes, tester une bonne réponse à c
 
 ## Habillage BD et règles
 
-Le parcours comprend maintenant : accueil → équipes → règles → carnet de route → démonstration → correction. Les règles présentent les futurs « Plats piégés » et leur barème provisoire ; aucun joker ni nouvelle question n’est activé.
+Le parcours comprend maintenant : accueil → équipes → règles → carnet de route → démonstration → correction. Les règles présentent les « Plats piégés » et leurs deux modes sans retrait de points.
 
 Le personnage et le camion des pages intérieures sont des vignettes SVG réutilisant l’image d’accueil validée, sans modification de ce fichier. `assets/frites.svg` illustre la correction. Le carnet relie les six escales. `renderRoute({ current, completed })` dans `app.js` affiche les états (indices de manches de 0 à 5) et la position du camion ; les manches 1 et 2 font progresser cet itinéraire. La démo ne change pas l’état des manches.
 
@@ -275,3 +275,19 @@ Nouveaux : `world.js`, `world-ui.js`, `world-map.js`, `world-photos.js`, `flag-c
 `node --test tests/*.test.cjs` couvre les 49 combinaisons de réponses des deux équipes pour chacun des cinq premiers défis, les verrous et jetons périmés, les points océaniques/terrestres, les limites de la tolérance, les scores uniques, le maximum de 60, le cumul et la conservation des autres manches, les sept continents et les références/versions photo. Le générateur vérifie également la conservation topologique des terres.
 
 `WORLD_TEST_URL=http://127.0.0.1:8008 node tests/world.browser.cjs` vérifie de vrais clics sur les sept continents et dans tous les océans, les six défis dans l’ordre, le masquage complet, les drapeaux côte à côte, le clavier, l’absence de tout indice du Pacifique avant correction (y compris photo, requête image et crédits), les six photos, les scores, la reprise, le bilan, le carnet, la transition et le reset. Dimensions Chromium : 1920×1080, 1366×768, 1024×768, 390×844, 320×640, sans débordement horizontal. Les suites des manches 1 à 5, de la démo et des cinq pauses métiers vérifient les régressions. Ce sont des simulations de dimensions Chromebook/projection, sans appareil physique.
+
+
+## Jokers « Plat piégé ! »
+
+Deux piments par équipe pour toute la partie, quatre questions uniques. Le formateur choisit le propriétaire du piment, le mode et une question disponible avant de lancer :
+
+- **Je tente ma chance** : l’équipe joueuse gagne 10 points si elle répond juste, sinon 0.
+- **Je défie l’autre équipe** : l’adversaire répond obligatoirement. Une bonne réponse lui rapporte 10 points ; une erreur rapporte 10 points à l’équipe qui a lancé le défi.
+
+Le piment est consommé au lancement, jamais lors d’une simple consultation ou annulation. Aucun retrait de points. Un seul joker peut être joué entre deux défis principaux ; les bonus et pauses métiers ne recréent pas cet intervalle. Aucun lancement pendant une question ou une correction. Après validation collective A/B/C par le formateur, la correction révèle la photo, son crédit, l’explication et la réplique. La reprise retrouve exactement le défi suivant, sans perdre les réponses ni les scores des manches.
+
+Après l’achèvement des six manches, « Les derniers piments » affiche les scores provisoires. Les équipes volontaires alternent ; une équipe peut jouer successivement si l’autre renonce ou n’a plus de piments. Renoncer à utiliser ses piments ne dispense pas de répondre à un défi adverse. La clôture est possible sans jouer et fige les scores définitifs. La transition finale existante est réutilisée, sans nouveau graphisme final. Si certaines manches restent inachevées, la transition reste provisoire.
+
+Moteur indépendant : `spicy.js`. Interface et reprise des six parcours : `spicy-ui.js`. Références photo : `spicy-photos.js` et [crédits complets](assets/photos/SPICY.md). Les originaux sont conservés, affichés entièrement et uniquement après révélation ; la rubrique de crédits ne liste que les questions révélées.
+
+Vérification : **704 tests unitaires réussis** (`node --test tests/*.test.cjs`). `SPICY_TEST_URL=http://127.0.0.1:8008 node tests/spicy.browser.cjs` couvre les deux modes, erreurs et réussites, unicité, reprise des six manches, verrouillage des intervalles, alternance finale, renoncement, clôture, crédits, images masquées et réinitialisation. Les sept suites navigateur existantes (six manches et pauses métiers, démo incluse) passent également. Dimensions simulées : 1920×1080, 1366×768, 1024×768, 390×844 et 320×640 ; aucun débordement horizontal. Ces vérifications Chromium ne remplacent pas un essai sur vidéoprojecteur physique.
