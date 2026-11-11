@@ -12,6 +12,7 @@
   <script defer src="culture-photos.js"></script>
   <script defer src="apero-ui.js"></script>
   <script defer src="careers.js"></script>
+  <script defer src="career-illustrations.js"></script>
   <script defer src="careers-ui.js"></script>
 </head>
 <body class="welcome-mode">
@@ -25,7 +26,11 @@
   </defs></svg>
   <header class="topbar">
     <span class="game-signature">Le grand voyage <em>gourmand</em></span>
-    <div class="partners" aria-label="Partenaires"><img class="partner-labo" src="assets/Logo%20sans%20fond.png" width="60" height="60" alt="Le Labo Épicé"><img class="partner-afept" src="assets/logo_couleur%20(2).jpg" width="140" height="72" alt="AFEPT, formation, insertion et éducation permanente"><i aria-hidden="true">×</i><span class="e2c">E2C <small>COUTRAS</small></span></div>
+    <div class="partners" aria-label="Partenaires">
+      <img class="partner-logo partner-labo" src="assets/Logo%20sans%20fond.png" width="60" height="60" alt="Le Labo Épicé">
+      <svg class="partner-logo partner-afept" viewBox="105 85 475 185" width="150" height="58" role="img" aria-label="AFEPT, formation, insertion et éducation permanente"><image href="assets/Logo_AFEPT-removebg-preview.png" width="696" height="359"/></svg>
+      <figure class="partner-e2c"><svg class="partner-logo" viewBox="500 440 1370 1510" width="52" height="58" role="img" aria-label="École de la Deuxième Chance, E2C Gironde"><image href="assets/Copie%20de%20Gironde_1%20(1).png" width="2363" height="2363"/></svg><figcaption>Site de Coutras</figcaption></figure>
+    </div>
     <button class="text-button" id="reset" hidden>↺ Réinitialiser</button>
   </header>
 
@@ -129,9 +134,14 @@
 
     <section id="career-pause" class="screen compact career-screen" hidden aria-labelledby="career-title">
       <div class="scoreboard"></div>
-      <div class="career-heading"><div><p id="career-progress" class="eyebrow"></p><h1 id="career-title" tabindex="-1"></h1></div><span class="career-ticket">1–2 MIN<br><b>PAUSE COLLECTIVE</b></span></div>
-      <div class="career-invitation"><div><h2>Deux vérités, une idée reçue !</h2><p>Échangez tous ensemble. Quelle affirmation est fausse ?</p></div><aside class="companion"><svg aria-hidden="true"><use href="#companion-art"/></svg><p class="speech" id="career-quote"></p></aside></div>
-      <form id="career-form"><fieldset id="career-choices"><legend class="visually-hidden">Choix collectif : quelle affirmation est fausse ?</legend><div id="career-cards" class="career-cards"></div></fieldset><div class="career-choice-actions"><p id="career-choice-status" role="status">Le formateur sélectionne votre proposition.</p><button id="career-reveal" class="primary" type="submit" disabled>RÉVÉLER L’IDÉE REÇUE <span>→</span></button></div></form>
+      <div class="career-layout">
+        <div class="career-content">
+          <p id="career-progress" class="eyebrow"></p><h1 id="career-title" tabindex="-1"></h1>
+          <div class="career-invitation"><div><h2>Deux vérités, une idée reçue !</h2><p>Échangez tous ensemble. Quelle affirmation est fausse ?</p></div></div>
+          <form id="career-form"><fieldset id="career-choices"><legend class="visually-hidden">Choix collectif : quelle affirmation est fausse ?</legend><div id="career-cards" class="career-cards"></div></fieldset><div class="career-choice-actions"><p id="career-choice-status" role="status">Le formateur sélectionne votre proposition.</p><button id="career-reveal" class="primary" type="submit" disabled>RÉVÉLER L’IDÉE REÇUE <span>→</span></button></div></form>
+        </div>
+        <aside class="career-companion" aria-label="Notre compagnon de voyage"><div id="career-portrait" class="career-portrait"></div><p class="speech" id="career-quote" hidden></p></aside>
+      </div>
       <div id="career-revelation" class="career-revelation" hidden tabindex="-1" aria-labelledby="career-feedback"><h2 id="career-feedback"></h2><p id="career-explanation"></p><ul id="career-facts" class="career-facts"></ul></div>
       <div class="career-bottom"><p class="tiny">Une découverte pour tout le monde · Aucun point attribué · Aucun joker utilisé</p><button id="career-continue" class="primary" hidden>LE CARNET DE ROUTE <span>→</span></button></div>
     </section>

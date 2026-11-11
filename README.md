@@ -77,3 +77,16 @@ Depuis le bilan de L’apéro local : **Pause métier → Serveur / Serveuse →
 Seule la pause serveur est reliée à la navigation publique. Les pauses cuisinier, réceptionniste, entretien hôtelier et restauration rapide sont prêtes dans les données et le composant, mais aucun bouton ne les débloque et aucune manche non développée n’est simulée. Lors du développement des manches suivantes, leur bilan pourra appeler `openCareerPause(index)` avec un indice de 0 à 4 ; l’appel ne termine aucune manche et ne lance pas la suivante. Le bouton de sortie rejoint le carnet.
 
 Vérifications : `node --test tests/*.test.cjs`. Tests navigateur facultatifs avec Playwright et Chromium : `CAREER_TEST_URL=http://127.0.0.1:8000 node tests/careers.browser.cjs`. Ils exercent les 15 choix possibles, les révélations, le clavier, la répétition, les scores/jokers et cinq tailles d’écran. Le test `tests/apero.browser.cjs` vérifie aussi la liaison réelle entre le bilan de la manche 1, la pause serveur et le carnet.
+
+### Disposition des pauses et illustrations métier
+
+Les cinq pauses partagent la composition 60/40 : affirmations verticales à gauche, grand compagnon validé à droite. La réplique humoristique n’apparaît qu’après la révélation. Les corrections et les trois repères métier sont conservés, sans modification du moteur ni des textes validés.
+
+Aucune déclinaison de tenue n’est disponible dans les ressources validées : le même compagnon de l’accueil est donc réutilisé fidèlement, sans fabriquer de nouveaux personnages ou de tenues approximatives. `career-illustrations.js` prévoit cinq emplacements `src` pour des illustrations approuvées : service avec plateau, cuisine, réception, entretien et restauration rapide. Tant que `src` est vide, le SVG reprend exactement le personnage de l’accueil. Pour intégrer un visuel validé, renseigner seulement son chemin local et son texte alternatif dans cette configuration.
+
+Logos officiels utilisés dans l’en-tête :
+- `assets/Logo sans fond.png` — Labo Épicé, PNG RGBA 500×500.
+- `assets/Logo_AFEPT-removebg-preview.png` — AFEPT transparent, PNG RGBA 696×359.
+- `assets/Copie de Gironde_1 (1).png` — E2C Gironde, PNG RGBA 2363×2363, accompagné de la mention « Site de Coutras ».
+
+Les fichiers des logos restent intacts. Les viewports SVG retirent uniquement l’excès de marge transparente pour les afficher à une taille lisible, sans redessiner ni déformer les marques. Le logo AFEPT transparent est repris de main sans remplacer les autres modifications de la branche. L’illustration d’accueil reste inchangée.

@@ -23,7 +23,21 @@ function renderCareerPause() {
   scores();
   $('career-progress').textContent = `PAUSE MÉTIER ${currentCareerIndex + 1} / ${job.name.toLocaleUpperCase('fr')} · ENTRE LES MANCHES ${job.afterRound} ET ${job.afterRound + 1}`;
   $('career-title').textContent = job.title;
-  $('career-quote').textContent = job.quote;
+  $('career-quote').hidden = !state.revealed;
+  $('career-quote').textContent = state.revealed ? job.quote : '';
+  const illustration = CareerIllustrations[currentCareerIndex];
+  const portrait = $('career-portrait'); portrait.replaceChildren();
+  portrait.dataset.career = String(currentCareerIndex + 1);
+  if (illustration.src) {
+    const image = document.createElement('img'); image.src = illustration.src; image.alt = illustration.alt;
+    portrait.append(image);
+  } else {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 380 696'); svg.setAttribute('role', 'img');
+    svg.setAttribute('aria-label', 'Notre compagnon de voyage, repris de l’illustration d’accueil validée');
+    const use = document.createElementNS('http://www.w3.org/2000/svg', 'use'); use.setAttribute('href', '#companion-art');
+    svg.append(use); portrait.append(svg);
+  }
   $('career-cards').replaceChildren(...job.statements.map((statement, index) => {
     const card = document.createElement('label'); card.className = 'career-card';
     const input = document.createElement('input'); input.type = 'radio'; input.name = 'career-choice'; input.value = String(index); input.required = true;
