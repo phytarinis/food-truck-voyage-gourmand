@@ -116,7 +116,7 @@ function renderSpicyCorrection(){
 }
 function openSpicyFinale(){
  if(!game)return;
- if(game.spicy?.finale?.phase==='closed'){scores();show('world-transition');return;}
+ if(game.spicy?.finale?.phase==='closed'){scores();if(typeof openGrandFinal==='function')openGrandFinal();else show('world-transition');return;}
  if(!SpicyGame.beginFinale(game))return;renderSpicyFinale();
 }
 function renderSpicyFinale(){
@@ -127,7 +127,7 @@ function renderSpicyFinale(){
  }));const owners=SpicyGame.finaleOwners(game);
  $('spicy-final-turn').textContent=!SpicyGame.available(game).length?'Les quatre questions ont été utilisées.':!owners.length?'Aucune équipe ne souhaite ou ne peut jouer. Vous pouvez clôturer.':owners.length===2?'Le formateur choisit la première équipe.':`Au tour de ${game.teams[owners[0]].name} de jouer un piment.`;
  $('spicy-final-play').disabled=owners.length===0;
- $('spicy-final-close').textContent=owners.length?'CLÔTURER ET VOIR LES SCORES DÉFINITIFS →':'VOIR LES SCORES DÉFINITIFS →';show('spicy-finale');
+ $('spicy-final-close').textContent='Terminer les jokers et découvrir les résultats →';show('spicy-finale');
 }
 function appendSpicyPhotoCredits(container){
  if(!game?.spicy)return;
@@ -144,5 +144,5 @@ $('spicy-return').addEventListener('click',()=>{
  spicySetup=null;$('spicy-photo').replaceChildren();if(kind==='finale')renderSpicyFinale();else if(context==='spicy-break')spicyResume();else spicyRestore(context);
 });
 $('spicy-final-play').addEventListener('click',()=>openSpicySetup('finale'));
-$('spicy-final-close').addEventListener('click',()=>{if(SpicyGame.closeFinale(game)){scores();show('world-transition')}});
+$('spicy-final-close').addEventListener('click',()=>{if(SpicyGame.closeFinale(game)){scores();if(typeof openGrandFinal==='function')openGrandFinal();else show('world-transition')}});
 $('spicy-final-back').addEventListener('click',()=>{scores();show('journey')});

@@ -266,7 +266,7 @@ Les originaux ne sont jamais écrasés. Deux versions proportionnelles WebP sont
 
 ### Bilan et transition finale
 
-Après la sixième correction, le bilan indique les six gains, le total de manche et les scores cumulés. La manche est marquée terminée et le camion atteint l’escale 6 du carnet. « Terminer le grand voyage ! » mène à `world-transition`, un simple emplacement de transition avec scores conservés et retour au carnet. **Aucun écran final complet, classement de gagnants ou animation nouvelle n’a été développé** ; cet écran sera conçu ultérieurement.
+Après la sixième correction, le bilan indique les six gains, le total de manche et les scores cumulés. La manche est marquée terminée et le camion atteint l’escale 6 du carnet. « Terminer le grand voyage ! » mène à `world-transition`, un simple emplacement de transition avec scores conservés et retour au carnet. Cette transition initiale est maintenant prolongée par le grand final décrit ci-dessous, après clôture des derniers piments.
 
 ### Fichiers et tests
 
@@ -286,8 +286,31 @@ Deux piments par équipe pour toute la partie, quatre questions uniques. Le form
 
 Le piment est consommé au lancement, jamais lors d’une simple consultation ou annulation. Aucun retrait de points. Un seul joker peut être joué entre deux défis principaux ; les bonus et pauses métiers ne recréent pas cet intervalle. Aucun lancement pendant une question ou une correction. Après validation collective A/B/C par le formateur, la correction révèle la photo, son crédit, l’explication et la réplique. La reprise retrouve exactement le défi suivant, sans perdre les réponses ni les scores des manches.
 
-Après l’achèvement des six manches, « Les derniers piments » affiche les scores provisoires. Les équipes volontaires alternent ; une équipe peut jouer successivement si l’autre renonce ou n’a plus de piments. Renoncer à utiliser ses piments ne dispense pas de répondre à un défi adverse. La clôture est possible sans jouer et fige les scores définitifs. La transition finale existante est réutilisée, sans nouveau graphisme final. Si certaines manches restent inachevées, la transition reste provisoire.
+Après l’achèvement des six manches, « Les derniers piments » affiche les scores provisoires. Les équipes volontaires alternent ; une équipe peut jouer successivement si l’autre renonce ou n’a plus de piments. Renoncer à utiliser ses piments ne dispense pas de répondre à un défi adverse. La clôture est possible sans jouer et fige les scores définitifs. La clôture mène désormais à la séquence du grand final décrite ci-dessous. Si certaines manches restent inachevées, la transition reste provisoire.
 
 Moteur indépendant : `spicy.js`. Interface et reprise des six parcours : `spicy-ui.js`. Références photo : `spicy-photos.js` et [crédits complets](assets/photos/SPICY.md). Les originaux sont conservés, affichés entièrement et uniquement après révélation ; la rubrique de crédits ne liste que les questions révélées.
 
 Vérification : **704 tests unitaires réussis** (`node --test tests/*.test.cjs`). `SPICY_TEST_URL=http://127.0.0.1:8008 node tests/spicy.browser.cjs` couvre les deux modes, erreurs et réussites, unicité, reprise des six manches, verrouillage des intervalles, alternance finale, renoncement, clôture, crédits, images masquées et réinitialisation. Les sept suites navigateur existantes (six manches et pauses métiers, démo incluse) passent également. Dimensions simulées : 1920×1080, 1366×768, 1024×768, 390×844 et 320×640 ; aucun débordement horizontal. Ces vérifications Chromium ne remplacent pas un essai sur vidéoprojecteur physique.
+
+## Le grand final
+
+La séquence finale réutilise `SpicyGame` et son instantané de clôture : aucun nouveau moteur de jokers ni calcul de gain. Après les six manches, « DERNIER COUP DE PIMENT ! » affiche les scores provisoires, permet les deux modes existants et la clôture sans jouer. La clôture verrouille les scores, puis enchaîne : retour animé du camion et du personnage d’origine → six souvenirs → révélation simultanée des scores définitifs. Corail, sauge et égalité sont traités avec la même valorisation des deux équipes.
+
+Les animations sont courtes, ne désactivent jamais les boutons et disparaissent avec `prefers-reduced-motion`. Aucun son n’est ajouté. Les pictogrammes des souvenirs sont de petits dessins vectoriels ; les illustrations d’origine restent inchangées.
+
+« Revoir notre voyage » ouvre le carnet, ses six escales terminées et cinq accès métiers. Les corrections sont consultables en lecture seule : destinations, informations culturelles, cartes exactes existantes, photographies/crédits et gains enregistrés. Cette consultation ne modifie aucun état de partie, ne rejoue pas les questions et ne rapporte aucun point. « Revenir aux résultats » reste accessible. La démonstration est désactivée après clôture.
+
+« Nouvelle partie » et le bouton de réinitialisation commun ouvrent la même confirmation, avec annulation sans modification. Confirmer efface la partie, les scores, réponses, drapeaux, chronomètres et jokers ; les références temporaires de navigation/validation sont nettoyées. Retour à l’accueil validé, inchangé. La partie suivante dispose de deux piments par équipe et quatre questions disponibles.
+
+### Fichiers et dépendances du final
+
+- `final.js` lit l’instantané définitif et détermine victoire/égalité, sans modifier la partie.
+- `final-ui.js` orchestre la séquence, les souvenirs et les consultations en lecture seule.
+- `index.html`, `styles.css`, `app.js`, `spicy-ui.js` intègrent les écrans et la navigation.
+- `tests/final.test.cjs`, `tests/final.browser.cjs` vérifient la séquence ; le test navigateur des jokers suit désormais cette nouvelle continuation.
+
+Branche `feat/grand-final`, mise à jour depuis `main` après la fusion de la PR #14 des jokers (fusion effectuée extérieurement pendant le développement). La manche 6 est intégrée via la PR #13. La PR du final vise donc directement `main`, sans dépendance non fusionnée. Aucune fusion n’a été effectuée par l’agent. Le nouveau fichier `assets/Le grand voyage gourmand.png` ajouté à `main` est conservé sans modification.
+
+Validation du final : `node --test tests/*.test.cjs` et `FINAL_TEST_URL=http://127.0.0.1:8008 node tests/final.browser.cjs`. Le navigateur couvre un dernier joker réel, le verrou définitif, l’absence de révélation prématurée, corail/sauge/égalité, les onze consultations sans mutation, annulation/confirmation du reset, les nouveaux piments et la réduction des animations. Les cinq dimensions habituelles sont vérifiées sans débordement horizontal. Les essais utilisent Chromium avec des dimensions Chromebook/vidéoprojecteur simulées, sans matériel physique.
+
+Résultat de validation : **709 tests unitaires réussis**, ainsi que les neuf suites navigateur (final, jokers, six manches et pauses métiers, démonstration comprise).

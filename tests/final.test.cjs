@@ -1,0 +1,3 @@
+const{test}=require('node:test'),assert=require('node:assert/strict'),Final=require('../final.js');
+test('les résultats attendent le verrou de clôture des jokers',()=>{for(const game of[null,{}, {spicy:{finale:{phase:'open',scores:[{score:20},{score:10}]}}}])assert.equal(Final.outcome(game),null)});
+for(const [scores,winner]of[[[200,180],0],[[10,90],1],[[0,0],null],[[340,340],null]])test(`résultat définitif ${scores}`,()=>{const game={teams:[{score:999},{score:0}],spicy:{finale:{phase:'closed',scores:scores.map((score,i)=>({name:`Équipe ${i}`,score}))}}};const before=JSON.stringify(game),out=Final.outcome(game);assert.equal(out.winner,winner);assert.deepEqual(out.teams.map(t=>t.score),scores);out.teams[0].score=-1;assert.equal(JSON.stringify(game),before)});
