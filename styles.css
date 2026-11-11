@@ -385,3 +385,76 @@ body:not(.welcome-mode) h1 em{background:linear-gradient(transparent 85%,#e9b44b
 .sauce-clue-gate p{font-size:14px;line-height:1.5;margin:0;max-width:620px}
 .sauce-clue-gate .primary{flex-shrink:0}
 @media(max-width:700px){.sauce-clue-gate{align-items:stretch;flex-direction:column;gap:14px}}
+
+/* Manche 3 : les composants sobres existants, une carte de régions en plus. */
+.france-screen>h1{font-size:clamp(29px,3vw,43px);line-height:1.15;margin:10px 0 20px}
+.france-screen .scoreboard{margin-bottom:18px}
+.france-scoring{padding:14px 18px;background:#e6eadb;border-left:4px solid #78916c;line-height:1.6}
+.france-screen .sauce-confidential{margin:12px 0 18px}
+.france-map-heading{display:flex;align-items:center;justify-content:space-between;gap:24px}
+.france-map-heading h1{font-size:clamp(28px,3vw,42px);margin:8px 0;line-height:1.1}
+.france-map-heading .eyebrow{margin:0}
+.france-map-turn{border:1px solid var(--ink);border-radius:5px;padding:12px 18px;font-weight:bold;max-width:350px;overflow-wrap:anywhere}
+.france-map-turn.team-0{background:#f2d4c8;border-left:5px solid var(--red)}
+.france-map-turn.team-1{background:#dce4cf;border-left:5px solid #6d8561}
+.france-map-instruction{font-size:17px;line-height:1.5;margin:6px 0 14px}
+.france-map-layout{display:grid;grid-template-columns:minmax(0,1fr) 265px;gap:24px;align-items:start}
+.france-map-figure{margin:0;min-width:0}
+.france-map-board{display:grid;grid-template-columns:minmax(0,2.5fr) minmax(180px,1fr);gap:8px;background:var(--cream);border:1px solid var(--line);border-radius:8px;padding:8px}
+.france-mainland{min-width:0;display:flex;align-items:center;justify-content:center}
+.france-mainland>svg{display:block;width:100%;max-height:425px;overflow:visible}
+.france-insets{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-content:center;min-width:0}
+.france-inset{display:flex;flex-direction:column;text-align:center;align-items:center;min-width:0;background:#f1eedf;border-radius:4px;padding:4px}
+.france-inset>svg{display:block;width:100%;max-height:112px;overflow:visible}
+.france-inset>span{font-size:13px;font-weight:bold;line-height:1.4;padding:2px 0}
+.france-region{fill:#dce1ce;stroke:var(--ink);stroke-width:1.2;fill-rule:evenodd;cursor:pointer;transition:fill .12s}
+.france-region:hover[aria-disabled="false"]{fill:#bdcdae}
+.france-region.is-selected{fill:#ebc3b0;stroke-width:2.5}
+.france-region:focus-visible{outline:none;stroke:#237d9b;stroke-width:4;filter:drop-shadow(0 0 2px #fff)}
+.france-region[aria-disabled="true"]{cursor:default}
+.france-region.is-correct{fill:#9dbb83;stroke:#36532f;stroke-width:3}
+.france-region-label{font:700 16px 'Trebuchet MS',Arial,sans-serif;fill:var(--ink);pointer-events:none;paint-order:stroke;stroke:var(--cream);stroke-width:3px;stroke-linejoin:round}
+.france-flag{pointer-events:none}
+.france-flag-shape{fill:#e76950;stroke:var(--ink);stroke-width:2.3;stroke-linejoin:round}
+.france-flag.team-1 .france-flag-shape{fill:#a4ba8e}
+.france-flag text{font:bold 15px Arial,sans-serif;fill:var(--ink)}
+.france-map-figure figcaption{font-size:11px;line-height:1.5;padding:8px 2px}
+.france-map-controls{display:flex;flex-direction:column;gap:12px;background:#fffaf0;border:1px solid var(--line);border-radius:6px;padding:18px;min-width:0}
+.france-map-controls h2{font-size:22px;margin:0}
+#france-map-choice{font-size:16px;line-height:1.5;min-height:58px}
+#france-map-choice p{margin:0 0 10px;overflow-wrap:anywhere}
+.france-map-controls>button{font-size:14px;min-height:48px;padding:12px}
+.france-map-controls .bonus-answer{padding:12px;margin:0}
+.france-map-controls .bonus-answer h2{font-size:20px}
+.france-map-help{font-size:12px;line-height:1.5;margin:0}
+.france-map-controls details{font-size:12px;line-height:1.6}
+.france-map-controls summary{cursor:pointer;padding:8px 0}
+#france-region-list{display:grid;gap:5px;margin-top:8px}
+#france-region-list button{background:var(--paper);border:1px solid var(--line);border-radius:3px;text-align:left;padding:10px;min-height:44px}
+#france-region-answer p{font-size:15px;line-height:1.6}
+#france-bonus fieldset{border:0;padding:0;margin:0;min-width:0}
+#france-bonus .bonus-options{margin:0;gap:10px;font-size:21px}
+#france-bonus .bonus-options li{padding:14px 18px}
+#france-bonus .bonus-options label{cursor:pointer;display:flex;align-items:center;gap:12px}
+#france-bonus .bonus-options input{accent-color:var(--ink);width:18px;height:18px;flex-shrink:0}
+#france-bonus .bonus-options li:has(input:checked){background:#e0e8d2;border-color:#6c855f}
+#france-bonus .bonus-options li.bonus-correct{background:#dce7cf;border:2px solid #536f47}
+#france-bonus .bonus-options .bonus-correct::after{content:'✓';float:right;font-weight:bold}
+#france-bonus .bonus-map{margin:0}
+#france-bonus .bonus-map img{width:100%;max-height:280px;object-fit:contain}
+#france-bonus-discovery{margin-top:12px}
+#france-bonus-discovery .speech{font-size:18px}
+#france-bonus-reference{font-size:14px;line-height:1.6}
+@media(max-width:1100px){.france-map-layout{grid-template-columns:minmax(0,1fr) 230px;gap:14px}.france-map-board{grid-template-columns:minmax(0,1fr) 150px}.france-insets{gap:4px}.france-inset>span{font-size:11px}.france-region-label{font-size:17px}.france-map-controls{padding:12px}}
+@media(max-width:850px){.france-map-layout{grid-template-columns:1fr}.france-mainland>svg{max-height:470px}.france-map-controls{display:grid;grid-template-columns:1fr 1fr}.france-map-controls h2,.france-map-controls .bonus-answer{grid-column:1/-1}.france-map-turn{font-size:14px;padding:10px}.france-map-heading{gap:12px}}
+@media(max-width:650px){.france-map-heading{align-items:stretch;flex-direction:column;gap:6px}.france-map-turn{margin:6px 0;max-width:none}.france-map-board{display:flex;flex-direction:column;gap:14px}.france-insets{grid-template-columns:repeat(3,1fr);gap:8px}.france-inset>svg{max-height:80px}.france-inset>span{font-size:11px}.france-map-controls{display:flex}.france-map-instruction{font-size:16px}#france-bonus .bonus-layout{grid-template-columns:1fr}.france-screen .sauce-discovery{grid-template-columns:1fr}.france-region-label{font-size:18px}.france-screen>h1{font-size:29px}}
+@media(min-width:851px){#france-location{padding-top:18px;padding-bottom:20px}#france-location .scoreboard{margin-bottom:10px}.france-mainland>svg{max-height:365px}.france-inset>svg{max-height:92px}.france-map-controls{gap:10px}.france-map-controls>.text-button{margin-top:0}}
+.france-map-board[data-active-team="1"] .france-region.is-selected{fill:#c1d4ac}
+.france-region-label{font-size:20px}
+#france-bonus .bonus-options li{display:flex;align-items:center;gap:14px;padding:12px 16px}
+#france-bonus .bonus-options li::before{flex:0 0 26px}
+#france-bonus .bonus-options label{flex:1}
+#france-bonus .bonus-options li:has(input:disabled):has(input:checked):not(.bonus-correct){background:#f3dfd2;border-color:#b5866e}
+#france-bonus .bonus-options li.bonus-correct::after{content:'✓';font-weight:bold;color:#36532f}
+@media(min-width:851px){#france-bonus{padding-top:18px;padding-bottom:25px}#france-bonus>.eyebrow{margin-top:16px}#france-bonus>h1{font-size:32px;margin:12px 0}#france-bonus .scoreboard{margin-bottom:12px}#france-bonus .bonus-options{font-size:20px}#france-bonus .bonus-options li{padding:10px 14px;min-height:54px}#france-bonus .sauce-bonus-question{margin:14px 0;font-size:21px}#france-bonus .bonus-answer{margin:12px 0;padding:14px 18px}#france-bonus .bonus-answer p{line-height:1.5;margin:8px 0}#france-bonus .bonus-map img{max-height:245px}#france-bonus .result-actions{margin-top:14px}}
+.france-bonus-letter{flex:0 0 26px;font-weight:bold}

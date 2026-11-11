@@ -172,9 +172,6 @@ document.querySelectorAll('.sauce-back').forEach(button => button.addEventListen
 $('photo-credits-open').addEventListener('click', () => {
   const content = $('photo-credits-content'); content.replaceChildren();
   const revealed = SauceGame.puzzles.filter((_, index) => Boolean(game?.sauce?.results[index]));
-  if (!revealed.length) {
-    const note = document.createElement('p'); note.textContent = 'Les crédits apparaîtront après les corrections pour préserver les spécialités à découvrir.'; content.append(note);
-  }
   for (const puzzle of revealed) {
     const photo = SaucePhotos[puzzle.id];
     const article = document.createElement('article');
@@ -189,6 +186,10 @@ $('photo-credits-open').addEventListener('click', () => {
     const status = document.createElement('p'); status.className = 'photo-credit-status';
     status.textContent = photo.kind === 'ai-illustration' || photo.verified ? 'Aucune retouche ni recadrage par le jeu. Image affichée entière.' : photo.approvedForDisplay ? 'Affichage confirmé par l’utilisateur. Référence Wikimedia fournie ; comparaison avec l’original inaccessible (403). Aucune retouche ni recadrage par le jeu.' : 'Photo non affichée : correspondance et droits en attente de confirmation.';
     article.append(title, credit, links, status); content.append(article);
+  }
+  if (typeof appendFrancePhotoCredits === 'function') appendFrancePhotoCredits(content);
+  if (!content.childElementCount) {
+    const note = document.createElement('p'); note.textContent = 'Les crédits apparaîtront après les corrections pour préserver les spécialités à découvrir.'; content.append(note);
   }
   $('photo-credits-dialog').showModal(); $('photo-credits-close').focus();
 });

@@ -126,3 +126,36 @@ Les trois visuels et leurs crédits sont conservés : rhosoi / CC BY 2.0, illust
 `canRevealNextClue`, `nextClueToken` et `revealNextClue` centralisent les conditions et la protection du bouton. Exemple : erreur corail → attente à l’indice 1 ; réussite sauge → +20 pour sauge ; clic du formateur → indice 2 commun, corail seule encore en recherche pour 15 points. Aucune réponse validée ne fait avancer automatiquement l’indice.
 
 Les tests couvrent les 16 combinaisons de gains sur les trois énigmes, dans les deux ordres de validation, ainsi que l’attente, la poursuite en solo, les confirmations périmées, les révélations répétées, le retour au carnet, les images/crédits, le bonus sans points et la réinitialisation.
+
+## Manche 3 — La France et ses spécialités
+
+La troisième escale est désormais jouable : introduction → choucroute → drapeaux → découverte culturelle → galette de sarrasin → drapeaux → découverte → rougail saucisse → drapeaux → découverte → bonus population → bilan → pause métier Réceptionniste → carnet. La manche 4 reste non jouable. La démonstration reste indépendante.
+
+- `france.js` : moteur propre à cette manche, sur le principe synchronisé de la manche 2. Un indice commun ; validations séparées, confirmations annulables ; révélation suivante explicite après les deux réponses ou une recherche déjà terminée. Une réussite donne 20/15/10 points une seule fois ; les deux recherches terminées débloquent la révélation de la spécialité.
+- `france-ui.js` : écrans, confidentialité des drapeaux, corrections, bonus et transition. Les classes sobres des composants existants sont réutilisées, sans changer les moteurs des manches précédentes.
+- `france-regions.js`, `assets/maps/regions-france.geojson`, `tools/generate-france-regions.py` : frontières IGN / france-geojson, 13 régions métropolitaines et 5 DROM. Génération hors ligne, attribution dans `assets/maps/ATTRIBUTION.md`. Le SVG du bonus est généré depuis les mêmes entités métropolitaines. Les collectivités d’outre-mer autres que les DROM ne sont pas représentées.
+- `index.html`, `styles.css`, `app.js` : nouveaux écrans et styles limités à la manche 3, entrée de la troisième escale et suivi de progression. Les illustrations, logos et écrans antérieurs sont conservés.
+
+### Drapeaux et points
+
+Le formateur choisit directement une région par clic sur sa véritable surface, ou au clavier (Tab, Entrée/Espace). Une liste de boutons permet aussi de sélectionner les très petites zones. Le drapeau est déplaçable avant validation. Après validation corail, le rendu ne conserve ni drapeau, ni surbrillance, ni texte indiquant son choix pendant le tour sauge. Les deux drapeaux réapparaissent après validation sauge ; s’ils partagent la même région, ils sont décalés côte à côte. La bonne région ne s’affiche qu’après le clic explicite de révélation, qui ajoute exactement 5 points par bon choix, sans pénalité. Une équipe n’ayant pas trouvé la spécialité peut gagner les points géographiques.
+
+Le maximum de cette manche est donc de 75 points par équipe, ajoutés aux scores cumulés. Les jetons empêchent les confirmations et validations périmées ; les transitions et la révélation géographique sont protégées contre les répétitions. Revenir au carnet puis reprendre conserve la phase et les choix, y compris le masquage du drapeau corail. Le rechargement et la réinitialisation effacent la partie, comme auparavant.
+
+### Bonus et photographies
+
+Le bonus collectif attend une sélection puis « Révéler la réponse ». B, environ 67 millions, est l’ordre de grandeur attendu. La correction indique le 1er janvier 2026, le caractère provisoire et la [publication Insee du 13 janvier 2026](https://www.insee.fr/fr/statistiques/5225246). L’utilisateur a vérifié et fourni cette référence et l’estimation de 66 792 845 habitants ; l’accès direct Insee est refusé par le réseau de l’environnement (403), sans modification des paramètres réseau. Le bonus ne touche ni aux points ni aux jokers.
+
+Les corrections affichent les trois photographies locales via `france-photos.js`, identifiées par `data-specialty` (`choucroute`, `galette`, `rougail`). Les fichiers suivants ont été récupérés depuis `main` et restent intacts :
+
+- `assets/Choucroute-garni_1.JPG`
+- `assets/Galette_de_sarrasin_complète_bretonne.jpg`
+- `assets/Rougail_saucisse_et_riz_zambrocal.jpg`
+
+Crédits fournis par l’utilisateur : Brücke-Osteuropa / CC0 1.0 (choucroute), Arnaud 25 / CC BY-SA 4.0 (galette), Benoît Prieur / CC0 1.0 (rougail). Les crédits, liens Wikimedia et licences apparaissent sous chaque photo et dans « Crédits photos », après sa correction uniquement. Les fichiers sont affichés entiers avec `object-fit: contain`, sans retouche ni recadrage par le jeu ; aucune adaptation de la galette n’est créée. Toute adaptation ultérieure devra respecter CC BY-SA 4.0. Aucun visuel généré ni photo de substitution n’a été ajouté. Les références sont celles fournies par l’utilisateur ; aucune comparaison externe supplémentaire n’est revendiquée.
+
+### Validation
+
+`node --test tests/*.test.cjs` couvre notamment les 16 combinaisons de réussites/échecs des deux équipes, pour les trois énigmes et dans les deux ordres de validation, les indices verrouillés, les jetons périmés, les drapeaux, le +5 unique, le bonus sans points et le cumul réel des trois manches.
+
+`FRANCE_TEST_URL=http://127.0.0.1:8007 node tests/france.browser.cjs` teste le parcours complet, les clics réels dans les 18 régions, le masquage corail jusque dans les sélections accessibles, les drapeaux côte à côte, la sélection au clavier, les scores, la reprise, le bonus, la pause Réceptionniste et le reset. Le rendu est vérifié en Chromium à 1920×1080, 1366×768, 1024×768, 390×844 et 320×640, sans débordement horizontal. Les parcours navigateur des manches 1, 2 et des cinq pauses métiers sont également vérifiés. Ces dimensions simulent Chromebook et projection ; aucun appareil physique n’est utilisé.
