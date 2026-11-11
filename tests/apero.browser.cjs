@@ -3,7 +3,13 @@ const assert=require('node:assert/strict');
 (async()=>{
  const browser=await chromium.launch({executablePath:'/usr/bin/chromium',args:['--no-sandbox']});
  const p=await browser.newPage({viewport:{width:1366,height:768},reducedMotion:'reduce'});let errors=[];p.on('pageerror',e=>errors.push(e.message));
- const back=async()=>{await p.locator('section:not([hidden]) .apero-back').click();};
+ const back=async()=>{
+  if(await p.locator('#apero-end').isVisible()) {
+    await p.locator('#career-start').click();
+    if(!await p.locator('#career-continue').isVisible()) { await p.locator('input[name="career-choice"][value="1"]').check(); await p.locator('#career-reveal').click(); }
+    await p.locator('#career-continue').click();
+  } else await p.locator('section:not([hidden]) .apero-back').click();
+ };
  const reopen=async()=>p.locator('.route-round-open').click();
  const choose=async(t,d,n)=>{await p.locator(`input[name="team-${t}-department"][value="${d}"]`).check();await p.locator(`input[name="team-${t}-number"][value="${n}"]`).check();};
  await p.goto((process.env.APERO_TEST_URL || 'http://127.0.0.1:8000'));await p.locator('#onward').click();await p.locator('#team-one').fill('Corail');await p.locator('#team-two').fill('Sauge');await p.locator('#team-form button').click();await p.locator('#rules-next').click();await reopen();assert.equal(await p.locator('#apero-intro').isVisible(),true);await p.locator('#apero-begin').click();
