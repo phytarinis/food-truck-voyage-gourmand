@@ -1,6 +1,7 @@
 /* Moteur partagé des indices synchronisés et drapeaux : manches 3 et 5. */
 (function(root){
  'use strict';
+ const Flags=typeof module!=='undefined'&&module.exports?require('./flag-choices.js'):root.FlagChoices;
  function createRound({key, points, puzzles, bonus, regionCodes}) {
   let nextId = 1;
   const newPlayers = () => [0, 1].map(() => ({ clueIndex: 0, status: 'searching', points: 0, locationPoints: 0, revision: 0 }));
@@ -55,34 +56,28 @@
   function startLocation(game) {
     const s = game[key];
     if (!s || s.phase !== 'answer') return false;
-    s.location = { activeTeam: 0, choices: [null, null], locked: [false, false], revealed: false };
+    s.location = Flags.create();
     s.phase = 'location'; return true;
   }
   function locationToken(game) {
     const s = game[key], l = s?.location;
     if (s?.phase !== 'location' || !l || l.revealed || l.locked.every(Boolean)) return null;
-    return `${key}:${s.id}:${s.puzzleIndex}:flag:${l.activeTeam}`;
+    return Flags.token(l,`${key}:${s.id}:${s.puzzleIndex}:flag`);
   }
   function chooseRegion(game, code, stamp) {
-    const current = locationToken(game);
-    if (!current || current !== stamp || !regionCodes.includes(code)) return false;
-    const l = game[key].location; l.choices[l.activeTeam] = code; return true;
+    return Flags.select(game[key]?.location,code,stamp,locationToken(game),choice=>regionCodes.includes(choice));
   }
   function lockFlag(game, stamp) {
-    const current = locationToken(game), l = game[key]?.location;
-    if (!current || current !== stamp || !l.choices[l.activeTeam]) return false;
-    l.locked[l.activeTeam] = true; l.activeTeam = 1; return true;
+    return Flags.lock(game[key]?.location,stamp,locationToken(game));
   }
   function revealLocation(game) {
-    const s = game[key], l = s?.location;
-    if (s?.phase !== 'location' || !l || !l.locked.every(Boolean) || l.revealed) return false;
-    l.revealed = true;
-    s.players.forEach((p, team) => {
-      p.locationPoints = l.choices[team] === puzzles[s.puzzleIndex].region ? 5 : 0;
-      game.teams[team].score += p.locationPoints;
-      Object.assign(s.results[s.puzzleIndex][team], { locationPoints: p.locationPoints, region: l.choices[team] });
-    });
-    return true;
+    const s=game[key];if(s?.phase!=='location')return false;
+    const awards=Flags.reveal(s.location,choice=>choice===puzzles[s.puzzleIndex].region,5);
+    if(!awards)return false;
+    s.players.forEach((p,team)=>{
+      p.locationPoints=awards[team];game.teams[team].score+=awards[team];
+      Object.assign(s.results[s.puzzleIndex][team],{locationPoints:awards[team],region:s.location.choices[team]});
+    });return true;
   }
   function discover(game) {
     if (game[key]?.phase !== 'location' || !game[key].location.revealed) return false;

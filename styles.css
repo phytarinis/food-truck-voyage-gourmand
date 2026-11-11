@@ -595,3 +595,44 @@ body:not(.welcome-mode) h1 em{background:linear-gradient(transparent 85%,#e9b44b
 #passport-bonus-photo>img{height:220px;object-fit:contain}
 #passport-bonus.passport-bonus-with-photo .bonus-map img{max-height:145px}
 @media(max-width:600px){.passport-cultural-media .sauce-photo>img{height:240px}}
+
+/* Manche 6 : un planisphère partagé, sans noms pendant les réponses. */
+.world-screen>h1{font-size:clamp(29px,3vw,43px);line-height:1.15;margin:12px 0 18px}
+.world-screen .scoreboard{margin-bottom:12px}.world-screen>.eyebrow{margin-top:14px}
+.world-principle{background:#e6eadb;border-left:4px solid #78916c;padding:16px 20px;font-size:18px;line-height:1.7;max-width:900px}
+#world-challenge{padding-top:18px;padding-bottom:24px}
+.world-instruction{font-size:19px;line-height:1.5;margin:6px 0 18px}
+.world-layout{display:grid;grid-template-columns:minmax(0,1fr) 285px;gap:22px;align-items:start}
+.world-map-figure{margin:0;min-width:0;border:1px solid var(--line);border-radius:7px;background:#fffaf0;padding:8px}
+#world-planisphere{display:block;width:100%;height:auto;aspect-ratio:2/1;min-height:300px;overflow:hidden;touch-action:manipulation}
+#world-planisphere:focus-visible{outline:3px solid #237d9b;outline-offset:2px}
+.world-ocean{fill:#fffaf0}.world-map-figure .france-region{stroke-width:.7;fill:#dce3ce}
+.world-map-figure .france-region.is-selected{fill:#efb9a3;stroke-width:1.8}
+#world-map-board[data-active-team="1"] .france-region.is-selected{fill:#adc697}
+.world-map-figure .france-region.is-correct{fill:#9bbd7f;stroke:#486c3a;stroke-width:1.5}
+.world-map-figure figcaption{font-size:11px;line-height:1.5;padding:8px 4px}
+.world-map-label{font:bold 17px Arial;fill:var(--ink);paint-order:stroke;stroke:#fffaf0;stroke-width:4px;stroke-linejoin:round;pointer-events:none}
+.world-destination{fill:none;stroke:#d94532;stroke-width:2;pointer-events:none;fill-rule:evenodd}
+.world-destination-dot{fill:#d94532;stroke:#172e39;stroke-width:1;pointer-events:none}
+.world-pollution-zone{fill:#bfd0a780;stroke:#63834d;stroke-width:1.8;stroke-dasharray:7 5;pointer-events:none}
+.world-flag-link{fill:none;stroke-width:1.4;stroke-dasharray:3 3;pointer-events:none}.world-flag-link.team-0{stroke:#d94532}.world-flag-link.team-1{stroke:#698756}
+.world-point{stroke:#172e39;stroke-width:.8;pointer-events:none}.world-point.team-0{fill:#d94532}.world-point.team-1{fill:#8fae75}
+.world-controls{display:flex;flex-direction:column;gap:12px;border:1px solid var(--line);border-radius:7px;background:#fffaf0;padding:16px;min-width:0}
+.world-turn{font-size:18px;font-weight:bold;border:1px solid var(--ink);border-radius:4px;padding:12px;margin:0;overflow-wrap:anywhere}
+.world-turn.team-0{background:#f2d4c8;border-left:5px solid var(--red)}.world-turn.team-1{background:#dce4cf;border-left:5px solid #6d8561}
+#world-choice{font-size:15px;line-height:1.5;margin:0}.world-controls>button{font-size:14px;padding:12px;min-height:48px}
+.world-controls .bonus-answer{margin:0;padding:12px}.world-controls .bonus-answer h2{font-size:22px}.world-controls .bonus-answer p{font-size:16px;line-height:1.6}
+#world-character{gap:8px}#world-character svg{width:36px;height:72px}#world-character .speech{font-size:16px;line-height:1.5;padding:12px;box-shadow:none}
+.world-small{font-size:12px;line-height:1.6;margin:0}
+#world-discovery{margin-top:24px}
+.world-discovery-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:28px;align-items:start}
+#world-photo>img{height:240px;object-fit:contain}
+#world-photo figcaption{overflow-wrap:anywhere}
+#world-discovery-title{font-size:25px;margin:0 0 12px}
+#world-fact{font-size:19px;line-height:1.65;margin:0 0 18px}
+#world-photo-note{font-size:16px;line-height:1.6;border-left:4px solid #78916c;background:#e6eadb;padding:12px;margin:14px 0}
+#world-final-quote{font-size:18px;margin-top:18px;max-width:none}
+#world-totals ul{padding-left:20px;font-size:17px;line-height:1.8}
+@media(min-width:1500px){.world-layout{grid-template-columns:minmax(0,1fr) 320px}#world-planisphere{min-height:390px}}
+@media(max-width:1000px){.world-layout{grid-template-columns:minmax(0,1fr) 245px;gap:14px}.world-controls{padding:12px}#world-planisphere{min-height:260px}}
+@media(max-width:800px){.world-layout,.world-discovery-grid{grid-template-columns:1fr}#world-planisphere{min-height:240px}.world-map-label{font-size:19px}.world-map-figure{padding:4px}#world-fact{font-size:18px}}
