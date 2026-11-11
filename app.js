@@ -21,6 +21,7 @@ function show(id) {
   if (heading && heading.hasAttribute('tabindex')) heading.focus();
   window.scrollTo(0, 0);
   if(typeof syncSpicyAccess==='function')syncSpicyAccess(id);
+  if(typeof syncFinalAccess==='function')syncFinalAccess(id);
 }
 function scores() {
   if(typeof spicyObserveProgress==='function')spicyObserveProgress();
@@ -108,7 +109,7 @@ function renderRoute({ current = null, completed = [] } = {}) {
       open.type = 'button'; open.className = 'route-round-open'; open.textContent = title;
       const progress = index === 0 ? game?.apero : index === 1 ? game?.sauce : index === 2 ? game?.france : index === 3 ? game?.gps : index === 4 ? game?.passport : game?.world;
       open.setAttribute('aria-label', `${title} : ${progress?.phase === 'complete' ? 'voir le bilan' : progress ? 'reprendre la manche' : 'jouer la manche'}`);
-      open.addEventListener('click', () => { game.routeCurrent = index; if (index === 0) openApero(); else if (index === 1) openSauce(); else if (index === 2) openFrance(); else if (index === 3) openGps(); else if (index === 4) openPassport(); else openWorld(); }); name.append(open);
+      open.addEventListener('click', () => { if(typeof finalIsClosed==='function'&&finalIsClosed()){openFinalReview(index);return;} game.routeCurrent = index; if (index === 0) openApero(); else if (index === 1) openSauce(); else if (index === 2) openFrance(); else if (index === 3) openGps(); else if (index === 4) openPassport(); else openWorld(); }); name.append(open);
     } else name.textContent = title;
     const status = document.createElement('small'); status.textContent = { pending: 'À venir', active: 'En cours', complete: 'Terminée' }[state];
     card.append(number, name, status); $('rounds').append(card);
