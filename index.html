@@ -7,7 +7,10 @@
   <title>Food Truck — Le grand voyage gourmand</title>
   <link rel="stylesheet" href="styles.css">
   <script defer src="game.js"></script>
+  <script defer src="apero.js"></script>
   <script defer src="app.js"></script>
+  <script defer src="culture-photos.js"></script>
+  <script defer src="apero-ui.js"></script>
 </head>
 <body class="welcome-mode">
   <svg class="art-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -20,7 +23,7 @@
   </defs></svg>
   <header class="topbar">
     <span class="game-signature">Le grand voyage <em>gourmand</em></span>
-    <div class="partners" aria-label="Emplacements provisoires des logos"><span>LABO <b>ÉPICÉ</b><small>EMPLACEMENT LOGO</small></span><i>×</i><span class="e2c">E2C <small>COUTRAS · EMPLACEMENT LOGO</small></span></div>
+    <div class="partners" aria-label="Partenaires"><img class="partner-labo" src="assets/Logo%20sans%20fond.png" width="60" height="60" alt="Le Labo Épicé"><img class="partner-afept" src="assets/logo_couleur%20(2).jpg" width="140" height="72" alt="AFEPT, formation, insertion et éducation permanente"><i aria-hidden="true">×</i><span class="e2c">E2C <small>COUTRAS</small></span></div>
     <button class="text-button" id="reset" hidden>↺ Réinitialiser</button>
   </header>
 
@@ -60,8 +63,8 @@
       <div id="journey-scores" class="scoreboard"></div>
       <p class="eyebrow">LE CARNET DE ROUTE</p>
       <h1 id="journey-title" tabindex="-1">Six manches. <em>Un grand voyage.</em></h1>
-      <p class="intro">Voici l’itinéraire. Pour cette première escale, testez notre énigme de démonstration.</p>
-      <div class="route-map" aria-label="Itinéraire des six manches, non jouables pour cette version">
+      <p class="intro">Cliquez sur L’apéro local pour lancer la première manche. La démo reste disponible à part.</p>
+      <div class="route-map" aria-label="Itinéraire des six manches : L’apéro local est jouable">
         <svg class="board-art" viewBox="0 0 1200 440" preserveAspectRatio="none" aria-hidden="true">
           <path d="M0 0H400Q322 90 220 124T0 222Z" fill="#d9dfc8"/>
           <path d="M1200 0H855Q812 51 891 91T1200 185Z" fill="#e8dcc0"/>
@@ -82,7 +85,44 @@
       </div>
       <div class="route-legend" aria-label="États prévus des manches"><span class="pending">○ À venir</span><span class="active">◉ En cours</span><span class="complete">✓ Terminée</span></div>
       <div class="demo-launch"><div><span class="eyebrow">UNE ESCALE POUR ESSAYER</span><p>Un pays, une spécialité… à vous de jouer !</p></div><button class="primary" id="play">LANCER LA DÉMO <span>→</span></button></div>
-      <p class="tiny">Les six manches et les jokers ne sont pas encore jouables. La démo est une escale indépendante.</p>
+      <p class="tiny">Les manches 2 à 6 et les jokers sont à venir. La démo est une escale indépendante.</p>
+    </section>
+
+    <section id="apero-intro" class="screen compact apero-screen" hidden aria-labelledby="apero-intro-title">
+      <div class="scoreboard"></div><p class="eyebrow">MANCHE 01 / DÉPART DE COUTRAS</p>
+      <h1 id="apero-intro-title" tabindex="-1">L’apéro <em>local</em></h1>
+      <p class="intro">Trois livraisons, trois départements à retrouver !</p>
+      <aside class="companion apero-intro-scene"><svg aria-hidden="true"><use href="#companion-art"/></svg><p class="speech">Première livraison ! Le GPS connaît la ville… mais il a oublié le département !</p></aside>
+      <p class="apero-short-brief">Un département et un numéro à choisir ensemble, puis une réponse par équipe.</p>
+      <div class="result-actions"><button id="apero-begin" class="primary">PREMIÈRE LIVRAISON <span>→</span></button><button class="text-button apero-back">Le carnet de route</button></div>
+    </section>
+
+    <section id="delivery" class="screen compact apero-screen" hidden aria-labelledby="delivery-title">
+      <div class="scoreboard"></div><p id="delivery-progress" class="eyebrow"></p>
+      <h1 id="delivery-title" tabindex="-1"></h1>
+      <p class="delivery-instruction">Les deux équipes se concertent en même temps. Le formateur enregistre leurs choix, puis valide l’ensemble.</p>
+      <form id="delivery-form"><div id="delivery-answers" class="delivery-answers"></div><div class="delivery-actions"><p id="delivery-status" role="status"></p><button class="primary" id="delivery-validate" type="submit" disabled>VALIDER LES DEUX ÉQUIPES <span>✓</span></button></div></form>
+      <button class="text-button apero-back">Le carnet de route · réponses conservées</button>
+    </section>
+
+    <section id="delivery-correction" class="screen compact apero-screen" hidden aria-labelledby="delivery-correction-title">
+      <div class="scoreboard"></div><p id="correction-progress" class="eyebrow"></p>
+      <h1 id="delivery-correction-title" tabindex="-1"></h1>
+      <p id="delivery-solution" class="delivery-solution"></p>
+      <div class="department-discovery"><figure><img id="department-map" alt=""><figcaption>France métropolitaine · département en sauge · repères communaux numérotés.<br>Contours IGN / Admin Express COG 2018 · <a href="assets/maps/ATTRIBUTION.md" target="_blank" rel="noopener">Sources et licence</a></figcaption></figure><div class="department-details"><div id="delivery-awards" class="delivery-awards" aria-live="polite"></div><p id="department-prefecture" class="eyebrow"></p><ul id="department-facts"></ul><div id="department-illustrations" class="department-illustrations"></div></div></div>
+      <div class="result-actions"><button class="truck-next" id="delivery-next"><svg aria-hidden="true"><use href="#truck-art"/></svg><span id="delivery-next-label">Livraison suivante</span><span aria-hidden="true">→</span></button><button class="text-button apero-back">Le carnet de route</button></div>
+    </section>
+
+    <section id="apero-bonus" class="screen compact apero-screen" hidden aria-labelledby="apero-bonus-title">
+      <div class="scoreboard"></div><p class="eyebrow">BONUS FINAL / SANS POINTS</p><h1 id="apero-bonus-title" tabindex="-1">Pourquoi les départements français ont-ils <em>des numéros ?</em></h1>
+      <p class="intro">Les deux équipes réfléchissent ensemble.</p><div class="bonus-layout"><div class="bonus-discussion"><ol class="bonus-options" type="A"><li>Selon leur superficie.</li><li>Selon l’ordre alphabétique de leurs noms.</li><li>Selon leur nombre d’habitants.</li></ol>
+      <button id="bonus-reveal" class="primary">RÉVÉLER LA RÉPONSE</button><div id="bonus-answer" class="bonus-answer" hidden><h2>B. Selon l’ordre alphabétique de leurs noms.</h2><p>À l’origine, les départements ont été numérotés principalement selon l’ordre alphabétique de leurs noms. Il existe aujourd’hui quelques exceptions liées aux évolutions administratives.</p></div>
+      <div class="result-actions"><button id="apero-finish" class="primary" hidden>TERMINER LA MANCHE <span>→</span></button><button class="text-button apero-back">Le carnet de route</button></div>
+</div><figure class="bonus-map"><a href="assets/maps/france-numeros.svg" target="_blank" rel="noopener" aria-label="Agrandir la carte des départements dans un nouvel onglet"><img src="assets/maps/france-numeros.svg" alt="Carte de France métropolitaine avec les limites et les numéros INSEE des 96 départements, et un zoom de l’Île-de-France."></a><figcaption><a href="assets/maps/france-numeros.svg" target="_blank" rel="noopener">Agrandir la carte numérotée</a> · IGN / Admin Express 2018, Licence Ouverte</figcaption></figure></div>
+    </section>
+
+    <section id="apero-end" class="screen compact apero-screen" hidden aria-labelledby="apero-end-title">
+      <div class="scoreboard"></div><p class="eyebrow">LES TROIS LIVRAISONS SONT ARRIVÉES !</p><h1 id="apero-end-title" tabindex="-1">L’apéro local : <em>manche terminée.</em></h1><p id="apero-totals" class="outcome"></p><p class="intro">Le bonus ne rapporte aucun point. La deuxième escale reste à venir.</p><button class="primary apero-back">LE CARNET DE ROUTE <span>→</span></button>
     </section>
 
     <section id="challenge" class="screen compact challenge" hidden aria-labelledby="challenge-title">
