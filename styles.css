@@ -97,3 +97,62 @@ body:not(.welcome-mode) h1 em{background:linear-gradient(transparent 85%,#e9b44b
 #journey .board-river-line{stroke:#bfe5dd;stroke-width:2.5;stroke-dasharray:26 20}
 @media(min-width:901px) and (max-width:1050px){#journey .board-eiffel{width:61px;height:94px}#journey .board-mountains{left:57%;width:126px;height:94px}#journey .board-beach{left:60%;width:99px;height:88px}}
 @media(max-width:900px){#journey .board-eiffel{width:58px;height:82px}#journey .board-mountains{left:7%;width:94px;height:72px}#journey .board-beach{width:93px;height:77px}}
+
+/* Manche 1 : livraisons simultanées, mêmes deux couleurs d’équipe. */
+#journey .route-round-open{font:inherit;font-weight:inherit;color:inherit;border:0;background:none;padding:2px;cursor:pointer;text-decoration:underline;text-underline-offset:4px;min-height:30px}
+#journey .route-round-open:hover{color:var(--red)}
+.apero-screen>h1{font-size:clamp(32px,3.7vw,52px);letter-spacing:-2px}
+.apero-screen .scoreboard{margin-bottom:18px}
+.apero-screen .eyebrow{margin-top:14px}
+.apero-screen>.companion{margin:24px 0}
+.apero-brief{display:flex;gap:25px;align-items:center;margin:25px 0;max-width:900px;line-height:1.8;font-size:18px}
+.apero-truck{width:150px;height:115px;flex-shrink:0;border-radius:8px;overflow:hidden}
+.delivery-instruction{font-size:15px;line-height:1.5;margin:10px 0 18px}
+.delivery-answers,.delivery-awards{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.delivery-team,.delivery-award{min-width:0;border:1px solid #bcbfaf;border-top:5px solid var(--red);border-radius:5px;padding:18px;background:#fffaf0}
+.delivery-team.team-1,.delivery-award.team-1{border-top-color:#7d9675}
+.delivery-team>h2{font-size:22px;margin:0 0 16px;overflow-wrap:anywhere}
+.delivery-team fieldset{border:0;padding:0;margin:0 0 18px;min-width:0}
+.delivery-team fieldset:last-child{margin:0}
+.delivery-team legend{font-size:17px;font-weight:bold;line-height:1.45;margin-bottom:12px}
+.delivery-choices{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.delivery-choices label{display:flex;align-items:center;gap:8px;padding:10px 12px;min-height:48px;border:1px solid #c5c8b8;border-radius:4px;font-size:17px;cursor:pointer;line-height:1.25}
+.delivery-choices label:has(input:checked){background:#f5d8ce;border-color:var(--red);box-shadow:inset 0 0 0 1px var(--red)}
+.team-1 .delivery-choices label:has(input:checked){background:#e0e7d5;border-color:#65805a;box-shadow:inset 0 0 0 1px #65805a}
+.delivery-choices label:focus-within{outline:3px solid #237d9b;outline-offset:2px}
+.delivery-choices input{accent-color:var(--red);width:18px;height:18px;margin:0;flex-shrink:0}
+.team-1 .delivery-choices input{accent-color:#65805a}
+.option-letter{font-size:12px;color:#627063}
+.delivery-choices.number{grid-template-columns:repeat(4,1fr)}
+.delivery-choices.number label{justify-content:center;font-size:21px}
+.delivery-choices.number .option-letter{display:none}
+.delivery-actions{display:flex;align-items:center;justify-content:space-between;gap:20px;margin:20px 0 10px}
+.delivery-actions p{font-size:14px;line-height:1.5}
+.primary:disabled{opacity:.55;cursor:not-allowed;box-shadow:none;transform:none}
+.delivery-solution{font-size:22px;font-weight:bold;margin:14px 0}
+.delivery-award{padding:12px 18px}
+.delivery-award h2{font-size:20px;margin:0 0 8px;overflow-wrap:anywhere}
+.delivery-award p{font-size:15px;line-height:1.5;margin:3px 0}
+.department-discovery{display:grid;grid-template-columns:1.2fr 1fr;align-items:center;gap:28px;margin:18px 0}
+.department-discovery figure{margin:0;min-width:0}
+#department-map{width:100%;height:auto;display:block;background:#fffaf0;border:1px solid #bec5b0;border-radius:8px}
+.department-discovery figcaption{font-size:10px;color:#576657;line-height:1.5;margin-top:5px}
+.department-discovery a{color:inherit}
+#department-facts{padding-left:20px;margin:10px 0}
+#department-facts li{font-size:18px;line-height:1.65;margin:12px 0}
+.department-illustrations{display:flex;gap:22px;margin-top:16px}
+.department-illustrations figure{flex:1;max-width:170px}
+.department-illustrations img{width:100%;max-height:95px;display:block}
+.department-illustrations figcaption{font-size:12px;text-align:center}
+#apero-bonus>h1{max-width:1000px;line-height:1.2}
+.bonus-options{list-style-position:inside;padding:0;display:grid;gap:12px;margin:25px 0;font-size:22px}
+.bonus-options li{padding:18px 22px;background:#fffaf0;border:1px solid #b8c1a8;border-radius:5px}
+.bonus-answer{max-width:1000px;padding:20px 25px;background:#e1e7d5;border-left:5px solid #65805a;margin:20px 0}
+.bonus-answer h2{font-size:22px;margin:0 0 12px}
+.bonus-answer p{font-size:19px;line-height:1.65}
+#apero-bonus .result-actions{margin-top:24px}
+@media(min-width:1001px){#delivery{padding-top:20px}#delivery>h1{font-size:42px;margin:10px 0}#delivery .delivery-team{padding:14px 18px}#delivery .delivery-team>h2{margin-bottom:12px}#delivery .delivery-team fieldset{margin-bottom:12px}.apero-screen>h1{margin:12px 0}.department-discovery{gap:22px;margin:16px 0}#delivery-correction .result-actions{margin-top:18px}}
+@media(max-width:1000px){.delivery-choices label{font-size:15px;padding:9px 7px;gap:5px}.delivery-team{padding:16px 12px}.delivery-choices.number label{font-size:19px}.department-discovery{gap:18px}.apero-screen>h1{font-size:36px}}
+@media(max-width:700px){.delivery-answers,.delivery-awards,.department-discovery{grid-template-columns:1fr}.delivery-actions{align-items:stretch;flex-direction:column;gap:8px}.delivery-choices label{font-size:16px;min-height:50px}.delivery-choices.number label{font-size:20px}.delivery-team legend{font-size:18px}.apero-brief{align-items:flex-start;gap:16px;font-size:16px}.apero-truck{width:95px;height:85px}.bonus-options{font-size:19px}.bonus-answer p{font-size:17px}.apero-screen .result-actions{gap:16px}}
+@media(min-width:1001px){#delivery-correction{padding-top:16px;padding-bottom:24px}#delivery-correction>h1{font-size:38px;margin:8px 0}#delivery-correction .eyebrow{margin-top:10px}#delivery-correction .scoreboard{padding-bottom:12px;margin-bottom:16px}#delivery-correction .delivery-solution{font-size:20px;margin:10px 0}#delivery-correction .department-discovery{grid-template-columns:.9fr 1.1fr;align-items:start;margin:12px 0}#delivery-correction .delivery-awards{gap:12px}#delivery-correction .delivery-award{padding:10px 12px}#delivery-correction .delivery-award h2{font-size:17px}#delivery-correction .delivery-award p{font-size:14px}#delivery-correction #department-facts li{font-size:17px;line-height:1.55;margin:8px 0}#delivery-correction .department-illustrations{margin-top:12px;gap:20px}#delivery-correction .department-illustrations img{max-height:75px}#delivery-correction .department-illustrations figure{max-width:140px}#delivery-correction .result-actions{margin-top:12px}}
+@media(min-width:701px) and (max-width:1000px){.department-discovery{grid-template-columns:1fr}.department-discovery>figure{max-width:600px}.department-illustrations img{max-height:95px}}

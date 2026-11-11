@@ -6,6 +6,7 @@ function show(id) {
   document.body.classList.toggle('welcome-mode', id === 'welcome');
   document.querySelectorAll('.screen').forEach(screen => { screen.hidden = screen.id !== id; });
   $('reset').hidden = id === 'welcome';
+  if (id === 'journey' && game) renderRoute(game.apero ? { current: 0, completed: game.apero.phase === 'complete' ? [0] : [] } : {});
   const heading = $(id).querySelector('h1');
   if (heading && heading.hasAttribute('tabindex')) heading.focus();
   window.scrollTo(0, 0);
@@ -79,8 +80,7 @@ $('team-form').addEventListener('submit', event => {
 });
 $('rules-next').addEventListener('click', () => show('journey'));
 [$('team-one'), $('team-two')].forEach(input => input.addEventListener('input', () => input.setCustomValidity('')));
-// État de présentation prêt pour les futures manches. La démo ne fait pas
-// progresser cet itinéraire : aucune des six manches n’est encore jouable.
+// La manche 1 seule fait progresser l’itinéraire ; la démo reste indépendante.
 function renderRoute({ current = null, completed = [] } = {}) {
   $('rounds').replaceChildren();
   rounds.forEach((title, index) => {
@@ -89,7 +89,13 @@ function renderRoute({ current = null, completed = [] } = {}) {
     card.className = `route-stop ${state}`;
     if (state === 'active') card.setAttribute('aria-current', 'step');
     const number = document.createElement('span'); number.className = 'stop-number'; number.textContent = `0${index + 1}`;
-    const name = document.createElement('h2'); name.textContent = title;
+    const name = document.createElement('h2');
+    if (index === 0) {
+      const open = document.createElement('button');
+      open.type = 'button'; open.className = 'route-round-open'; open.textContent = title;
+      open.setAttribute('aria-label', `${title} : ${game?.apero?.phase === 'complete' ? 'voir le bilan' : game?.apero ? 'reprendre la manche' : 'jouer la manche'}`);
+      open.addEventListener('click', () => openApero()); name.append(open);
+    } else name.textContent = title;
     const status = document.createElement('small'); status.textContent = { pending: 'À venir', active: 'En cours', complete: 'Terminée' }[state];
     card.append(number, name, status); $('rounds').append(card);
   });
