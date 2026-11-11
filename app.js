@@ -21,7 +21,22 @@ function scores() {
       points.className = 'score-points';
       points.textContent = `${team.score} pts`;
       const jokers = document.createElement('small');
-      jokers.textContent = `✦ ✦  ${team.jokers} jokers · à venir`;
+      jokers.className = 'joker-counter';
+      const peppers = document.createElement('span');
+      peppers.className = 'pepper-pair';
+      peppers.setAttribute('aria-hidden', 'true');
+      for (let i = 0; i < 2; i++) {
+        const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        icon.classList.add('joker-pepper');
+        icon.classList.toggle('is-used', i >= team.jokers);
+        const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+        use.setAttribute('href', '#pepper-icon');
+        icon.append(use);
+        peppers.append(icon);
+      }
+      const label = document.createElement('span');
+      label.textContent = `${team.jokers} jokers disponibles · à venir`;
+      jokers.append(peppers, label);
       card.append(name, points, jokers);
       return card;
     }));
