@@ -88,3 +88,12 @@ body:not(.welcome-mode) h1 em{background:linear-gradient(transparent 85%,#e9b44b
 @media(max-width:900px){#journey .route-map{height:850px}#journey .board-art{display:none}#journey .mobile-road{display:block}#journey .route-stop{width:min(155px,45%);top:calc(var(--mobile-y) - 23px);left:var(--mobile-x)}#journey .route-stop h2{font-size:16px}#journey .route-stop:nth-child(1){--mobile-x:25%;--mobile-y:10%}#journey .route-stop:nth-child(2){--mobile-x:72%;--mobile-y:27%}#journey .route-stop:nth-child(3){--mobile-x:28%;--mobile-y:43%}#journey .route-stop:nth-child(4){--mobile-x:72%;--mobile-y:60%}#journey .route-stop:nth-child(5){--mobile-x:25%;--mobile-y:76%}#journey .route-stop:nth-child(6){--mobile-x:72%;--mobile-y:91%;top:calc(var(--mobile-y) - 100px)}#journey .board-eiffel{left:65%;top:5%;width:53px;height:75px}#journey .board-mountains{left:7%;top:23%;width:85px;height:65px}#journey .board-beach{left:65%;top:42%;width:85px;height:70px}#journey .board-sign{left:6%;top:60%;width:60px;height:55px}#journey .route-truck{left:45%;top:5%;width:85px;transform:translate(-50%,-50%) rotate(-8deg)}#journey .route-truck svg{height:67px}#journey .route-truck.on-route{left:var(--truck-mobile-x);top:var(--truck-mobile-y);transform:translate(-50%,-50%) rotate(-8deg)}}
 
 @media(min-width:901px){#journey .route-truck.on-route{width:95px}#journey .route-truck.on-route svg{height:75px}}
+
+/* Colorisation des quatre décors existants, sans déplacer les escales. */
+#journey .board-eiffel{width:72px;height:94px}
+#journey .board-mountains{left:61%;width:160px;height:94px}
+#journey .board-beach{width:121px;height:88px}
+#journey .board-river{stroke:#46a9b3;stroke-width:31}
+#journey .board-river-line{stroke:#bfe5dd;stroke-width:2.5;stroke-dasharray:26 20}
+@media(min-width:901px) and (max-width:1050px){#journey .board-eiffel{width:61px;height:94px}#journey .board-mountains{left:57%;width:126px;height:94px}#journey .board-beach{left:60%;width:99px;height:88px}}
+@media(max-width:900px){#journey .board-eiffel{width:58px;height:82px}#journey .board-mountains{left:7%;width:94px;height:72px}#journey .board-beach{width:93px;height:77px}}
