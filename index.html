@@ -139,13 +139,13 @@
       <div class="scoreboard"></div><p class="eyebrow">MANCHE 02 / NOUVELLE-AQUITAINE</p><h1 id="sauce-intro-title" tabindex="-1">À quelle <em>sauce ?</em></h1>
       <p class="intro">Notre food truck poursuit sa route en Nouvelle-Aquitaine !</p>
       <aside class="companion sauce-intro-scene"><svg aria-hidden="true"><use href="#companion-art"/></svg><p class="speech">On reste en Nouvelle-Aquitaine ! Mais cette fois, il va falloir reconnaître ce qu'on met dans les assiettes…</p></aside>
-      <p class="intro sauce-intro-principle">Trois spécialités à découvrir. Trois indices possibles. Plus vous trouvez tôt, plus vous gagnez de points !</p><p class="sauce-confidential">Chaque équipe progresse à son rythme et transmet sa réponse par écrit au formateur, sans l’annoncer à voix haute.</p>
+      <p class="intro sauce-intro-principle">Trois spécialités à découvrir. Trois indices possibles. Plus vous trouvez tôt, plus vous gagnez de points !</p><p class="sauce-confidential">Les indices sont dévoilés ensemble. Chaque équipe transmet sa réponse par écrit au formateur, sans l’annoncer à voix haute.</p>
       <div class="result-actions"><button id="sauce-begin" class="primary">PREMIÈRE ÉNIGME <span>→</span></button><button class="text-button sauce-back">Le carnet de route</button></div>
     </section>
 
     <section id="sauce-search" class="screen compact sauce-screen" hidden aria-labelledby="sauce-search-title">
       <div class="scoreboard"></div><div class="sauce-heading"><div><p id="sauce-progress" class="eyebrow"></p><h1 id="sauce-search-title" tabindex="-1">À quelle <em>sauce ?</em></h1></div><aside class="sauce-mini-companion"><svg aria-hidden="true"><use href="#companion-art"/></svg><p class="sauce-reminder">Chut… les réponses voyagent sur le papier !<br><small>Transmettez-les discrètement au formateur.</small></p></aside></div>
-      <div id="sauce-panels" class="sauce-panels"></div><p id="sauce-live" class="feedback" role="status"></p><button class="text-button sauce-back">Le carnet de route · progression conservée</button>
+      <div id="sauce-panels" class="sauce-panels"></div><div id="sauce-clue-gate" class="sauce-clue-gate" hidden><p>Chaque équipe a répondu ou a déjà trouvé. Le prochain indice peut être dévoilé.</p><button type="button" id="sauce-next-clue" class="primary">Dévoiler l’indice suivant <span aria-hidden="true">→</span></button></div><p id="sauce-live" class="feedback" role="status"></p><button class="text-button sauce-back">Le carnet de route · progression conservée</button>
     </section>
 
     <section id="sauce-correction" class="screen compact sauce-screen" hidden aria-labelledby="sauce-correction-title">
