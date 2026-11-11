@@ -41,3 +41,10 @@ node --test tests/game.test.cjs
 ```
 
 Vérification manuelle : démarrer deux équipes, tester une bonne réponse à chaque indice, six mauvaises réponses, l’alternance en rejouant, puis l’annulation et la confirmation de la réinitialisation.
+
+
+## Habillage BD et règles
+
+Le parcours comprend maintenant : accueil → équipes → règles → carnet de route → démonstration → correction. Les règles présentent les futurs « Plats piégés » et leur barème provisoire ; aucun joker ni nouvelle question n’est activé.
+
+Le personnage et le camion des pages intérieures sont des vignettes SVG réutilisant l’image d’accueil validée, sans modification de ce fichier. `assets/frites.svg` illustre la correction. Le carnet relie les six escales, toutes non jouables et « À venir ». `renderRoute({ current, completed })` dans `app.js` prépare les états visuels (indices de manches de 0 à 5) et la position du camion pour une intégration future ; la démo ne change pas l’état des manches.

@@ -10,8 +10,12 @@
   <script defer src="app.js"></script>
 </head>
 <body class="welcome-mode">
+  <svg class="art-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+    <symbol id="companion-art" viewBox="825 245 380 696"><image href="assets/Le%20grand%20voyage%20gourmand%20%C3%A0%20Coutras.png" width="1672" height="941"/></symbol>
+    <symbol id="truck-art" viewBox="730 195 940 740"><image href="assets/Le%20grand%20voyage%20gourmand%20%C3%A0%20Coutras.png" width="1672" height="941"/></symbol>
+  </defs></svg>
   <header class="topbar">
-    <a class="brand" href="index.html" aria-label="Food Truck, accueil">FT<span>★</span><small>LE GRAND VOYAGE GOURMAND</small></a>
+    <span class="game-signature">Le grand voyage <em>gourmand</em></span>
     <div class="partners" aria-label="Emplacements provisoires des logos"><span>LABO <b>ÉPICÉ</b><small>EMPLACEMENT LOGO</small></span><i>×</i><span class="e2c">E2C <small>COUTRAS · EMPLACEMENT LOGO</small></span></div>
     <button class="text-button" id="reset" hidden>↺ Réinitialiser</button>
   </header>
@@ -26,6 +30,7 @@
     </section>
 
     <section id="setup" class="screen compact" hidden aria-labelledby="setup-title">
+      <aside class="companion setup-companion"><svg role="img" aria-label="Notre compagnon de voyage, extrait de l’illustration validée"><use href="#companion-art"/></svg><p class="speech">Bon, le camion est prêt… mais qui monte à bord ?</p></aside>
       <p class="eyebrow">AVANT DE TOURNER LA CLÉ</p>
       <h1 id="setup-title" tabindex="-1">Qui monte <em>à bord ?</em></h1>
       <p class="intro">Deux équipes, deux noms. Le formateur tient le volant,<br>vous vous concertez et répondez à voix haute.</p>
@@ -35,19 +40,36 @@
       </form>
     </section>
 
+    <section id="rules" class="screen compact rules" hidden aria-labelledby="rules-title">
+      <p class="eyebrow">LE BRIEF AVANT LE DÉPART</p>
+      <h1 id="rules-title" tabindex="-1">Avant de prendre <em>la route !</em></h1>
+      <div class="rules-grid">
+        <article class="rule-card"><span class="rule-number">01</span><h2>Deux équipes, six manches</h2><p>Les équipes se concertent et répondent à tour de rôle.</p></article>
+        <article class="rule-card"><span class="rule-number">02</span><h2>Des points à gagner</h2><p>Pour les énigmes à trois indices :</p><ul class="point-scale"><li>1er indice <b>20 points</b></li><li>2e indice <b>15 points</b></li><li>3e indice <b>10 points</b></li></ul><p class="rule-note">Les autres types de défis auront leur propre barème, à définir ultérieurement.</p></article>
+        <article class="rule-card"><span class="rule-number">03</span><h2>Une tentative par indice</h2><p>Une équipe qui se trompe laisse la main à l’autre. Si les deux échouent, on dévoile l’indice suivant.</p><p>La première bonne réponse termine l’énigme et rapporte les points correspondants.</p></article>
+        <article class="rule-card trapped-rule"><span class="rule-number">04</span><h2>Le Plat piégé !</h2><p>Chaque équipe dispose de <strong>deux jokers pour toute la partie</strong>. Un joker peut être déclenché <strong>entre deux défis</strong>, pour sa propre équipe ou contre l’équipe adverse. Une seule activation est autorisée entre deux défis.</p><p><strong>Bonne réponse : +10 points ; mauvaise réponse : −10 points.</strong> Barème provisoire jusqu’à l’équilibrage final.</p><p>La réponse à un Plat piégé est déterminée avant l’attribution des points.</p><p class="rule-note">À venir : les jokers et les quatre questions seront intégrés ultérieurement.</p></article>
+      </div>
+      <div class="rules-bottom"><aside class="companion"><svg aria-hidden="true"><use href="#companion-art"/></svg><p class="speech">J’ai le permis du food truck… mais pour la géographie, je compte sur vous !</p></aside><button class="primary" id="rules-next">C’EST PARTI ! <span>→</span></button></div>
+    </section>
+
     <section id="journey" class="screen compact" hidden aria-labelledby="journey-title">
       <div id="journey-scores" class="scoreboard"></div>
       <p class="eyebrow">LE CARNET DE ROUTE</p>
-      <h1 id="journey-title" tabindex="-1">Six manches.<br><em>Un grand voyage.</em></h1>
+      <h1 id="journey-title" tabindex="-1">Six manches. <em>Un grand voyage.</em></h1>
       <p class="intro">Voici l’itinéraire. Pour cette première escale, testez notre énigme de démonstration.</p>
-      <div id="rounds" class="round-grid"></div>
+      <div class="route-map" aria-label="Itinéraire des six manches, non jouables pour cette version">
+        <svg class="route-line" viewBox="0 0 1000 280" preserveAspectRatio="none" aria-hidden="true"><path class="road-edge" d="M35 245 Q5 105 85 75 C160 35 180 205 250 200 S360 50 415 75 S525 220 580 200 S690 50 745 75 S855 225 915 200 Q990 185 970 65"/><path class="road-dashes" d="M35 245 Q5 105 85 75 C160 35 180 205 250 200 S360 50 415 75 S525 220 580 200 S690 50 745 75 S855 225 915 200 Q990 185 970 65"/></svg>
+        <ol id="rounds" class="route-stops"></ol>
+        <div class="route-truck" id="route-truck"><svg role="img" aria-label="Notre food truck rouge, prêt au départ"><use href="#truck-art"/></svg><span>AU DÉPART</span></div>
+      </div>
+      <div class="route-legend" aria-label="États prévus des manches"><span class="pending">○ À venir</span><span class="active">◉ En cours</span><span class="complete">✓ Terminée</span></div>
       <div class="demo-launch"><div><span class="eyebrow">UNE ESCALE POUR ESSAYER</span><p>Un pays, une spécialité… à vous de jouer !</p></div><button class="primary" id="play">LANCER LA DÉMO <span>→</span></button></div>
-      <p class="tiny">Les jokers et les cartes interactives seront ajoutés plus tard.</p>
+      <p class="tiny">Les six manches et les jokers ne sont pas encore jouables. La démo est une escale indépendante.</p>
     </section>
 
     <section id="challenge" class="screen compact challenge" hidden aria-labelledby="challenge-title">
       <div id="challenge-scores" class="scoreboard"></div>
-      <div class="challenge-heading"><div><p class="eyebrow">ESCALE DÉMO / SPÉCIALITÉ MYSTÈRE</p><h1 id="challenge-title" tabindex="-1">Ça vous dit <em>quelque chose ?</em></h1></div><span class="ticket" id="points"></span></div>
+      <div class="challenge-heading"><svg class="challenge-truck" role="img" aria-label="Le food truck rouge de notre voyage"><use href="#truck-art"/></svg><div><p class="eyebrow">ESCALE DÉMO / SPÉCIALITÉ MYSTÈRE</p><h1 id="challenge-title" tabindex="-1">Ça vous dit <em>quelque chose ?</em></h1></div><span class="ticket" id="points"></span></div>
       <div class="clue-card"><div class="clue-top"><span id="clue-number"></span><span id="clue-progress" aria-hidden="true"></span></div><p id="clue" aria-live="polite"></p><span class="clue-note">CONCERTEZ-VOUS ET RÉPONDEZ À VOIX HAUTE.</span></div>
       <div class="turn-panel"><div><p class="eyebrow">AU TOUR DE</p><h2 id="active-team"></h2><p id="attempt-status"></p></div><div class="validation"><span>LE FORMATEUR VALIDE LA RÉPONSE</span><div><button id="wrong" class="secondary">✕ Mauvaise réponse</button><button id="correct" class="primary">✓ Bonne réponse</button></div></div></div>
       <p id="feedback" class="feedback" role="status"></p>
@@ -58,7 +80,8 @@
       <p class="eyebrow">LE MYSTÈRE EST DANS LE CORNET</p>
       <h1 id="result-title" tabindex="-1">C’étaient <em>les frites !</em></h1>
       <p id="outcome" class="outcome" role="status"></p>
-      <div class="correction"><span class="flag" aria-label="Drapeau belge">🇧🇪</span><div><h2>Petite escale en Belgique</h2><p>La Belgique est un pays d’Europe voisin de la France. Sa capitale, <strong>Bruxelles</strong>, accueille plusieurs grandes institutions de l’Union européenne. Les frites y sont une spécialité emblématique, souvent servie en cornet avec de la sauce.</p></div></div>
+      <div class="correction"><img class="specialty-art" src="assets/frites.svg" alt="Un cornet de frites dorées avec une portion de sauce"><div><p class="eyebrow">BELGIQUE / BRUXELLES</p><h2>Une escale qui croustille</h2><p>Voisine de la France, la <strong>Belgique</strong> est célèbre pour ses frites servies en cornet avec de la sauce.</p><p><strong>Bruxelles</strong>, sa capitale, accueille plusieurs grandes institutions de l’Union européenne.</p></div></div>
+      <aside class="companion result-companion"><svg aria-hidden="true"><use href="#companion-art"/></svg><p class="speech">Pour la prochaine escale, je prends une carte… et un cornet !</p></aside>
       <div class="result-actions"><button class="primary" id="back-to-journey">LE CARNET DE ROUTE <span>→</span></button><button class="text-button" id="replay">Rejouer la démonstration ↻</button></div>
       <p class="tiny">Rejouer conserve les scores et alterne l’équipe qui commence.</p>
     </section>

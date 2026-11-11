@@ -60,17 +60,30 @@ $('team-form').addEventListener('submit', event => {
   }
   game = createGame(inputs.map(input => input.value));
   scores();
-  show('journey');
+  show('rules');
 });
+$('rules-next').addEventListener('click', () => show('journey'));
 [$('team-one'), $('team-two')].forEach(input => input.addEventListener('input', () => input.setCustomValidity('')));
-rounds.forEach((title, index) => {
-  const card = document.createElement('article');
-  card.className = 'round';
-  const number = document.createElement('span'); number.className = 'round-number'; number.textContent = `0${index + 1}`;
-  const name = document.createElement('h2'); name.textContent = title;
-  const status = document.createElement('small'); status.textContent = 'À VENIR';
-  card.append(number, name, status); $('rounds').append(card);
-});
+// État de présentation prêt pour les futures manches. La démo ne fait pas
+// progresser cet itinéraire : aucune des six manches n’est encore jouable.
+function renderRoute({ current = null, completed = [] } = {}) {
+  $('rounds').replaceChildren();
+  rounds.forEach((title, index) => {
+    const state = completed.includes(index) ? 'complete' : current === index ? 'active' : 'pending';
+    const card = document.createElement('li');
+    card.className = `route-stop ${state}`;
+    if (state === 'active') card.setAttribute('aria-current', 'step');
+    const number = document.createElement('span'); number.className = 'stop-number'; number.textContent = `0${index + 1}`;
+    const name = document.createElement('h2'); name.textContent = title;
+    const status = document.createElement('small'); status.textContent = { pending: 'À venir', active: 'En cours', complete: 'Terminée' }[state];
+    card.append(number, name, status); $('rounds').append(card);
+  });
+  const truck = $('route-truck');
+  truck.style.setProperty('--stop', current === null ? 0 : current + 1);
+  truck.classList.toggle('on-route', current !== null);
+  truck.querySelector('span').textContent = current === null ? 'AU DÉPART' : `ESCALE ${current + 1}`;
+}
+renderRoute();
 $('play').addEventListener('click', launch);
 $('replay').addEventListener('click', launch);
 $('back-to-journey').addEventListener('click', () => { scores(); show('journey'); });
