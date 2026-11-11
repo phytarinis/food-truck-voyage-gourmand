@@ -154,6 +154,14 @@
       <div class="result-actions"><button id="sauce-next" class="primary">POURSUIVRE LE VOYAGE <span>→</span></button><button class="text-button sauce-back">Le carnet de route</button></div>
     </section>
 
+    <section id="sauce-bonus" class="screen compact sauce-screen" hidden aria-labelledby="sauce-bonus-title">
+      <div class="scoreboard"></div><p class="eyebrow">BONUS FINAL / COLLECTIF / SANS POINTS</p><h1 id="sauce-bonus-title" tabindex="-1"></h1><p id="sauce-bonus-question" class="sauce-bonus-question"></p>
+      <div class="bonus-layout"><div class="bonus-discussion"><form id="sauce-bonus-form"><fieldset><legend class="visually-hidden">Choisissez collectivement une proposition</legend><ol id="sauce-bonus-options" class="bonus-options" type="A"></ol></fieldset><p id="sauce-bonus-status" role="status">Le formateur sélectionne la proposition du groupe.</p><button class="primary" id="sauce-bonus-reveal" type="submit" disabled>RÉVÉLER LA RÉPONSE</button></form>
+      <div id="sauce-bonus-answer" class="bonus-answer" hidden tabindex="-1"><h2 id="sauce-bonus-solution"></h2><p id="sauce-bonus-explanation"></p></div>
+      <div class="result-actions"><button id="sauce-bonus-finish" class="primary" hidden>TERMINER LA MANCHE <span>→</span></button><button class="text-button sauce-back">Le carnet de route</button></div></div>
+      <div id="sauce-bonus-discovery" hidden><figure class="bonus-map"><a href="assets/maps/bonus-nouvelle-aquitaine.svg" target="_blank" rel="noopener" aria-label="Agrandir la carte des anciennes régions dans un nouvel onglet"><img src="assets/maps/bonus-nouvelle-aquitaine.svg" alt="Carte des anciennes régions Aquitaine, Limousin et Poitou-Charentes qui composent la Nouvelle-Aquitaine."></a><figcaption>Limites historiques IGN / france-geojson · <a href="assets/maps/ATTRIBUTION.md" target="_blank" rel="noopener">Source et Licence Ouverte</a></figcaption></figure><aside class="companion"><svg aria-hidden="true"><use href="#companion-art"/></svg><p id="sauce-bonus-quote" class="speech"></p></aside></div></div>
+    </section>
+
     <section id="sauce-end" class="screen compact sauce-screen" hidden aria-labelledby="sauce-end-title">
       <div class="scoreboard"></div><p class="eyebrow">TROIS SPÉCIALITÉS DÉCOUVERTES</p><h1 id="sauce-end-title" tabindex="-1">À quelle sauce ? <em>Manche terminée.</em></h1><p id="sauce-totals" class="outcome"></p><p class="intro">La troisième escale reste à venir. Avant de repartir, une pause avec les métiers de la cuisine !</p><button id="sauce-career" class="primary">PAUSE MÉTIER : CUISINE <span>→</span></button>
     </section>

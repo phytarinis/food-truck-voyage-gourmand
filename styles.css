@@ -353,3 +353,29 @@ body:not(.welcome-mode) h1 em{background:linear-gradient(transparent 85%,#e9b44b
 #photo-credits-dialog a{color:var(--ink);text-underline-offset:3px}
 #photo-credits-dialog>.secondary{margin-top:15px}
 @media(max-width:650px){footer{flex-wrap:wrap;align-items:center}.footer-credits{font-size:9px}}
+
+/* Bonus de la manche 2 : même carnet collectif que le bonus de la manche 1. */
+#sauce-bonus{padding-top:16px}
+#sauce-bonus>h1{font-size:36px;line-height:1.15;margin:10px 0}
+#sauce-bonus .scoreboard{padding-bottom:12px;margin-bottom:12px}
+.sauce-bonus-question{font-size:21px;line-height:1.5;margin:14px 0 18px}
+#sauce-bonus fieldset{border:0;padding:0;margin:0;min-width:0}
+#sauce-bonus .bonus-options{margin:0;gap:10px;font-size:20px}
+#sauce-bonus .bonus-options li{position:relative;padding:12px 16px;line-height:1.5}
+#sauce-bonus .bonus-options label{cursor:pointer}
+#sauce-bonus .bonus-options input{position:absolute;opacity:0;width:1px;height:1px}
+#sauce-bonus .bonus-options li:has(input:focus-visible){outline:3px solid #237d9b;outline-offset:3px}
+#sauce-bonus .bonus-options li:has(input:checked){background:#e0e8d2;border-color:#6c855f;box-shadow:inset 0 0 0 1px #6c855f}
+#sauce-bonus .bonus-options li.bonus-correct{border:2px solid #536f47;background:#dce7cf;padding:11px 15px}
+#sauce-bonus .bonus-options label:has(input:disabled){cursor:default}
+#sauce-bonus-status{font-size:12px;line-height:1.5;margin:12px 0}
+#sauce-bonus-reveal{margin-top:6px}
+#sauce-bonus .result-actions{margin-top:16px;gap:20px}
+#sauce-bonus-discovery .companion{margin-top:16px;gap:16px}
+#sauce-bonus-discovery .companion svg{width:52px;height:95px}
+#sauce-bonus-discovery .speech{font-size:18px;padding:14px 18px;line-height:1.5;max-width:none}
+#sauce-bonus .bonus-map img{max-height:270px;object-fit:contain}
+@media(max-width:1000px){#sauce-bonus>h1{font-size:32px}.sauce-bonus-question{font-size:20px}#sauce-bonus .bonus-options{font-size:18px}#sauce-bonus .bonus-options li{padding:11px 13px}#sauce-bonus .bonus-options li.bonus-correct{padding:10px 12px}}
+@media(max-width:650px){#sauce-bonus>h1{font-size:30px}#sauce-bonus .bonus-layout{grid-template-columns:1fr}#sauce-bonus .bonus-options{font-size:19px}#sauce-bonus .bonus-map img{max-height:none}#sauce-bonus-discovery .speech{font-size:18px}}
+#sauce-bonus-options:has(input:disabled) li:has(input:checked):not(.bonus-correct){background:#f3dfd2;border-color:#b5866e;box-shadow:none}
+#sauce-bonus-options .bonus-correct::after{content:'✓';float:right;color:#36532f;font-weight:bold}

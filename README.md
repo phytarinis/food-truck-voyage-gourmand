@@ -94,7 +94,7 @@ Les fichiers des logos restent intacts. Les viewports SVG retirent uniquement l�
 
 ## Manche 2 — À quelle sauce ?
 
-Depuis la deuxième escale : introduction → trois énigmes (foie gras, chocolatine/pain au chocolat, huîtres) → bilan → pause métier cuisine → carnet. Chaque équipe transmet ses réponses par écrit au formateur ; aucun champ de spécialité n’est affiché à l’écran. Les deux appellations de la viennoiserie sont acceptées par le formateur.
+Depuis la deuxième escale : introduction → trois énigmes (foie gras, chocolatine/pain au chocolat, huîtres) → bonus Nouvelle-Aquitaine → bilan → pause métier cuisine → carnet. Chaque équipe transmet ses réponses par écrit au formateur ; aucun champ de spécialité n’est affiché à l’écran. Les deux appellations de la viennoiserie sont acceptées par le formateur.
 
 `sauce.js` gère deux progressions indépendantes. Une erreur fait avancer seulement l’équipe concernée à l’indice suivant ; la troisième erreur termine sa recherche à zéro. Une réussite attribue 20, 15 ou 10 points selon son propre indice, une seule fois, puis désactive ses commandes. La correction attend la fin des deux recherches. Maximum : 60 points par équipe sur cette manche, ajoutés aux scores généraux.
 
@@ -107,3 +107,13 @@ Le lien « Crédits photos » du pied de page ouvre les auteurs, titres, sources
 La carte des huîtres situe Arcachon au bord du bassin dans la région Nouvelle-Aquitaine, en reprenant les limites IGN 2018 et le contour communal. Sources dans `assets/maps/ATTRIBUTION.md` ; génération hors ligne avec `python3 tools/generate-arcachon-map.py`.
 
 Tests : `node --test tests/*.test.cjs`. Test navigateur facultatif : `SAUCE_TEST_URL=http://127.0.0.1:8000 node tests/sauce.browser.cjs`. Il vérifie les deux progressions, confirmation/annulation, correction différée, reprise, pause cuisine, fin de manche, réinitialisation et cinq tailles d’écran. Seules les deux premières escales sont jouables ; leur sélection depuis le carnet n’ajoute pas de condition de déblocage nouvelle.
+
+### Bonus final de la manche 2 — Une région, trois histoires
+
+Après les huîtres, le bouton « Le bonus gourmand » ouvre une question collective sur les régions fusionnées en 2016. Le formateur sélectionne A, B ou C puis révèle la réponse. La bonne réponse est A (Aquitaine, Limousin et Poitou-Charentes). La carte historique et la réplique du compagnon restent masquées avant la révélation.
+
+Ce bonus ne change ni les scores ni les jokers, quelle que soit la réponse sélectionnée. La manche 2 reste en cours jusqu’au clic sur « Terminer la manche » après révélation ; le bilan propose ensuite la pause cuisine. Retourner au carnet conserve le choix et la correction sans attribuer de points supplémentaires. `sauce.js` expose `chooseBonus`, `revealBonus` et `finish` pour ce parcours.
+
+La carte est générée hors ligne par `python3 tools/generate-regions-bonus-map.py` à partir de `assets/maps/anciennes-regions-nouvelle-aquitaine.geojson`. Les trois contours proviennent du fichier historique `regions-avant-redecoupage-2015.geojson` de france-geojson ; aucune frontière n’est redessinée. Attribution et Licence Ouverte dans `assets/maps/ATTRIBUTION.md`.
+
+Les trois visuels et leurs crédits sont conservés : rhosoi / CC BY 2.0, illustration IA sans attribution à Ariane Corisande, Wilfredor / CC0 1.0. La comparaison des originaux Wikimedia est toujours refusée par HTTP 403 dans l’environnement ; aucune validation externe réussie n’est revendiquée.

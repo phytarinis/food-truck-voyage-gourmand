@@ -9,6 +9,7 @@ function renderSauce() {
   if (s.phase === 'intro') { show('sauce-intro'); return; }
   if (s.phase === 'search') { renderSauceSearch(); show('sauce-search'); return; }
   if (s.phase === 'correction') { renderSauceCorrection(); show('sauce-correction'); return; }
+  if (s.phase === 'bonus') { renderSauceBonus(); show('sauce-bonus'); return; }
   $('sauce-totals').textContent = SauceGame.totals(game).map((total, team) => `${game.teams[team].name} : ${total} / 60 points sur cette manche`).join(' · ');
   show('sauce-end');
 }
@@ -80,7 +81,7 @@ function renderSauceCorrection() {
   $('sauce-correction-quote').textContent = puzzle.quote || '';
   $('sauce-map').hidden = puzzle.id !== 'huitres';
   renderSaucePhoto(puzzle);
-  $('sauce-next').textContent = s.puzzleIndex === 2 ? 'TERMINER LA MANCHE →' : 'ÉNIGME SUIVANTE →';
+  $('sauce-next').textContent = s.puzzleIndex === 2 ? 'LE BONUS GOURMAND →' : 'ÉNIGME SUIVANTE →';
 }
 function renderSaucePhoto(puzzle) {
   const photo = SaucePhotos[puzzle.id];
@@ -104,6 +105,39 @@ function renderSaucePhoto(puzzle) {
     figure.append(placeholder, caption);
   }
 }
+function renderSauceBonus() {
+  const state = game.sauce.bonus, data = SauceGame.bonus;
+  $('sauce-bonus-title').textContent = data.title;
+  $('sauce-bonus-question').textContent = data.question;
+  $('sauce-bonus-options').replaceChildren(...data.options.map((text, index) => {
+    const item = document.createElement('li');
+    const label = document.createElement('label');
+    const input = document.createElement('input'); input.type = 'radio'; input.name = 'sauce-bonus-choice'; input.value = String(index); input.required = true;
+    input.checked = state.selected === index; input.disabled = state.revealed;
+    const copy = document.createElement('span'); copy.textContent = text; label.append(input, copy); item.append(label);
+    if (state.revealed && index === data.correctIndex) item.classList.add('bonus-correct');
+    input.addEventListener('change', () => {
+      SauceGame.chooseBonus(game, index); $('sauce-bonus-reveal').disabled = false;
+      $('sauce-bonus-status').textContent = `Proposition ${String.fromCharCode(65 + index)} retenue collectivement.`;
+    });
+    return item;
+  }));
+  $('sauce-bonus-reveal').disabled = state.selected === null;
+  $('sauce-bonus-reveal').hidden = state.revealed;
+  $('sauce-bonus-status').hidden = state.revealed;
+  $('sauce-bonus-status').textContent = state.selected === null ? 'Le formateur sélectionne la proposition du groupe.' : `Proposition ${String.fromCharCode(65 + state.selected)} retenue collectivement.`;
+  $('sauce-bonus-answer').hidden = !state.revealed;
+  $('sauce-bonus-discovery').hidden = !state.revealed;
+  $('sauce-bonus-finish').hidden = !state.revealed;
+  $('sauce-bonus-solution').textContent = state.revealed ? 'A. ' + data.options[data.correctIndex] : '';
+  $('sauce-bonus-explanation').textContent = state.revealed ? data.explanation : '';
+  $('sauce-bonus-quote').textContent = state.revealed ? data.quote : '';
+}
+$('sauce-bonus-form').addEventListener('submit', event => {
+  event.preventDefault();
+  if (SauceGame.revealBonus(game)) { renderSauceBonus(); $('sauce-bonus-answer').focus(); }
+});
+$('sauce-bonus-finish').addEventListener('click', () => { if (SauceGame.finish(game)) renderSauce(); });
 $('sauce-begin').addEventListener('click', () => { SauceGame.begin(game); renderSauce(); });
 $('sauce-cancel').addEventListener('click', () => $('sauce-confirm').close());
 $('sauce-confirm').addEventListener('close', () => { pendingSauceValidation = null; });

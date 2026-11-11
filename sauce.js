@@ -31,10 +31,18 @@
       "Le bassin d'Arcachon est un territoire emblématique de l'ostréiculture en Nouvelle-Aquitaine."
     ] }
   ];
+  const bonus = {
+    title: 'Bonus gourmand : une région, trois histoires !',
+    question: 'En 2016, quelles anciennes régions ont fusionné pour former la Nouvelle-Aquitaine ?',
+    options: ['Aquitaine, Limousin et Poitou-Charentes.', 'Aquitaine, Occitanie et Bretagne.', 'Limousin, Auvergne et Pays de la Loire.'],
+    correctIndex: 0,
+    explanation: 'En 2016, les anciennes régions Aquitaine, Limousin et Poitou-Charentes ont fusionné pour former la Nouvelle-Aquitaine.',
+    quote: "Trois régions dans une seule… Heureusement qu'on a un grand camion !"
+  };
   let nextId = 1;
   const newPlayers = () => [0, 1].map(() => ({ clueIndex: 0, status: 'searching', points: 0, revision: 0 }));
   function start(game) {
-    if (!game.sauce) game.sauce = { id: nextId++, puzzleIndex: 0, phase: 'intro', players: newPlayers(), results: [] };
+    if (!game.sauce) game.sauce = { id: nextId++, puzzleIndex: 0, phase: 'intro', players: newPlayers(), results: [], bonus: { selected: null, revealed: false } };
     return game.sauce;
   }
   function begin(game) { if (game.sauce?.phase === 'intro') game.sauce.phase = 'search'; }
@@ -62,12 +70,27 @@
   function next(game) {
     const s = game.sauce;
     if (!s || s.phase !== 'correction') return false;
-    if (s.puzzleIndex === puzzles.length - 1) s.phase = 'complete';
+    if (s.puzzleIndex === puzzles.length - 1) s.phase = 'bonus';
     else { s.puzzleIndex++; s.players = newPlayers(); s.phase = 'search'; }
     return true;
   }
+  function chooseBonus(game, choice) {
+    const s = game.sauce;
+    if (!s || s.phase !== 'bonus' || s.bonus.revealed || !Number.isInteger(choice) || choice < 0 || choice >= bonus.options.length) return false;
+    s.bonus.selected = choice; return true;
+  }
+  function revealBonus(game) {
+    const s = game.sauce;
+    if (!s || s.phase !== 'bonus' || s.bonus.selected === null || s.bonus.revealed) return false;
+    s.bonus.revealed = true; return true;
+  }
+  function finish(game) {
+    const s = game.sauce;
+    if (!s || s.phase !== 'bonus' || !s.bonus.revealed) return false;
+    s.phase = 'complete'; return true;
+  }
   function totals(game) { return game.teams.map((_, team) => (game.sauce?.results || []).reduce((sum, result) => sum + result[team].points, 0)); }
-  const api = { points, puzzles, start, begin, token, validate, next, totals };
+  const api = { points, puzzles, bonus, start, begin, token, validate, next, chooseBonus, revealBonus, finish, totals };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.SauceGame = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

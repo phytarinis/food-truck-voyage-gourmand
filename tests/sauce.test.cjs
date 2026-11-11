@@ -21,7 +21,7 @@ test('60 points chacun, cumul général conservé, reprise et fin sans double co
  const game=fresh();game.teams.forEach(t=>{t.score=30});
  const state=game.sauce;assert.equal(S.start(game),state);
  for(let i=0;i<3;i++){assert.equal(S.next(game),false);solve(game,0,0);solve(game,1,0);assert.equal(S.start(game),state);assert.equal(S.next(game),true);}
- assert.equal(game.sauce.phase,'complete');assert.equal(S.next(game),false);assert.deepEqual(S.totals(game),[60,60]);assert.deepEqual(game.teams.map(t=>t.score),[90,90]);
+ assert.equal(game.sauce.phase,'bonus');assert.equal(S.finish(game),false);assert.equal(S.chooseBonus(game,0),true);assert.equal(S.revealBonus(game),true);assert.equal(S.finish(game),true);assert.equal(game.sauce.phase,'complete');assert.equal(S.next(game),false);assert.deepEqual(S.totals(game),[60,60]);assert.deepEqual(game.teams.map(t=>t.score),[90,90]);
  S.begin(game);S.start(game);assert.equal(game.sauce.phase,'complete');assert.deepEqual(game.teams.map(t=>t.score),[90,90]);
 });
 test('validations périmées, ancien indice, ancienne énigme et ancien jeu refusés',()=>{
@@ -42,4 +42,21 @@ test('pas de validation sans confirmation courante, paramètres invalides ignor�
  for(const index of [-1,2,'0',null])assert.equal(S.token(game,index),null);
  const untouched=createGame(['A','B']);assert.equal(untouched.sauce,undefined);
  assert.equal(S.token(untouched,0),null);
+});
+
+for(let choice=0;choice<3;choice++)test(`bonus collectif ${String.fromCharCode(65+choice)} : aucune variation de score ou de joker`,()=>{
+ const game=fresh();for(let i=0;i<3;i++){solve(game,0,0);solve(game,1,2);S.next(game);}
+ assert.equal(game.sauce.phase,'bonus');assert.equal(S.bonus.correctIndex,0);
+ const before=structuredClone(game.teams);assert.equal(S.revealBonus(game),false);assert.equal(S.finish(game),false);
+ assert.equal(S.chooseBonus(game,choice),true);assert.equal(S.revealBonus(game),true);
+ assert.equal(S.revealBonus(game),false);assert.equal(S.chooseBonus(game,(choice+1)%3),false);
+ assert.deepEqual(game.teams,before);assert.equal(S.start(game).bonus.selected,choice);
+ assert.equal(S.finish(game),true);assert.equal(S.finish(game),false);assert.deepEqual(game.teams,before);
+});
+test('bonus inaccessible avant les trois corrections, choix invalides refusés',()=>{
+ const game=fresh();assert.equal(S.chooseBonus(game,0),false);assert.equal(S.revealBonus(game),false);assert.equal(S.finish(game),false);
+ for(let i=0;i<3;i++){solve(game,0,3);solve(game,1,3);S.next(game);}
+ for(const value of [-1,3,'0',null,undefined,NaN])assert.equal(S.chooseBonus(game,value),false);
+ assert.equal(game.sauce.bonus.selected,null);assert.equal(S.finish(game),false);
+ assert.deepEqual(game.teams.map(t=>[t.score,t.jokers]),[[0,2],[0,2]]);
 });

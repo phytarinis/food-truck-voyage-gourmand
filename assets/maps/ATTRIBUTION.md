@@ -15,3 +15,9 @@ Fichiers d’origine : `departements.geojson` et `departements/{16-charente,17-c
 ## Nouvelle-Aquitaine et bassin d’Arcachon
 
 `nouvelle-aquitaine-arcachon.svg` reprend les limites des 12 départements de la région dans `mainland.geojson` et le repère communal d’Arcachon (INSEE 33009). Son contour d’origine, sans modification, est conservé dans `arcachon.geojson` et provient du fichier `departements/33-gironde/communes-33-gironde.geojson` de france-geojson, même source IGN 2018 et Licence Ouverte. La carte localise Arcachon au bord du bassin ; elle ne prétend pas tracer le périmètre marin du bassin. Génération hors ligne : `python3 tools/generate-arcachon-map.py`.
+
+## Bonus : anciennes régions de la Nouvelle-Aquitaine
+
+`anciennes-regions-nouvelle-aquitaine.geojson` conserve les trois entités historiques Aquitaine (72), Limousin (74) et Poitou-Charentes (54), extraites sans modification des coordonnées du fichier [regions-avant-redecoupage-2015.geojson](https://github.com/gregoiredavid/france-geojson/blob/master/regions-avant-redecoupage-2015.geojson). Source : france-geojson, fonds administratifs IGN selon la documentation du projet, Licence Ouverte Etalab. Ces contours historiques sont distincts du fichier des départements actuels ; aucune limite n’est inventée ni tracée à la main.
+
+`python3 tools/generate-regions-bonus-map.py` génère `bonus-nouvelle-aquitaine.svg` hors ligne. La projection locale est équirectangulaire à 45° ; les trois couleurs identifient les anciennes régions. Les points servent uniquement à relier les noms à leurs surfaces, pas à localiser des villes.
