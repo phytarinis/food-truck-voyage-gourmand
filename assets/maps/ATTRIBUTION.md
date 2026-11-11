@@ -7,3 +7,7 @@ Données sous [Licence Ouverte / Open Licence Etalab](https://www.etalab.gouv.fr
 Fichiers d’origine : `departements.geojson` et `departements/{16-charente,17-charente-maritime,24-dordogne}/communes-*.geojson` sur la branche `master` du dépôt cité. Les dix entités utiles sont conservées sans redessiner ni simplifier leurs coordonnées dans `source.geojson`.
 
 `python3 tools/generate-maps.py` régénère les trois SVG hors ligne. Projection équirectangulaire locale à latitude 45,5°. Le département est sauge et les communes sont corail. Les points représentent les centroïdes communaux, et non une adresse ou une position GPS du centre-ville. Le nord est indiqué ; ces cartes pédagogiques ne servent pas à la navigation. Aucune modification des limites n’est effectuée.
+
+## Cartes métropolitaines
+
+`mainland.geojson` conserve les 96 départements métropolitains du même jeu IGN Admin Express COG 2018 / france-geojson (y compris 2A et 2B). `python3 tools/generate-france-maps.py` produit les vues `france-16.svg`, `france-17.svg`, `france-24.svg` et `france-numeros.svg` sans réseau. Les limites et codes ne sont pas inventés : ils proviennent des propriétés INSEE et coordonnées source. Le zoom Île-de-France isole les départements très petits. Les cartes ont le nord en haut ; la précision d’affichage est pédagogique, non adaptée à la navigation.

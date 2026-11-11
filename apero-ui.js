@@ -61,12 +61,36 @@ function renderDeliveryCorrection() {
     const number = document.createElement('p'); number.textContent = `${r.numberCorrect ? '✓' : '✕'} Numéro ${r.number} → +${r.numberCorrect ? 5 : 0} points`;
     card.append(title, department, number); return card;
   }));
-  $('department-map').src = `assets/maps/${d.number}.svg`;
-  $('department-map').alt = `Carte de la ${d.department}, avec ${d.city} et ${d.prefecture}. Le département est en sauge et les communes en corail.`;
+  $('department-map').src = `assets/maps/france-${d.number}.svg`;
+  $('department-map').alt = `Carte de France métropolitaine et zoom sur la ${d.department}, avec ${d.city} (repère 1) et ${d.prefecture} (repère 2).`;
   $('department-prefecture').textContent = `PRÉFECTURE : ${d.prefecture}`;
-  $('department-facts').replaceChildren(...d.facts.map(fact => { const li = document.createElement('li'); li.textContent = fact; return li; }));
-  $('department-illustrations').hidden = d.number !== '17';
-  $('delivery-next').textContent = s.index === 2 ? 'LE BONUS FINAL →' : 'LIVRAISON SUIVANTE →';
+  $('department-facts').replaceChildren();
+  renderCulturePhotos(d.number);
+  $('delivery-next-label').textContent = s.index === 2 ? 'Le bonus final' : 'Livraison suivante';
+}
+function renderCulturePhotos(department) {
+  $('department-illustrations').replaceChildren(...CulturePhotos[department].map(photo => {
+    const figure = document.createElement('figure'); figure.className = 'culture-photo';
+    const hasPhoto = photo.src && photo.credit && photo.source && photo.license;
+    if (hasPhoto) {
+      const image = document.createElement('img'); image.src = photo.src; image.alt = photo.alt;
+      figure.append(image);
+    } else {
+      const placeholder = document.createElement('div'); placeholder.className = 'culture-photo-placeholder';
+      const icon = document.createElement('span'); icon.className = 'photo-frame'; icon.setAttribute('aria-hidden', 'true');
+      const note = document.createElement('span'); note.textContent = 'Photo à ajouter';
+      placeholder.append(icon, note); figure.append(placeholder);
+    }
+    const caption = document.createElement('figcaption');
+    const title = document.createElement('strong'); title.textContent = photo.caption; caption.append(title);
+    if (hasPhoto) {
+      const credit = document.createElement('small'); credit.textContent = `${photo.credit} · ${photo.license} · `;
+      const link = document.createElement('a'); link.href = photo.source; link.textContent = 'Source'; link.target = '_blank'; link.rel = 'noopener';
+      credit.append(link); caption.append(credit);
+    }
+    figure.append(caption); return figure;
+  }));
+  $('department-illustrations').hidden = false;
 }
 $('apero-begin').addEventListener('click', () => { AperoGame.begin(game); renderApero(); });
 $('delivery-form').addEventListener('submit', event => {

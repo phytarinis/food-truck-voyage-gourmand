@@ -9,6 +9,7 @@
   <script defer src="game.js"></script>
   <script defer src="apero.js"></script>
   <script defer src="app.js"></script>
+  <script defer src="culture-photos.js"></script>
   <script defer src="apero-ui.js"></script>
 </head>
 <body class="welcome-mode">
@@ -22,7 +23,7 @@
   </defs></svg>
   <header class="topbar">
     <span class="game-signature">Le grand voyage <em>gourmand</em></span>
-    <div class="partners" aria-label="Emplacements provisoires des logos"><span>LABO <b>ÉPICÉ</b><small>EMPLACEMENT LOGO</small></span><i>×</i><span class="e2c">E2C <small>COUTRAS · EMPLACEMENT LOGO</small></span></div>
+    <div class="partners" aria-label="Partenaires"><img class="partner-labo" src="assets/Logo%20sans%20fond.png" width="60" height="60" alt="Le Labo Épicé"><img class="partner-afept" src="assets/logo_couleur%20(2).jpg" width="140" height="72" alt="AFEPT, formation, insertion et éducation permanente"><i aria-hidden="true">×</i><span class="e2c">E2C <small>COUTRAS</small></span></div>
     <button class="text-button" id="reset" hidden>↺ Réinitialiser</button>
   </header>
 
@@ -91,8 +92,8 @@
       <div class="scoreboard"></div><p class="eyebrow">MANCHE 01 / DÉPART DE COUTRAS</p>
       <h1 id="apero-intro-title" tabindex="-1">L’apéro <em>local</em></h1>
       <p class="intro">Trois livraisons, trois départements à retrouver !</p>
-      <aside class="companion"><svg aria-hidden="true"><use href="#companion-art"/></svg><p class="speech">Première livraison ! Le GPS connaît la ville… mais il a oublié le département !</p></aside>
-      <div class="apero-brief"><svg class="apero-truck" aria-hidden="true"><use href="#truck-art"/></svg><p>Les deux équipes répondent au même défi. Pour chacune : <strong>département correct +5 points</strong> et <strong>numéro correct +5 points</strong>.<br>Maximum : 30 points par équipe sur la manche.</p></div>
+      <aside class="companion apero-intro-scene"><svg aria-hidden="true"><use href="#companion-art"/></svg><p class="speech">Première livraison ! Le GPS connaît la ville… mais il a oublié le département !</p></aside>
+      <p class="apero-short-brief">Un département et un numéro à choisir ensemble, puis une réponse par équipe.</p>
       <div class="result-actions"><button id="apero-begin" class="primary">PREMIÈRE LIVRAISON <span>→</span></button><button class="text-button apero-back">Le carnet de route</button></div>
     </section>
 
@@ -108,15 +109,16 @@
       <div class="scoreboard"></div><p id="correction-progress" class="eyebrow"></p>
       <h1 id="delivery-correction-title" tabindex="-1"></h1>
       <p id="delivery-solution" class="delivery-solution"></p>
-      <div class="department-discovery"><figure><img id="department-map" alt=""><figcaption>Département en sauge · communes en corail.<br>Contours IGN / Admin Express COG 2018 · <a href="assets/maps/ATTRIBUTION.md" target="_blank" rel="noopener">Sources et licence</a></figcaption></figure><div class="department-details"><div id="delivery-awards" class="delivery-awards" aria-live="polite"></div><p id="department-prefecture" class="eyebrow"></p><ul id="department-facts"></ul><div id="department-illustrations" class="department-illustrations" hidden><figure><img src="assets/aquarium.svg" alt="Un poisson dans un aquarium bleu"><figcaption>Aquarium de La Rochelle</figcaption></figure><figure><img src="assets/fort-boyard.svg" alt="Fort Boyard, fort de pierre ovale entouré par la mer"><figcaption>Fort Boyard</figcaption></figure></div></div></div>
-      <div class="result-actions"><button class="primary" id="delivery-next"></button><button class="text-button apero-back">Le carnet de route</button></div>
+      <div class="department-discovery"><figure><img id="department-map" alt=""><figcaption>France métropolitaine · département en sauge · repères communaux numérotés.<br>Contours IGN / Admin Express COG 2018 · <a href="assets/maps/ATTRIBUTION.md" target="_blank" rel="noopener">Sources et licence</a></figcaption></figure><div class="department-details"><div id="delivery-awards" class="delivery-awards" aria-live="polite"></div><p id="department-prefecture" class="eyebrow"></p><ul id="department-facts"></ul><div id="department-illustrations" class="department-illustrations"></div></div></div>
+      <div class="result-actions"><button class="truck-next" id="delivery-next"><svg aria-hidden="true"><use href="#truck-art"/></svg><span id="delivery-next-label">Livraison suivante</span><span aria-hidden="true">→</span></button><button class="text-button apero-back">Le carnet de route</button></div>
     </section>
 
     <section id="apero-bonus" class="screen compact apero-screen" hidden aria-labelledby="apero-bonus-title">
       <div class="scoreboard"></div><p class="eyebrow">BONUS FINAL / SANS POINTS</p><h1 id="apero-bonus-title" tabindex="-1">Pourquoi les départements français ont-ils <em>des numéros ?</em></h1>
-      <p class="intro">Les deux équipes réfléchissent ensemble.</p><ol class="bonus-options" type="A"><li>Selon leur superficie.</li><li>Selon l’ordre alphabétique de leurs noms.</li><li>Selon leur nombre d’habitants.</li></ol>
-      <button id="bonus-reveal" class="primary">RÉVÉLER LA RÉPONSE</button><div id="bonus-answer" class="bonus-answer" hidden><h2>B. Selon l’ordre alphabétique de leurs noms.</h2><p>À l’origine, les départements ont été numérotés principalement selon l’ordre alphabétique de leurs noms. Il existe aujourd’hui quelques exceptions liées aux évolutions administratives.</p><p>Aucun point n’est attribué pour ce bonus.</p></div>
+      <p class="intro">Les deux équipes réfléchissent ensemble.</p><div class="bonus-layout"><div class="bonus-discussion"><ol class="bonus-options" type="A"><li>Selon leur superficie.</li><li>Selon l’ordre alphabétique de leurs noms.</li><li>Selon leur nombre d’habitants.</li></ol>
+      <button id="bonus-reveal" class="primary">RÉVÉLER LA RÉPONSE</button><div id="bonus-answer" class="bonus-answer" hidden><h2>B. Selon l’ordre alphabétique de leurs noms.</h2><p>À l’origine, les départements ont été numérotés principalement selon l’ordre alphabétique de leurs noms. Il existe aujourd’hui quelques exceptions liées aux évolutions administratives.</p></div>
       <div class="result-actions"><button id="apero-finish" class="primary" hidden>TERMINER LA MANCHE <span>→</span></button><button class="text-button apero-back">Le carnet de route</button></div>
+</div><figure class="bonus-map"><a href="assets/maps/france-numeros.svg" target="_blank" rel="noopener" aria-label="Agrandir la carte des départements dans un nouvel onglet"><img src="assets/maps/france-numeros.svg" alt="Carte de France métropolitaine avec les limites et les numéros INSEE des 96 départements, et un zoom de l’Île-de-France."></a><figcaption><a href="assets/maps/france-numeros.svg" target="_blank" rel="noopener">Agrandir la carte numérotée</a> · IGN / Admin Express 2018, Licence Ouverte</figcaption></figure></div>
     </section>
 
     <section id="apero-end" class="screen compact apero-screen" hidden aria-labelledby="apero-end-title">
