@@ -102,11 +102,10 @@ function renderFranceCorrection() {
   $('france-cultural-title').textContent = puzzle.heading;
   $('france-fact').textContent = puzzle.fact;
   $('france-correct-region').textContent = `Région : ${franceRegionName(puzzle.region)}`;
-  const placeholder = document.createElement('div'); placeholder.className = 'sauce-photo-placeholder';
-  const frame = document.createElement('span'); frame.className = 'photo-frame'; frame.setAttribute('aria-hidden', 'true');
-  const text = document.createElement('span'); text.textContent = 'Photographie à venir'; placeholder.append(frame, text);
-  const caption = document.createElement('figcaption'); caption.textContent = puzzle.answer;
-  $('france-photo').replaceChildren(placeholder, caption);
+  const photo = FrancePhotos[puzzle.id];
+  const image = document.createElement('img'); image.src = photo.src; image.alt = photo.alt;
+  const caption = document.createElement('figcaption'); appendFrancePhotoCredit(caption, photo);
+  $('france-photo').replaceChildren(image, caption);
   $('france-photo').dataset.specialty = puzzle.id;
   $('france-next').textContent = s.puzzleIndex === 2 ? 'LE BONUS COLLECTIF →' : 'ÉNIGME SUIVANTE →';
 }
@@ -262,3 +261,26 @@ $('france-reveal-region').addEventListener('click', () => {
   if (FranceGame.revealLocation(game)) { scores(); renderFranceLocation(); $('france-region-answer').focus(); }
 });
 $('france-discover').addEventListener('click', () => { if (FranceGame.discover(game)) renderFrance(); });
+
+// Les photos et leurs sources restent réservées aux corrections découvertes.
+function appendFrancePhotoCredit(container, photo) {
+  container.append(photo.credit + ' · ');
+  for (const [url, label] of [[photo.source, 'Source'], [photo.licenseUrl, photo.license]]) {
+    const link = document.createElement('a'); link.href = url; link.textContent = label; link.target = '_blank'; link.rel = 'noopener';
+    container.append(link, ' · ');
+  }
+  container.append('Image affichée entière, sans retouche ni recadrage par le jeu.');
+}
+function appendFrancePhotoCredits(container) {
+  const s = game?.france;
+  if (!s) return;
+  FranceGame.puzzles.forEach((puzzle, index) => {
+    // La recherche seule ne suffit pas : attendre la correction géographique.
+    const corrected = index < s.puzzleIndex || (index === s.puzzleIndex && ['correction', 'bonus', 'complete'].includes(s.phase));
+    if (!corrected) return;
+    const article = document.createElement('article');
+    const title = document.createElement('h3'); title.textContent = `Manche 3 — ${puzzle.answer}`;
+    const credit = document.createElement('p'); appendFrancePhotoCredit(credit, FrancePhotos[puzzle.id]);
+    article.append(title, credit); container.append(article);
+  });
+}

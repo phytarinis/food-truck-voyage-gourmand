@@ -146,13 +146,13 @@ Le maximum de cette manche est donc de 75 points par équipe, ajoutés aux score
 
 Le bonus collectif attend une sélection puis « Révéler la réponse ». B, environ 67 millions, est l’ordre de grandeur attendu. La correction indique le 1er janvier 2026, le caractère provisoire et la [publication Insee du 13 janvier 2026](https://www.insee.fr/fr/statistiques/5225246). L’utilisateur a vérifié et fourni cette référence et l’estimation de 66 792 845 habitants ; l’accès direct Insee est refusé par le réseau de l’environnement (403), sans modification des paramètres réseau. Le bonus ne touche ni aux points ni aux jokers.
 
-Les corrections prévoient trois cadres « Photographie à venir », identifiés par `data-specialty` (`choucroute`, `galette`, `rougail`), sans image ni crédit inventés. Pendant le développement, les fichiers suivants ont été ajoutés sur `main` puis récupérés dans la branche, intacts :
+Les corrections affichent les trois photographies locales via `france-photos.js`, identifiées par `data-specialty` (`choucroute`, `galette`, `rougail`). Les fichiers suivants ont été récupérés depuis `main` et restent intacts :
 
 - `assets/Choucroute-garni_1.JPG`
 - `assets/Galette_de_sarrasin_complète_bretonne.jpg`
 - `assets/Rougail_saucisse_et_riz_zambrocal.jpg`
 
-Ces photographies ne sont pas encore affichées : auteurs, sources et licences restent à documenter avant leur intégration. Aucun visuel généré ni photo de substitution n’a été ajouté.
+Crédits fournis par l’utilisateur : Brücke-Osteuropa / CC0 1.0 (choucroute), Arnaud 25 / CC BY-SA 4.0 (galette), Benoît Prieur / CC0 1.0 (rougail). Les crédits, liens Wikimedia et licences apparaissent sous chaque photo et dans « Crédits photos », après sa correction uniquement. Les fichiers sont affichés entiers avec `object-fit: contain`, sans retouche ni recadrage par le jeu ; aucune adaptation de la galette n’est créée. Toute adaptation ultérieure devra respecter CC BY-SA 4.0. Aucun visuel généré ni photo de substitution n’a été ajouté. Les références sont celles fournies par l’utilisateur ; aucune comparaison externe supplémentaire n’est revendiquée.
 
 ### Validation
 
