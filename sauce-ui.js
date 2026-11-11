@@ -189,6 +189,7 @@ $('photo-credits-open').addEventListener('click', () => {
   }
   if (typeof appendFrancePhotoCredits === 'function') appendFrancePhotoCredits(content);
   if (typeof appendPassportPhotoCredits === 'function') appendPassportPhotoCredits(content);
+  if (typeof appendWorldPhotoCredits === 'function') appendWorldPhotoCredits(content);
   if (!content.childElementCount) {
     const note = document.createElement('p'); note.textContent = 'Les crédits apparaîtront après les corrections pour préserver les spécialités à découvrir.'; content.append(note);
   }

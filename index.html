@@ -17,6 +17,7 @@
   <script defer src="sauce.js"></script>
   <script defer src="sauce-photos.js"></script>
   <script defer src="sauce-ui.js"></script>
+  <script defer src="flag-choices.js"></script>
   <script defer src="clue-flags.js"></script>
   <script defer src="flag-map.js"></script>
   <script defer src="france.js"></script>
@@ -30,6 +31,10 @@
   <script defer src="passport.js"></script>
   <script defer src="passport-photos.js"></script>
   <script defer src="passport-ui.js"></script>
+  <script defer src="world-map.js"></script>
+  <script defer src="world.js"></script>
+  <script defer src="world-photos.js"></script>
+  <script defer src="world-ui.js"></script>
 </head>
 <body class="welcome-mode">
   <svg class="art-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -294,6 +299,25 @@
     </section>
     <dialog id="passport-confirm" aria-labelledby="passport-confirm-title"><h2 id="passport-confirm-title">Confirmer la validation</h2><p id="passport-confirm-text"></p><div class="dialog-actions"><button class="secondary" id="passport-cancel">ANNULER</button><button class="primary" id="passport-confirm-answer">CONFIRMER</button></div></dialog>
 
+    <section id="world-intro" class="screen compact world-screen" hidden aria-labelledby="world-intro-title">
+      <div class="scoreboard"></div><p class="eyebrow">DERNIÈRE ESCALE</p><h1 id="world-intro-title" tabindex="-1">MANCHE 6 — TOUR DU MONDE</h1>
+      <aside class="companion sauce-intro-scene"><svg aria-hidden="true"><use href="#companion-art"/></svg><p class="speech">On a traversé la France, puis l'Europe… Maintenant, direction le monde entier ! J'espère juste que le camion a assez d'essence !</p></aside>
+      <p class="intro">Retrouvez les continents où notre food truck doit effectuer ses livraisons. Placez vos drapeaux sur la carte du monde !</p>
+      <p class="world-principle"><strong>6 défis × 10 points = 60 points maximum par équipe.</strong><br>Corail choisit, puis sauge choisit sans voir le premier drapeau. Le formateur révèle ensuite la destination.</p>
+      <div class="result-actions"><button id="world-begin" class="primary">FAIRE LE TOUR DU MONDE <span>→</span></button><button class="text-button world-back">Le carnet de route</button></div>
+    </section>
+    <section id="world-challenge" class="screen compact world-screen" hidden aria-labelledby="world-challenge-title">
+      <div class="scoreboard"></div><p id="world-progress" class="eyebrow"></p><h1 id="world-challenge-title" tabindex="-1"></h1><p id="world-instruction" class="world-instruction"></p>
+      <div class="world-layout"><figure class="world-map-figure"><div id="world-map-board"></div><figcaption>Sept continents · Natural Earth, domaine public · <a href="assets/maps/ATTRIBUTION.md" target="_blank" rel="noopener">Sources et convention cartographique</a></figcaption></figure>
+      <aside class="world-controls"><p id="world-turn" class="world-turn" role="status" tabindex="-1"></p><p id="world-choice" role="status"></p><button id="world-lock" class="primary" disabled>Valider le drapeau corail</button><button id="world-reveal" class="primary" hidden>Révéler la destination</button><div id="world-verdict" class="bonus-answer" hidden tabindex="-1"></div><button id="world-next" class="primary" hidden>DESTINATION SUIVANTE <span>→</span></button><aside id="world-character" class="companion"><svg aria-hidden="true"><use href="#companion-art"/></svg><p id="world-quote" class="speech"></p></aside><p id="world-map-help" class="world-small"></p><button class="text-button world-back">Le carnet de route · progression conservée</button></aside></div>
+      <div id="world-discovery" hidden><div class="world-discovery-grid"><figure id="world-photo" class="sauce-photo"></figure><div><h2 id="world-discovery-title"></h2><p id="world-fact"></p><p id="world-photo-note" hidden></p><p id="world-zone-note" class="world-small" hidden></p><p id="world-final-quote" class="speech" hidden></p></div></div></div>
+    </section>
+    <section id="world-end" class="screen compact world-screen" hidden aria-labelledby="world-end-title">
+      <div class="scoreboard"></div><p class="eyebrow">SIX DÉFIS, UNE DERNIÈRE ESCALE</p><h1 id="world-end-title" tabindex="-1">Tour du monde. <em>Manche terminée !</em></h1><div id="world-totals" class="delivery-awards"></div><div class="result-actions"><button id="world-finish-journey" class="primary">Terminer le grand voyage ! <span>→</span></button><button class="text-button world-back">Le carnet de route</button></div>
+    </section>
+    <section id="world-transition" class="screen compact world-screen" hidden aria-labelledby="world-transition-title">
+      <div class="scoreboard"></div><p class="eyebrow">DERNIÈRE ESCALE TERMINÉE</p><h1 id="world-transition-title" tabindex="-1">Le voyage touche <em>à sa fin.</em></h1><p class="intro">Vos scores sont conservés. Retrouvez votre parcours dans le carnet de route.</p><button class="primary world-back">RETOUR AU CARNET <span>→</span></button>
+    </section>
     <section id="career-pause" class="screen compact career-screen" hidden aria-labelledby="career-title">
       <div class="scoreboard"></div>
       <div class="career-layout">

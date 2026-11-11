@@ -237,3 +237,41 @@ Nouveaux : `passport.js`, `passport-ui.js`, `europe-map.js`, `clue-flags.js`, `f
 `node --test tests/*.test.cjs` vérifie les 16 combinaisons d’issues pour chacun des trois pays, dans les deux ordres de validation, les indices synchronisés, la poursuite en solo, les jetons périmés et non interchangeables entre manches, les localisations, les +5 uniques, le maximum de 75, le bonus sans points et les données géographiques.
 
 `PASSPORT_TEST_URL=http://127.0.0.1:8007 node tests/passport.browser.cjs` teste le parcours complet et de vrais clics sur les pays, le zoom de Belgique, l’anonymat avant correction, le masquage complet et la remise à zéro du cadrage, les drapeaux côte à côte, les capitales, les quatre photos et leurs crédits, l’absence d’image/requête/crédit du Parlement avant révélation, les scores, le clavier, l’audio facultatif, le bonus, le bilan, la pause restauration rapide et le reset. Les tests Chromium utilisent 1920×1080, 1366×768, 1024×768, 390×844 et 320×640, sans débordement horizontal. Les suites navigateur des manches 1 à 4, de la démonstration et des cinq pauses métiers vérifient les régressions. Chromebook et projection sont simulés par les dimensions ; aucun appareil physique n’est utilisé.
+
+## Manche 6 — Tour du monde
+
+Branche issue de `main` après fusion de la manche 5 et de ses quatre photographies (PR n° 12). Les six escales sont désormais jouables. Parcours de la dernière manche : introduction → Japon/Asie → Australie/Océanie → Mexique/Amérique du Nord → Maroc/Afrique → Antarctique → surprise sur les déchets marins → bilan → transition simple. Chaque défi comporte les deux placements, leur validation, une révélation explicite et une correction illustrée.
+
+### Carte et réponses
+
+Les cinq premières destinations utilisent **le même planisphère et le même composant** `renderWorldMap`, adossé au rendu `FlagMap` déjà validé. Les sept surfaces proviennent de Natural Earth : Europe, Asie, Afrique, Amérique du Nord, Amérique du Sud, Océanie, Antarctique. Les pays transcontinentaux ne sont pas affectés en bloc au continent politique de leur État ; les terres sont regroupées à partir des régions physiques sources. Source, convention, projection et limites d’usage dans `assets/maps/ATTRIBUTION.md` ; génération hors ligne par `tools/generate-world-map.py`.
+
+`flag-choices.js` extrait la gestion commune des choix, verrous et révélations des manches 3 et 5. Ces dernières continuent de l’utiliser via `clue-flags.js` avec leurs barèmes de 5 points inchangés. La manche 6 utilise la même logique de confidentialité : choix corail modifiable, validation, disparition complète de son drapeau, choix sauge, validation, deux drapeaux côte à côte si nécessaire. Aucun nom de continent n’est dessiné ni fourni dans les libellés accessibles pendant les réponses. La correction colore le continent et situe la destination (pays source mis en évidence pour les quatre premiers défis).
+
+Une bonne localisation donne **10 points par équipe et par défi**, une seule fois au clic de révélation. La manche rapporte au maximum **60 points par équipe**, ajoutés aux scores cumulés. Les jokers restent inchangés. Le retour au carnet conserve la phase, les réponses et leur masquage ; réinitialisation et rechargement effacent la partie comme auparavant.
+
+### Défi surprise : placement libre
+
+Le sixième défi reprend la carte mais accepte un point libre dans toute surface océanique, indépendamment des zones continentales. Un clic ou un appui place le drapeau ; les flèches au clavier le déplacent (Maj pour un pas plus grand), depuis une position neutre seulement après une action du joueur. Les points sur les terres sont refusés. Le moteur conserve longitude/latitude ; le petit décalage des deux drapeaux proches ne modifie jamais leurs positions d’évaluation. Les événements de pointeur conservent la précision des coordonnées, notamment au pavé tactile.
+
+Avant révélation : aucun nom de l’océan concerné, repère, contour, zone colorée, texte explicatif ou photographie de pollution. Après les deux validations, « Révéler le septième continent » affiche une zone **pédagogique indicative** dans le Pacifique Nord. La photo montre une plage polluée à Hawaï ; elle n’est pas une vue directe du Great Pacific Garbage Patch. Le texte explique une accumulation diffuse de plastiques, notamment de microplastiques, et non une île solide ou un véritable continent.
+
+La tolérance est explicite dans `world.js` : longitudes **−170° à −120°**, latitudes **20° à 45°**, bornes comprises, uniquement dans l’océan. Cette marge volontairement large permet une évaluation à l’échelle d’un planisphère. **Ce rectangle n’est pas une frontière scientifique du phénomène.** Il n’est ajouté au DOM qu’à la correction ; les crédits et les fichiers des photos ne révèlent pas non plus la réponse à l’avance.
+
+### Six photos validées et allégées
+
+`world-photos.js` associe les six fichiers aux destinations, auteurs, licences, sources et modifications techniques. L’utilisateur a confirmé les références après vérification des fiches Commons ; l’environnement reçoit toujours 403. Les trois photos CC BY-SA 4.0 gardent leurs crédits et liens de licence. Le statut de domaine public NOAA et l’historique Flickr sous CC BY 2.0 sont tous deux conservés. Détails complets : `assets/photos/WORLD.md`.
+
+Les originaux ne sont jamais écrasés. Deux versions proportionnelles WebP sont générées par `tools/optimize-world-photos.py` pour alléger les images les plus lourdes : Antarctique ~100 Ko et pollution ~314 Ko. Le dérivé de l’Antarctique reste sous CC BY-SA 4.0. Aucun recadrage ni image générée ; les changements de taille/compression sont annoncés dans le jeu. Les photos et leurs crédits apparaissent uniquement après la révélation de leur destination. Le fichier exact des tacos est `assets/Tacos_mexicanos (1).jpg`.
+
+### Bilan et transition finale
+
+Après la sixième correction, le bilan indique les six gains, le total de manche et les scores cumulés. La manche est marquée terminée et le camion atteint l’escale 6 du carnet. « Terminer le grand voyage ! » mène à `world-transition`, un simple emplacement de transition avec scores conservés et retour au carnet. **Aucun écran final complet, classement de gagnants ou animation nouvelle n’a été développé** ; cet écran sera conçu ultérieurement.
+
+### Fichiers et tests
+
+Nouveaux : `world.js`, `world-ui.js`, `world-map.js`, `world-photos.js`, `flag-choices.js`, sources géographiques sous `assets/maps`, deux versions photo sous `assets/photos/world`, générateurs, documentation et tests dédiés. Intégration dans `app.js`, `index.html`, `styles.css` et le dialogue de crédits. `clue-flags.js` et `flag-map.js` réutilisent les petits composants de drapeaux extraits sans changer le comportement des manches précédentes.
+
+`node --test tests/*.test.cjs` couvre les 49 combinaisons de réponses des deux équipes pour chacun des cinq premiers défis, les verrous et jetons périmés, les points océaniques/terrestres, les limites de la tolérance, les scores uniques, le maximum de 60, le cumul et la conservation des autres manches, les sept continents et les références/versions photo. Le générateur vérifie également la conservation topologique des terres.
+
+`WORLD_TEST_URL=http://127.0.0.1:8008 node tests/world.browser.cjs` vérifie de vrais clics sur les sept continents et dans tous les océans, les six défis dans l’ordre, le masquage complet, les drapeaux côte à côte, le clavier, l’absence de tout indice du Pacifique avant correction (y compris photo, requête image et crédits), les six photos, les scores, la reprise, le bilan, le carnet, la transition et le reset. Dimensions Chromium : 1920×1080, 1366×768, 1024×768, 390×844, 320×640, sans débordement horizontal. Les suites des manches 1 à 5, de la démo et des cinq pauses métiers vérifient les régressions. Ce sont des simulations de dimensions Chromebook/projection, sans appareil physique.
