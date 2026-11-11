@@ -50,3 +50,50 @@ body:not(.welcome-mode) h1 em{background:linear-gradient(transparent 85%,#e9b44b
 .route-map{background-image:none}
 @media(max-width:1000px){.setup-companion{max-width:340px}.setup-companion svg{width:86px;height:158px}.rule-icon{width:26px;height:26px}}
 @media(max-width:650px){.setup-companion{max-width:none}.setup-companion svg{width:70px;height:125px}.rule-icon{width:28px;height:28px}.rule-card h2{gap:8px}.route-landmarks{display:none}.joker-counter{gap:4px;flex-wrap:wrap}.joker-counter .pepper-pair svg{width:15px;height:18px}}
+
+/* Nouveau plateau : une boucle ample en trois passages, six escales HTML. */
+#journey .route-map{height:440px;min-height:0;background:#eef0e0;border:2px solid #a9b49c;border-radius:18px;margin-top:20px;isolation:isolate}
+#journey .board-art,#journey .mobile-road{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+#journey .mobile-road{display:none}
+#journey .board-river{fill:none;stroke:#aabfba;stroke-width:25;stroke-linecap:round}
+#journey .board-river-line{fill:none;stroke:#e8efe4;stroke-width:2;stroke-dasharray:20 16}
+#journey .road-border{fill:none;stroke:#718273;stroke-width:44;stroke-linecap:round;stroke-linejoin:round}
+#journey .road-edge{stroke:#a2ad94;stroke-width:39;stroke-linejoin:round}
+#journey .road-dashes{stroke:#fff9e7;stroke-width:3;stroke-dasharray:12 12}
+#journey .route-stops{position:absolute;inset:0;display:block;padding:0;margin:0;background:none}
+#journey .route-stop{position:absolute;left:var(--node-x);top:calc(var(--node-y) - 23px);width:180px;transform:translateX(-50%);text-align:center}
+#journey .route-stop:nth-child(1){--node-x:13.33%;--node-y:25.45%}
+#journey .route-stop:nth-child(2){--node-x:45.42%;--node-y:23.86%}
+#journey .route-stop:nth-child(3){--node-x:83.75%;--node-y:29.55%}
+#journey .route-stop:nth-child(4){--node-x:63.75%;--node-y:59.09%}
+#journey .route-stop:nth-child(5){--node-x:28.33%;--node-y:63.64%}
+#journey .route-stop:nth-child(6){--node-x:84.17%;--node-y:85.23%;top:calc(var(--node-y) - 100px)}
+#journey .stop-number{width:46px;height:46px;font-size:20px;border:2px solid var(--ink);background:var(--paper);box-shadow:0 3px 0 #172e3922}
+#journey .route-stop h2{background:#fffaf0;border:1.5px solid #88967f;border-radius:6px;padding:8px 9px;margin:7px 0 6px;font-size:17px;line-height:1.25}
+#journey .route-stop small{font-size:11px;background:#fffaf0;padding:3px 9px;border-radius:8px}
+#journey .route-stop:nth-child(6) .stop-number{position:absolute;top:77px;left:50%;transform:translateX(-50%)}
+#journey .route-stop.active .stop-number,#journey .route-stop.active small{background:#d94532;color:#fffaf0}
+#journey .route-stop.complete .stop-number,#journey .route-stop.complete small{background:#b4c5a4}
+#journey .board-landmark{position:absolute;pointer-events:none}
+#journey .board-landmark svg{display:block;width:100%;height:100%}
+#journey .board-eiffel{left:25%;top:3%;width:65px;height:86px;transform:rotate(-5deg)}
+#journey .board-mountains{left:63%;top:4%;width:145px;height:85px}
+#journey .board-beach{left:65%;top:31%;width:110px;height:80px}
+#journey .board-sign{left:40%;top:64%;width:76px;height:64px}
+#journey .route-truck{left:6.5%;top:84%;bottom:auto;width:115px;transform:translate(-50%,-50%) rotate(-8deg);z-index:2}
+#journey .route-truck svg{height:90px;border:3px solid var(--paper);border-radius:8px;box-shadow:2px 3px 0 #172e3955}
+#journey .route-truck span{font-size:10px;padding:3px;border-radius:3px}
+#journey .route-truck.on-route{left:var(--truck-x);top:var(--truck-y)}
+@media(min-width:901px) and (max-width:1050px){#journey .route-map{height:420px}#journey .route-stop{width:148px}#journey .route-stop h2{font-size:15px}#journey .board-eiffel{width:55px}#journey .board-mountains{width:115px}#journey .board-beach{width:90px;left:65%;top:32%}#journey .route-truck{width:95px}#journey .route-truck svg{height:75px}}
+@media(max-width:900px){#journey .route-map{height:850px}#journey .board-art{display:none}#journey .mobile-road{display:block}#journey .route-stop{width:min(155px,45%);top:calc(var(--mobile-y) - 23px);left:var(--mobile-x)}#journey .route-stop h2{font-size:16px}#journey .route-stop:nth-child(1){--mobile-x:25%;--mobile-y:10%}#journey .route-stop:nth-child(2){--mobile-x:72%;--mobile-y:27%}#journey .route-stop:nth-child(3){--mobile-x:28%;--mobile-y:43%}#journey .route-stop:nth-child(4){--mobile-x:72%;--mobile-y:60%}#journey .route-stop:nth-child(5){--mobile-x:25%;--mobile-y:76%}#journey .route-stop:nth-child(6){--mobile-x:72%;--mobile-y:91%;top:calc(var(--mobile-y) - 100px)}#journey .board-eiffel{left:65%;top:5%;width:53px;height:75px}#journey .board-mountains{left:7%;top:23%;width:85px;height:65px}#journey .board-beach{left:65%;top:42%;width:85px;height:70px}#journey .board-sign{left:6%;top:60%;width:60px;height:55px}#journey .route-truck{left:45%;top:5%;width:85px;transform:translate(-50%,-50%) rotate(-8deg)}#journey .route-truck svg{height:67px}#journey .route-truck.on-route{left:var(--truck-mobile-x);top:var(--truck-mobile-y);transform:translate(-50%,-50%) rotate(-8deg)}}
+
+@media(min-width:901px){#journey .route-truck.on-route{width:95px}#journey .route-truck.on-route svg{height:75px}}
+
+/* Colorisation des quatre décors existants, sans déplacer les escales. */
+#journey .board-eiffel{width:72px;height:94px}
+#journey .board-mountains{left:61%;width:160px;height:94px}
+#journey .board-beach{width:121px;height:88px}
+#journey .board-river{stroke:#46a9b3;stroke-width:31}
+#journey .board-river-line{stroke:#bfe5dd;stroke-width:2.5;stroke-dasharray:26 20}
+@media(min-width:901px) and (max-width:1050px){#journey .board-eiffel{width:61px;height:94px}#journey .board-mountains{left:57%;width:126px;height:94px}#journey .board-beach{left:60%;width:99px;height:88px}}
+@media(max-width:900px){#journey .board-eiffel{width:58px;height:82px}#journey .board-mountains{left:7%;width:94px;height:72px}#journey .board-beach{width:93px;height:77px}}

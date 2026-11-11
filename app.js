@@ -94,7 +94,15 @@ function renderRoute({ current = null, completed = [] } = {}) {
     card.append(number, name, status); $('rounds').append(card);
   });
   const truck = $('route-truck');
-  truck.style.setProperty('--stop', current === null ? 0 : current + 1);
+  // Coordonnées du pion sur les deux tracés du plateau, sans progression jouable.
+  const positions = [[6.5, 75], [31.67, 28.41], [80, 23.86], [72.5, 55.68], [40.83, 63.64], [76.67, 88.64]];
+  const mobilePositions = [[50, 6], [80, 20], [15, 36], [60, 56], [15, 68], [50, 95]];
+  if (current !== null) {
+    truck.style.setProperty('--truck-x', `${positions[current][0]}%`);
+    truck.style.setProperty('--truck-y', `${positions[current][1]}%`);
+    truck.style.setProperty('--truck-mobile-x', `${mobilePositions[current][0]}%`);
+    truck.style.setProperty('--truck-mobile-y', `${mobilePositions[current][1]}%`);
+  }
   truck.classList.toggle('on-route', current !== null);
   truck.querySelector('span').textContent = current === null ? 'AU DÉPART' : `ESCALE ${current + 1}`;
 }
