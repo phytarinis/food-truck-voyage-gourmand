@@ -17,6 +17,8 @@
   <script defer src="sauce.js"></script>
   <script defer src="sauce-photos.js"></script>
   <script defer src="sauce-ui.js"></script>
+  <script defer src="clue-flags.js"></script>
+  <script defer src="flag-map.js"></script>
   <script defer src="france.js"></script>
   <script defer src="france-regions.js"></script>
   <script defer src="france-photos.js"></script>
@@ -24,6 +26,9 @@
   <script defer src="gps-geography.js"></script>
   <script defer src="gps.js"></script>
   <script defer src="gps-ui.js"></script>
+  <script defer src="europe-map.js"></script>
+  <script defer src="passport.js"></script>
+  <script defer src="passport-ui.js"></script>
 </head>
 <body class="welcome-mode">
   <svg class="art-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -244,6 +249,50 @@
       <div class="scoreboard"></div><p class="eyebrow">TROIS REPÈRES RETROUVÉS</p><h1 id="gps-end-title" tabindex="-1">Le GPS a perdu la boule ! <em>Manche terminée.</em></h1><div id="gps-totals" class="delivery-awards"></div>
       <div class="result-actions"><button id="gps-career" class="primary">PAUSE MÉTIER : ENTRETIEN HÔTELIER <span>→</span></button><button class="text-button gps-back">Le carnet de route</button></div>
     </section>
+    <section id="passport-intro" class="screen compact passport-screen" hidden aria-labelledby="passport-intro-title">
+      <div class="scoreboard"></div><p class="eyebrow">MANCHE 5</p><h1 id="passport-intro-title" tabindex="-1">MANCHE 5 — PASSEPORT GOURMAND</h1>
+      <aside class="companion sauce-intro-scene"><svg aria-hidden="true"><use href="#companion-art"/></svg><p class="speech">Sortez les passeports ! Cette fois, on quitte la France. J'espère juste que le GPS connaît les frontières…</p></aside>
+      <p class="intro">Retrouvez trois pays européens grâce aux indices, puis plantez vos drapeaux sur la carte d'Europe.</p>
+      <p class="passport-scoring">Pays : <strong>20 / 15 / 10 points</strong> selon l’indice · Bonne localisation : <strong>+5 points</strong></p>
+      <p class="sauce-confidential">Un indice commun, des réponses discrètes sur papier. Le formateur valide séparément chaque équipe.</p>
+      <div class="result-actions"><button id="passport-begin" class="primary">PREMIÈRE ÉNIGME <span>→</span></button><button class="text-button passport-back">Le carnet de route</button></div>
+    </section>
+    <section id="passport-search" class="screen compact passport-screen" hidden aria-labelledby="passport-search-title">
+      <div class="scoreboard"></div><p id="passport-progress" class="eyebrow"></p><h1 id="passport-search-title" tabindex="-1"><span id="passport-destination-title">Destination mystère : où va-t-on manger ?</span></h1>
+      <p class="sauce-confidential">Écrivez votre réponse et transmettez-la discrètement au formateur.</p>
+      <aside id="passport-mystery" class="passport-mystery" hidden><p id="passport-mystery-quote" class="speech"></p><button id="passport-sound" class="text-button" type="button">Ambiance mystère · 1 seconde</button><span id="passport-sound-status" role="status"></span></aside>
+      <div id="passport-panels" class="sauce-panels"></div><div id="passport-clue-gate" class="sauce-clue-gate" hidden><p>Chaque équipe a répondu ou a déjà trouvé.</p><button type="button" id="passport-next-clue" class="primary">Dévoiler l’indice suivant <span aria-hidden="true">→</span></button></div>
+      <p id="passport-live" class="feedback" role="status"></p><button class="text-button passport-back">Le carnet de route · progression conservée</button>
+    </section>
+    <section id="passport-answer" class="screen compact passport-screen" hidden aria-labelledby="passport-answer-title">
+      <div class="scoreboard"></div><p class="eyebrow">LES DEUX RECHERCHES SONT TERMINÉES</p><h1 id="passport-answer-title" tabindex="-1"></h1>
+      <div id="passport-search-awards" class="delivery-awards"></div><p class="intro">Le pays est découvert. Reste à le retrouver sur la carte !</p>
+      <div class="result-actions"><button id="passport-open-map" class="primary">PLANTER NOS DRAPEAUX <span>→</span></button><button class="text-button passport-back">Le carnet de route</button></div>
+    </section>
+    <section id="passport-location" class="screen compact passport-screen" hidden aria-labelledby="passport-location-title">
+      <div class="scoreboard"></div><div class="passport-map-heading"><div><p id="passport-location-specialty" class="eyebrow"></p><h1 id="passport-location-title" tabindex="-1">Où faut-il livrer ?</h1></div><p id="passport-map-turn" class="passport-map-turn" role="status"></p></div>
+      <p class="passport-map-instruction">Plantez vos drapeaux en Europe ! Chaque équipe choisit un pays, puis valide son placement.</p>
+      <div class="passport-map-layout"><figure class="passport-map-figure"><div class="passport-map-toolbar" role="group" aria-label="Cadrage de la carte"><button id="passport-zoom-in" type="button" aria-label="Agrandir la carte">＋</button><button id="passport-zoom-out" type="button" aria-label="Réduire la carte">−</button><button id="passport-pan-left" type="button" aria-label="Déplacer la vue vers l’ouest">←</button><button id="passport-pan-right" type="button" aria-label="Déplacer la vue vers l’est">→</button><button id="passport-pan-up" type="button" aria-label="Déplacer la vue vers le nord">↑</button><button id="passport-pan-down" type="button" aria-label="Déplacer la vue vers le sud">↓</button><button id="passport-zoom-reset" type="button">Vue entière</button><output id="passport-zoom-status" aria-live="polite">Zoom 100 %</output></div><div id="passport-map-board" class="passport-map-board"></div><figcaption>Europe · Pays en bord de cadre partiellement représentés · Natural Earth, domaine public · <a href="assets/maps/ATTRIBUTION.md" target="_blank" rel="noopener">Sources et domaine public</a></figcaption></figure>
+      <aside class="passport-map-controls"><h2>Plante ton drapeau !</h2><p id="passport-map-choice" role="status"></p><button id="passport-lock-flag" class="primary" disabled>Valider le drapeau corail</button><button id="passport-reveal-region" class="primary" hidden>Révéler le bon pays</button><div id="passport-region-answer" class="bonus-answer" tabindex="-1" hidden></div><button id="passport-discover" class="primary" hidden>LA PETITE HISTOIRE <span>→</span></button><p class="passport-map-help">Cliquez sur un pays pour déplacer le drapeau. Utilisez le zoom pour les petits pays. Au clavier : Tab, puis Entrée ou Espace.</p><button class="text-button passport-back">Le carnet de route</button></aside></div>
+    </section>
+    <section id="passport-correction" class="screen compact passport-screen" hidden aria-labelledby="passport-correction-title">
+      <div class="scoreboard"></div><p id="passport-correction-progress" class="eyebrow"></p><h1 id="passport-correction-title" tabindex="-1"></h1><div id="passport-awards" class="delivery-awards"></div>
+      <div class="passport-cultural-media"><figure id="passport-photo" class="sauce-photo"></figure><figure class="passport-country-map"><img id="passport-country-map" alt=""><figcaption>Natural Earth · <a href="assets/maps/ATTRIBUTION.md" target="_blank" rel="noopener">Sources et domaine public</a></figcaption></figure></div><h2 id="passport-cultural-title"></h2><p id="passport-fact" class="intro"></p><p id="passport-correct-region" class="visually-hidden"></p>
+      <div class="result-actions"><button id="passport-next" class="primary">ÉNIGME SUIVANTE <span>→</span></button><button class="text-button passport-back">Le carnet de route</button></div>
+    </section>
+    <section id="passport-bonus" class="screen compact passport-screen" hidden aria-labelledby="passport-bonus-title">
+      <div class="scoreboard"></div><p class="eyebrow">BONUS FINAL / COLLECTIF / SANS POINTS</p><h1 id="passport-bonus-title" tabindex="-1"></h1><p id="passport-bonus-question" class="sauce-bonus-question"></p>
+      <div class="bonus-layout"><div class="bonus-discussion"><form id="passport-bonus-form"><fieldset><legend class="visually-hidden">Choisissez collectivement une proposition</legend><ol id="passport-bonus-options" class="bonus-options" type="A"></ol></fieldset><p id="passport-bonus-status" role="status"></p><button class="primary" id="passport-bonus-reveal" type="submit" disabled>RÉVÉLER LA RÉPONSE</button></form>
+      <div id="passport-bonus-answer" class="bonus-answer" hidden tabindex="-1"><h2 id="passport-bonus-solution"></h2><p id="passport-bonus-explanation"></p></div>
+      <div class="result-actions"><button id="passport-bonus-finish" class="primary" hidden>TERMINER LA MANCHE <span>→</span></button><button class="text-button passport-back">Le carnet de route</button></div></div>
+      <div><figure class="bonus-map"><img src="assets/maps/passport-strasbourg.svg" alt="Strasbourg repérée sur la carte de France."><figcaption>IGN / france-geojson et Natural Earth · <a href="assets/maps/ATTRIBUTION.md" target="_blank" rel="noopener">Sources et licence</a></figcaption></figure></div></div>
+    </section>
+    <section id="passport-end" class="screen compact passport-screen" hidden aria-labelledby="passport-end-title">
+      <div class="scoreboard"></div><p class="eyebrow">TROIS DESTINATIONS EUROPÉENNES</p><h1 id="passport-end-title" tabindex="-1">Passeport gourmand. <em>Manche terminée !</em></h1><div id="passport-totals" class="delivery-awards"></div>
+      <p class="intro">Une pause avec les métiers de la restauration rapide avant la prochaine escale !</p><div class="result-actions"><button id="passport-career" class="primary">PAUSE MÉTIER : RESTAURATION RAPIDE <span>→</span></button><button class="text-button passport-back">Le carnet de route</button></div>
+    </section>
+    <dialog id="passport-confirm" aria-labelledby="passport-confirm-title"><h2 id="passport-confirm-title">Confirmer la validation</h2><p id="passport-confirm-text"></p><div class="dialog-actions"><button class="secondary" id="passport-cancel">ANNULER</button><button class="primary" id="passport-confirm-answer">CONFIRMER</button></div></dialog>
+
     <section id="career-pause" class="screen compact career-screen" hidden aria-labelledby="career-title">
       <div class="scoreboard"></div>
       <div class="career-layout">

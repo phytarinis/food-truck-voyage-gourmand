@@ -212,32 +212,7 @@ function renderFranceLocation() {
     $('france-map-board').querySelector(`[data-region="${code}"]`).focus({ preventScroll: true });
   }
   function drawMap(regions, mainland) {
-    const svg = franceSvg('svg', { viewBox: mainland ? '0 0 660 560' : '0 0 180 120', role: 'group', 'aria-label': mainland ? 'Les 13 régions de France métropolitaine, Corse incluse' : regions[0].name });
-    const labels = [], flags = [];
-    for (const region of regions) {
-      const selected = !bothLocked && l.choices[l.activeTeam] === region.code;
-      const path = franceSvg('path', { d: region.path, 'data-region': region.code, role: 'button', tabindex: stamp ? '0' : '-1', 'aria-label': region.name, 'aria-pressed': String(selected), 'aria-disabled': String(!stamp), class: `france-region${selected ? ' is-selected' : ''}${l.revealed && puzzle.region === region.code ? ' is-correct' : ''}` });
-      const title = franceSvg('title'); title.textContent = region.name; path.append(title);
-      path.addEventListener('click', () => select(region.code));
-      path.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); select(region.code); } });
-      svg.append(path);
-      if (mainland) {
-        const offset = { '52': [-20, -8], '24': [8, 12], '28': [-10, -10] }[region.code] || [0, 0];
-        const labelX = region.center[0] + offset[0], labelY = region.center[1] + offset[1];
-        const text = franceSvg('text', { x: labelX, y: labelY - (region.labels.length - 1) * 11, class: 'france-region-label', 'text-anchor': 'middle', 'aria-hidden': 'true' });
-        region.labels.forEach((line, index) => { const span = franceSvg('tspan', { x: labelX, dy: index ? '22' : '0' }); span.textContent = line; text.append(span); }); labels.push(text);
-      }
-      l.choices.forEach((code, team) => {
-        // Le premier choix ne laisse ni drapeau, ni sélection, ni libellé pendant le tour sauge.
-        if (code !== region.code || (!bothLocked && team !== l.activeTeam)) return;
-        const shared = bothLocked && l.choices[0] === l.choices[1];
-        const x = region.center[0] + (shared ? team === 0 ? -40 : 8 : -14), y = region.center[1] - 52;
-        const flag = franceSvg('g', { transform: `translate(${x},${y}) scale(1.3)`, class: `france-flag team-${team}`, role: 'img', 'aria-label': `Drapeau ${team === 0 ? 'corail' : 'sauge'} : ${region.name}` });
-        flag.append(franceSvg('path', { d: 'M0 38V0M1 2H26L20 12L26 22H1', class: 'france-flag-shape' }));
-        const number = franceSvg('text', { x: '10', y: '17', 'aria-hidden': 'true' }); number.textContent = String(team + 1); flag.append(number); flags.push(flag);
-      });
-    }
-    svg.append(...labels, ...flags); return svg;
+    return FlagMap.render({ regions, mainland, location: l, correctCode: puzzle.region, canSelect: stamp, onSelect: select });
   }
   const mainland = document.createElement('div'); mainland.className = 'france-mainland';
   mainland.append(drawMap(FranceRegions.filter(r => r.mainland), true));
