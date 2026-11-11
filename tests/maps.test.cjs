@@ -28,3 +28,11 @@ test('localisation d’Arcachon : contours des 12 départements de Nouvelle-Aqui
  assert.equal(town.properties.code,'33009');assert.equal(town.properties.nom,'Arcachon');
  assert.match(svg,/repère communal/);assert.match(svg,/IGN \/ Admin Express COG 2018/);
 });
+
+test('bonus : trois anciennes régions exactes et codes historiques conservés',()=>{
+ const source=JSON.parse(read('anciennes-regions-nouvelle-aquitaine.geojson'));
+ assert.deepEqual(source.features.map(f=>[f.properties.code,f.properties.nom]).sort(),[['54','Poitou-Charentes'],['72','Aquitaine'],['74','Limousin']]);
+ const svg=read('bonus-nouvelle-aquitaine.svg');assert.deepEqual([...svg.matchAll(/data-region="([^"]+)"/g)].map(m=>m[1]).sort(),['54','72','74']);
+ for(const region of ['Aquitaine','Limousin','Poitou-Charentes'])assert.ok(svg.includes(region));
+ assert.match(svg,/Licence Ouverte/);
+});

@@ -1,5 +1,6 @@
 'use strict';
 let pendingSauceValidation = null;
+let pendingSauceClueToken = null;
 function openSauce() {
   SauceGame.start(game); game.routeCurrent = 1; renderSauce();
 }
@@ -9,6 +10,7 @@ function renderSauce() {
   if (s.phase === 'intro') { show('sauce-intro'); return; }
   if (s.phase === 'search') { renderSauceSearch(); show('sauce-search'); return; }
   if (s.phase === 'correction') { renderSauceCorrection(); show('sauce-correction'); return; }
+  if (s.phase === 'bonus') { renderSauceBonus(); show('sauce-bonus'); return; }
   $('sauce-totals').textContent = SauceGame.totals(game).map((total, team) => `${game.teams[team].name} : ${total} / 60 points sur cette manche`).join(' · ');
   show('sauce-end');
 }
@@ -21,18 +23,18 @@ function renderSauceSearch() {
     const title = document.createElement('h2'); title.textContent = game.teams[team].name; title.tabIndex = -1;
     const top = document.createElement('div'); top.className = 'sauce-panel-top';
     const status = document.createElement('span'); status.className = `sauce-status ${player.status}`;
-    status.textContent = { searching: 'En recherche', found: 'Trouvé !', exhausted: 'Aucun point' }[player.status]; top.append(title, status);
+    status.textContent = { searching: 'En recherche', waiting: 'En attente', found: 'Trouvé !', exhausted: 'Aucun point' }[player.status]; top.append(title, status);
     const info = document.createElement('div'); info.className = 'sauce-clue-info';
-    const index = document.createElement('span'); index.textContent = `INDICE ${player.clueIndex + 1} / 3`;
-    const value = document.createElement('strong'); value.textContent = player.status === 'searching' ? `${SauceGame.points[player.clueIndex]} points possibles` : `+${player.points} points`;
+    const index = document.createElement('span'); index.textContent = `INDICE ${s.clueIndex + 1} / 3`;
+    const value = document.createElement('strong'); value.textContent = player.status === 'searching' ? `${SauceGame.points[s.clueIndex]} points possibles` : player.status === 'waiting' ? 'Réponse enregistrée' : `+${player.points} points`;
     info.append(index, value);
-    const clue = document.createElement('p'); clue.className = 'sauce-current-clue'; clue.textContent = puzzle.clues[player.clueIndex];
+    const clue = document.createElement('p'); clue.className = 'sauce-current-clue'; clue.textContent = puzzle.clues[s.clueIndex];
     panel.append(top, info, clue);
-    if (player.clueIndex > 0) {
+    if (s.clueIndex > 0) {
       const history = document.createElement('div'); history.className = 'sauce-history';
       const label = document.createElement('h3'); label.textContent = 'Indices déjà révélés';
       const list = document.createElement('ol');
-      puzzle.clues.slice(0, player.clueIndex).forEach(text => { const item = document.createElement('li'); item.textContent = text; list.append(item); });
+      puzzle.clues.slice(0, s.clueIndex).forEach(text => { const item = document.createElement('li'); item.textContent = text; list.append(item); });
       history.append(label, list); panel.append(history);
     }
     const controls = document.createElement('div'); controls.className = 'sauce-controls';
@@ -50,18 +52,21 @@ function renderSauceSearch() {
     }
     controls.append(caption, row); panel.append(controls);
     if (player.status !== 'searching') {
-      const waiting = document.createElement('p'); waiting.className = 'sauce-waiting'; waiting.textContent = 'Recherche terminée. La réponse sera dévoilée quand les deux équipes auront terminé.'; panel.append(waiting);
+      const waiting = document.createElement('p'); waiting.className = 'sauce-waiting'; waiting.textContent = player.status === 'waiting' ? 'Réponse enregistrée. En attente de l’indice suivant.' : 'Recherche terminée. En attente de la fin des deux recherches.'; panel.append(waiting);
     }
     return panel;
   }));
+  pendingSauceClueToken = SauceGame.nextClueToken(game);
+  $('sauce-clue-gate').hidden = !pendingSauceClueToken;
 }
+
 function askSauceValidation(team, correct, stamp) {
   if (!stamp || SauceGame.token(game, team) !== stamp || $('sauce-confirm').open) return;
   const player = game.sauce.players[team];
   pendingSauceValidation = { team, correct, stamp };
   $('sauce-confirm-text').textContent = correct
-    ? `Attribuer ${SauceGame.points[player.clueIndex]} points à ${game.teams[team].name} et terminer sa recherche ? L’autre équipe garde sa progression.`
-    : `Valider une mauvaise réponse pour ${game.teams[team].name} ? ${player.clueIndex === 2 ? 'Sa recherche se terminera avec 0 point.' : `Cette équipe passera à l’indice ${player.clueIndex + 2}, pour ${SauceGame.points[player.clueIndex + 1]} points.`} L’autre équipe garde sa progression.`;
+    ? `Attribuer ${SauceGame.points[player.clueIndex]} points à ${game.teams[team].name} et terminer sa recherche ? La correction attend la fin des deux recherches.`
+    : `Valider une mauvaise réponse pour ${game.teams[team].name} ? ${player.clueIndex === 2 ? 'Sa recherche se terminera avec 0 point.' : 'Sa réponse sera enregistrée sans dévoiler le prochain indice. Le formateur pourra le révéler quand chaque équipe aura répondu ou aura déjà trouvé.'}`;
   $('sauce-confirm').showModal(); $('sauce-cancel').focus();
 }
 function renderSauceCorrection() {
@@ -80,7 +85,7 @@ function renderSauceCorrection() {
   $('sauce-correction-quote').textContent = puzzle.quote || '';
   $('sauce-map').hidden = puzzle.id !== 'huitres';
   renderSaucePhoto(puzzle);
-  $('sauce-next').textContent = s.puzzleIndex === 2 ? 'TERMINER LA MANCHE →' : 'ÉNIGME SUIVANTE →';
+  $('sauce-next').textContent = s.puzzleIndex === 2 ? 'LE BONUS GOURMAND →' : 'ÉNIGME SUIVANTE →';
 }
 function renderSaucePhoto(puzzle) {
   const photo = SaucePhotos[puzzle.id];
@@ -104,6 +109,39 @@ function renderSaucePhoto(puzzle) {
     figure.append(placeholder, caption);
   }
 }
+function renderSauceBonus() {
+  const state = game.sauce.bonus, data = SauceGame.bonus;
+  $('sauce-bonus-title').textContent = data.title;
+  $('sauce-bonus-question').textContent = data.question;
+  $('sauce-bonus-options').replaceChildren(...data.options.map((text, index) => {
+    const item = document.createElement('li');
+    const label = document.createElement('label');
+    const input = document.createElement('input'); input.type = 'radio'; input.name = 'sauce-bonus-choice'; input.value = String(index); input.required = true;
+    input.checked = state.selected === index; input.disabled = state.revealed;
+    const copy = document.createElement('span'); copy.textContent = text; label.append(input, copy); item.append(label);
+    if (state.revealed && index === data.correctIndex) item.classList.add('bonus-correct');
+    input.addEventListener('change', () => {
+      SauceGame.chooseBonus(game, index); $('sauce-bonus-reveal').disabled = false;
+      $('sauce-bonus-status').textContent = `Proposition ${String.fromCharCode(65 + index)} retenue collectivement.`;
+    });
+    return item;
+  }));
+  $('sauce-bonus-reveal').disabled = state.selected === null;
+  $('sauce-bonus-reveal').hidden = state.revealed;
+  $('sauce-bonus-status').hidden = state.revealed;
+  $('sauce-bonus-status').textContent = state.selected === null ? 'Le formateur sélectionne la proposition du groupe.' : `Proposition ${String.fromCharCode(65 + state.selected)} retenue collectivement.`;
+  $('sauce-bonus-answer').hidden = !state.revealed;
+  $('sauce-bonus-discovery').hidden = !state.revealed;
+  $('sauce-bonus-finish').hidden = !state.revealed;
+  $('sauce-bonus-solution').textContent = state.revealed ? 'A. ' + data.options[data.correctIndex] : '';
+  $('sauce-bonus-explanation').textContent = state.revealed ? data.explanation : '';
+  $('sauce-bonus-quote').textContent = state.revealed ? data.quote : '';
+}
+$('sauce-bonus-form').addEventListener('submit', event => {
+  event.preventDefault();
+  if (SauceGame.revealBonus(game)) { renderSauceBonus(); $('sauce-bonus-answer').focus(); }
+});
+$('sauce-bonus-finish').addEventListener('click', () => { if (SauceGame.finish(game)) renderSauce(); });
 $('sauce-begin').addEventListener('click', () => { SauceGame.begin(game); renderSauce(); });
 $('sauce-cancel').addEventListener('click', () => $('sauce-confirm').close());
 $('sauce-confirm').addEventListener('close', () => { pendingSauceValidation = null; });
@@ -112,8 +150,17 @@ $('sauce-confirm-answer').addEventListener('click', () => {
   if (!action || !game || !SauceGame.validate(game, action.team, action.correct, action.stamp)) return;
   const phase = game.sauce.phase; renderSauce();
   if (phase === 'search') {
-    $('sauce-live').textContent = `${game.teams[action.team].name} : ${action.correct ? 'recherche terminée' : 'progression mise à jour'}. L’autre équipe conserve ses indices.`;
+    $('sauce-live').textContent = `${game.teams[action.team].name} : ${action.correct ? 'recherche terminée' : 'réponse enregistrée'}. L’indice affiché reste commun aux deux équipes.`;
     $('sauce-panels').children[action.team].querySelector('h2').focus();
+  }
+});
+$('sauce-next-clue').addEventListener('click', () => {
+  const stamp = pendingSauceClueToken; pendingSauceClueToken = null;
+  if (game && SauceGame.revealNextClue(game, stamp)) {
+    renderSauce();
+    $('sauce-live').textContent = `L’indice ${game.sauce.clueIndex + 1} est maintenant visible pour les deux équipes.`;
+    const active = game.sauce.players.findIndex(player => player.status === 'searching');
+    if (active >= 0) $('sauce-panels').children[active].querySelector('h2').focus();
   }
 });
 $('sauce-next').addEventListener('click', () => { if (SauceGame.next(game)) renderSauce(); });
