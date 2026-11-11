@@ -589,3 +589,9 @@ body:not(.welcome-mode) h1 em{background:linear-gradient(transparent 85%,#e9b44b
 @media(min-width:801px){#passport-location,#passport-correction{padding-top:18px;padding-bottom:20px}#passport-location .scoreboard,#passport-correction .scoreboard{margin-bottom:10px}#passport-correction>.eyebrow{margin-top:14px}}
 @media(min-width:801px) and (max-width:1499px){#passport-europe-svg{height:360px}}
 @media(max-width:600px){.passport-cultural-media{grid-template-columns:1fr}.passport-cultural-media .passport-country-map img{height:220px}}
+/* Photos de la manche 5 : fichiers entiers, notamment la signature de Bran. */
+.passport-cultural-media .sauce-photo>img{height:180px;object-fit:contain}
+#passport-bonus-photo{margin-top:14px}
+#passport-bonus-photo>img{height:220px;object-fit:contain}
+#passport-bonus.passport-bonus-with-photo .bonus-map img{max-height:145px}
+@media(max-width:600px){.passport-cultural-media .sauce-photo>img{height:240px}}

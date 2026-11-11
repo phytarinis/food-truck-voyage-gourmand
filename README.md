@@ -217,15 +217,18 @@ La Roumanie est explicitement associée au **personnage fictif** de Dracula, san
 
 Le bonus Strasbourg attend une sélection puis une révélation ; A, le Parlement européen, est la bonne réponse. La correction rappelle que Strasbourg est son siège officiel et situe la ville sur une carte sourcée, sans photographie. Aucun point ni joker ne change pendant ce bonus.
 
-### Photographies à compléter
+### Quatre photographies intégrées
 
-Les corrections ont leurs trois emplacements dédiés : frites belges, pastéis de nata et château de Bran. Aucun visuel photographique ou généré n’est ajouté automatiquement, aucun crédit inventé. Les fichiers déjà présents dans le dépôt sont conservés intacts et ne sont pas encore affichés dans cette manche :
+`passport-photos.js` configure les quatre fichiers locaux, leurs crédits fournis, sources Wikimedia et liens de licence :
 
-- `assets/Un_cornet_de_frites_(Grand-Place,_Bruxelles).jpg`
-- `assets/Pasteis_de_Nata_001.jpg`
-- `assets/Bran_castle.jpeg`
+- `assets/Un_cornet_de_frites_(Grand-Place,_Bruxelles).jpg` — Benoît Prieur — CC0 1.0.
+- `assets/Pasteis_de_Nata_001.jpg` — Ocdp — CC0 1.0.
+- `assets/Bran_castle.jpeg` — Nicu hoandra — CC BY-SA 4.0.
+- `assets/December_2007,_flags_in_front_of_Louise_Weiss_building_2.jpg` — Syced — CC0 1.0.
 
-L’intégration de photographies attend la validation et les références de droits fournies ultérieurement. Les auteurs/licences des cartes, distinctes des photos, sont déjà crédités.
+Chaque photo est affichée entière dans sa correction, sans étirement, retouche ou recadrage ; la signature de Bran est conservée. Les crédits et liens sont accessibles sous les photos, avec un lien d’agrandissement, ainsi que dans « Crédits photos ». La photo du Parlement n’est ni insérée dans le DOM, ni demandée au réseau, ni divulguée par les crédits avant la révélation du bonus. Les crédits des pays apparaissent après leur correction uniquement.
+
+La fiche Commons de Bran renvoie 403 : la graphie « Nicu hoandra » est reprise de la référence fournie, sans confirmation indépendante. Aucune licence n’est changée et aucun fichier original n’est modifié. Sources, limites de vérification et obligations en cas d’adaptation future : `assets/photos/PASSPORT.md`.
 
 ### Fichiers et vérifications
 
@@ -233,4 +236,4 @@ Nouveaux : `passport.js`, `passport-ui.js`, `europe-map.js`, `clue-flags.js`, `f
 
 `node --test tests/*.test.cjs` vérifie les 16 combinaisons d’issues pour chacun des trois pays, dans les deux ordres de validation, les indices synchronisés, la poursuite en solo, les jetons périmés et non interchangeables entre manches, les localisations, les +5 uniques, le maximum de 75, le bonus sans points et les données géographiques.
 
-`PASSPORT_TEST_URL=http://127.0.0.1:8007 node tests/passport.browser.cjs` teste le parcours complet et de vrais clics sur les pays, le zoom de Belgique, l’anonymat avant correction, le masquage complet et la remise à zéro du cadrage, les drapeaux côte à côte, les capitales, les emplacements photo, les scores, le clavier, l’audio facultatif, le bonus, le bilan, la pause restauration rapide et le reset. Les tests Chromium utilisent 1920×1080, 1366×768, 1024×768, 390×844 et 320×640, sans débordement horizontal. Les suites navigateur des manches 1 à 4, de la démonstration et des cinq pauses métiers vérifient les régressions. Chromebook et projection sont simulés par les dimensions ; aucun appareil physique n’est utilisé.
+`PASSPORT_TEST_URL=http://127.0.0.1:8007 node tests/passport.browser.cjs` teste le parcours complet et de vrais clics sur les pays, le zoom de Belgique, l’anonymat avant correction, le masquage complet et la remise à zéro du cadrage, les drapeaux côte à côte, les capitales, les quatre photos et leurs crédits, l’absence d’image/requête/crédit du Parlement avant révélation, les scores, le clavier, l’audio facultatif, le bonus, le bilan, la pause restauration rapide et le reset. Les tests Chromium utilisent 1920×1080, 1366×768, 1024×768, 390×844 et 320×640, sans débordement horizontal. Les suites navigateur des manches 1 à 4, de la démonstration et des cinq pauses métiers vérifient les régressions. Chromebook et projection sont simulés par les dimensions ; aucun appareil physique n’est utilisé.

@@ -28,6 +28,7 @@
   <script defer src="gps-ui.js"></script>
   <script defer src="europe-map.js"></script>
   <script defer src="passport.js"></script>
+  <script defer src="passport-photos.js"></script>
   <script defer src="passport-ui.js"></script>
 </head>
 <body class="welcome-mode">
@@ -285,7 +286,7 @@
       <div class="bonus-layout"><div class="bonus-discussion"><form id="passport-bonus-form"><fieldset><legend class="visually-hidden">Choisissez collectivement une proposition</legend><ol id="passport-bonus-options" class="bonus-options" type="A"></ol></fieldset><p id="passport-bonus-status" role="status"></p><button class="primary" id="passport-bonus-reveal" type="submit" disabled>RÉVÉLER LA RÉPONSE</button></form>
       <div id="passport-bonus-answer" class="bonus-answer" hidden tabindex="-1"><h2 id="passport-bonus-solution"></h2><p id="passport-bonus-explanation"></p></div>
       <div class="result-actions"><button id="passport-bonus-finish" class="primary" hidden>TERMINER LA MANCHE <span>→</span></button><button class="text-button passport-back">Le carnet de route</button></div></div>
-      <div><figure class="bonus-map"><img src="assets/maps/passport-strasbourg.svg" alt="Strasbourg repérée sur la carte de France."><figcaption>IGN / france-geojson et Natural Earth · <a href="assets/maps/ATTRIBUTION.md" target="_blank" rel="noopener">Sources et licence</a></figcaption></figure></div></div>
+      <div><figure class="bonus-map"><img src="assets/maps/passport-strasbourg.svg" alt="Strasbourg repérée sur la carte de France."><figcaption>IGN / france-geojson et Natural Earth · <a href="assets/maps/ATTRIBUTION.md" target="_blank" rel="noopener">Sources et licence</a></figcaption></figure><figure id="passport-bonus-photo" class="sauce-photo" hidden></figure></div></div>
     </section>
     <section id="passport-end" class="screen compact passport-screen" hidden aria-labelledby="passport-end-title">
       <div class="scoreboard"></div><p class="eyebrow">TROIS DESTINATIONS EUROPÉENNES</p><h1 id="passport-end-title" tabindex="-1">Passeport gourmand. <em>Manche terminée !</em></h1><div id="passport-totals" class="delivery-awards"></div>
@@ -327,7 +328,7 @@
     </section>
   </main>
   <footer><span>LABO ÉPICÉ × E2C COUTRAS</span><span>LE SAVOIR A DU GOÛT.</span><button id="photo-credits-open" class="footer-credits" type="button">Crédits photos</button><span>VERSION DÉCOUVERTE · 01</span></footer>
-  <dialog id="photo-credits-dialog" aria-labelledby="photo-credits-title"><h2 id="photo-credits-title">Crédits photos</h2><p>Photographies des spécialités déjà découvertes.</p><div id="photo-credits-content"></div><button class="secondary" id="photo-credits-close" type="button">Fermer</button></dialog>
+  <dialog id="photo-credits-dialog" aria-labelledby="photo-credits-title"><h2 id="photo-credits-title">Crédits photos</h2><p>Photographies des découvertes et bonus déjà révélés.</p><div id="photo-credits-content"></div><button class="secondary" id="photo-credits-close" type="button">Fermer</button></dialog>
   <dialog id="sauce-confirm" aria-labelledby="sauce-confirm-title"><h2 id="sauce-confirm-title">Confirmer cette validation ?</h2><p id="sauce-confirm-text"></p><div><button type="button" class="secondary" id="sauce-cancel">Annuler</button><button type="button" class="primary" id="sauce-confirm-answer">Confirmer</button></div></dialog>
   <dialog id="reset-dialog" aria-labelledby="reset-title"><h2 id="reset-title">On repart de zéro ?</h2><p>Les noms, les scores et la progression seront effacés.</p><div><button class="secondary" id="cancel-reset">Continuer le voyage</button><button class="primary" id="confirm-reset">Réinitialiser</button></div></dialog>
 </body>

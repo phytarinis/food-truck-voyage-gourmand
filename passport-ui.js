@@ -108,11 +108,7 @@ function renderPassportCorrection() {
   $('passport-cultural-title').textContent = puzzle.heading;
   $('passport-fact').textContent = puzzle.fact;
   $('passport-correct-region').textContent = `Pays : ${passportRegionName(puzzle.region)}`;
-  const placeholder = document.createElement('div'); placeholder.className = 'sauce-photo-placeholder';
-  const frame = document.createElement('span'); frame.className = 'photo-frame'; frame.setAttribute('aria-hidden','true');
-  const text = document.createElement('span'); text.textContent = puzzle.photo; placeholder.append(frame,text);
-  const caption = document.createElement('figcaption'); caption.textContent = puzzle.answer;
-  $('passport-photo').replaceChildren(placeholder,caption);
+  renderPassportPhoto($('passport-photo'), PassportPhotos[puzzle.id]);
   $('passport-country-map').src = `assets/maps/passport-${puzzle.region.toLowerCase()}.svg`;
   $('passport-country-map').alt = `${puzzle.answer} et sa capitale, ${puzzle.capital}`;
   $('passport-photo').dataset.specialty = puzzle.id;
@@ -145,6 +141,10 @@ function renderPassportBonus() {
   $('passport-bonus-finish').hidden = !state.revealed;
   $('passport-bonus-solution').textContent = state.revealed ? 'A. ' + data.options[data.correctIndex] : '';
   $('passport-bonus-explanation').textContent = state.revealed ? data.explanation : '';
+  $('passport-bonus-photo').hidden = !state.revealed;
+  $('passport-bonus').classList.toggle('passport-bonus-with-photo', state.revealed);
+  if (state.revealed) renderPassportPhoto($('passport-bonus-photo'), PassportPhotos.strasbourg);
+  else $('passport-bonus-photo').replaceChildren();
 }
 $('passport-bonus-form').addEventListener('submit', event => {
   event.preventDefault();
@@ -245,3 +245,24 @@ $('passport-sound').addEventListener('click',async()=>{
  }catch{ $('passport-sound-status').textContent='Son indisponible. Le jeu continue sans audio.'; }
  finally{setTimeout(()=>{$('passport-sound').disabled=false},1000);}
 });
+
+function appendPassportPhotoCredit(container, photo) {
+  container.append(photo.credit + ' · ');
+  for (const [url,label] of [[photo.source,'Source Wikimedia Commons'],[photo.licenseUrl,photo.license]]) {
+    const link=document.createElement('a');link.href=url;link.textContent=label;link.target='_blank';link.rel='noopener';container.append(link,' · ');
+  }
+  container.append('Image affichée entière, sans retouche ni recadrage par le jeu.');
+}
+function renderPassportPhoto(figure, photo) {
+  const image=document.createElement('img');image.src=photo.src;image.alt=photo.alt;
+  const caption=document.createElement('figcaption');appendPassportPhotoCredit(caption,photo);
+  const full=document.createElement('a');full.href=photo.src;full.textContent='Agrandir la photographie';full.target='_blank';full.rel='noopener';caption.append(' · ',full);
+  figure.replaceChildren(image,caption);
+}
+function appendPassportPhotoCredits(container) {
+  const s=game?.passport;if(!s)return;
+  const entries=PassportGame.puzzles.filter((_,index)=>index<s.puzzleIndex||(index===s.puzzleIndex&&['correction','bonus','complete'].includes(s.phase))).map(p=>[p.answer,PassportPhotos[p.id]]);
+  // Ne pas divulguer la solution du bonus via ses crédits avant révélation.
+  if(s.bonus.revealed)entries.push(['Bonus Strasbourg',PassportPhotos.strasbourg]);
+  for(const[label,photo]of entries){const article=document.createElement('article'),title=document.createElement('h3'),credit=document.createElement('p');title.textContent=`Manche 5 — ${label}`;appendPassportPhotoCredit(credit,photo);article.append(title,credit);container.append(article);}
+}
