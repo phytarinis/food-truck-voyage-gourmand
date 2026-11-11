@@ -71,10 +71,13 @@ function renderDeliveryCorrection() {
 function renderCulturePhotos(department) {
   $('department-illustrations').replaceChildren(...CulturePhotos[department].map(photo => {
     const figure = document.createElement('figure'); figure.className = 'culture-photo';
-    const hasPhoto = photo.src && photo.credit && photo.source && photo.license;
+    const hasPhoto = Boolean(photo.src);
     if (hasPhoto) {
       const image = document.createElement('img'); image.src = photo.src; image.alt = photo.alt;
-      figure.append(image);
+      const link = document.createElement('a'); link.className = 'culture-photo-link';
+      link.href = photo.src; link.target = '_blank'; link.rel = 'noopener';
+      link.setAttribute('aria-label', `Agrandir : ${photo.caption} (nouvel onglet)`);
+      link.append(image); figure.append(link);
     } else {
       const placeholder = document.createElement('div'); placeholder.className = 'culture-photo-placeholder';
       const icon = document.createElement('span'); icon.className = 'photo-frame'; icon.setAttribute('aria-hidden', 'true');
@@ -84,9 +87,24 @@ function renderCulturePhotos(department) {
     const caption = document.createElement('figcaption');
     const title = document.createElement('strong'); title.textContent = photo.caption; caption.append(title);
     if (hasPhoto) {
-      const credit = document.createElement('small'); credit.textContent = `${photo.credit} · ${photo.license} · `;
-      const link = document.createElement('a'); link.href = photo.source; link.textContent = 'Source'; link.target = '_blank'; link.rel = 'noopener';
-      credit.append(link); caption.append(credit);
+      const credit = document.createElement('small');
+      const addLink = (url, text) => {
+        const link = document.createElement('a'); link.href = url; link.textContent = text;
+        link.target = '_blank'; link.rel = 'noopener'; return link;
+      };
+      if (photo.credit) credit.append(`${photo.verification === 'verified' ? '' : 'Référence fournie : '}${photo.credit}`);
+      if (photo.license) {
+        credit.append(' · ');
+        credit.append(photo.licenseUrl ? addLink(photo.licenseUrl, photo.license) : photo.license);
+      }
+      if (photo.source) credit.append(' · ', addLink(photo.source, 'Source'));
+      if (!photo.credit) credit.textContent = 'Crédit et licence à vérifier';
+      if (photo.verification !== 'verified' && photo.credit) {
+        const status = document.createElement('span'); status.className = 'photo-credit-status';
+        status.textContent = 'Correspondance et licence non vérifiées';
+        credit.append(status);
+      }
+      caption.append(credit);
     }
     figure.append(caption); return figure;
   }));
