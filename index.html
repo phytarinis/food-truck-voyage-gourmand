@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5efdf">
+  <title>Food Truck — Le grand voyage gourmand</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="game.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Food Truck, accueil">FT<span>★</span><small>LE GRAND VOYAGE GOURMAND</small></a>
+    <div class="partners" aria-label="Emplacements provisoires des logos"><span>LABO <b>ÉPICÉ</b><small>EMPLACEMENT LOGO</small></span><i>×</i><span class="e2c">E2C <small>COUTRAS · EMPLACEMENT LOGO</small></span></div>
+    <button class="text-button" id="reset" hidden>↺ Réinitialiser</button>
+  </header>
+
+  <main>
+    <section id="welcome" class="screen welcome" aria-labelledby="welcome-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="dot"></span> DEUX ÉQUIPES. UN FOOD TRUCK. LE MONDE À GOÛTER.</p>
+        <h1 id="welcome-title">Le grand<br>voyage <em>gourmand.</em></h1>
+        <p class="intro">On prend la route ?<br>Des spécialités à deviner, des coins du monde à découvrir… et quelques détours au menu.</p>
+        <button class="primary" id="onward">EN ROUTE ! <span>→</span></button>
+        <p class="tiny">Un voyage à partager · Animé par votre formateur</p>
+      </div>
+      <div class="hero-art"><span class="art-label">LA CURIOSITÉ, ÇA OUVRE L’APPÉTIT.</span><img src="assets/road-trip.svg" alt="Un food truck rouge vintage et un jeune compagnon en tablier bleu nuit, prêts à prendre la route."><span class="postmark">FRANCE<br>EUROPE<br><b>LE MONDE !</b></span></div>
+      <div class="hero-bottom"><span>01 — ON EMBARQUE</span><span>GÉOGRAPHIE + GASTRONOMIE + UN PEU D’AUDACE</span><span>06 ESCALES</span></div>
+    </section>
+
+    <section id="setup" class="screen compact" hidden aria-labelledby="setup-title">
+      <p class="eyebrow">AVANT DE TOURNER LA CLÉ</p>
+      <h1 id="setup-title" tabindex="-1">Qui monte <em>à bord ?</em></h1>
+      <p class="intro">Deux équipes, deux noms. Le formateur tient le volant,<br>vous vous concertez et répondez à voix haute.</p>
+      <form id="team-form">
+        <div class="team-fields"><label><span>01 / ÉQUIPE CORAIL</span><input id="team-one" name="teamOne" maxlength="32" placeholder="Le nom de votre équipe" required autocomplete="off"><small>0 point · 2 jokers en réserve</small></label><label><span>02 / ÉQUIPE SAUGE</span><input id="team-two" name="teamTwo" maxlength="32" placeholder="Le nom de votre équipe" required autocomplete="off"><small>0 point · 2 jokers en réserve</small></label></div>
+        <button class="primary" type="submit">C’EST PARTI ! <span>→</span></button>
+      </form>
+    </section>
+
+    <section id="journey" class="screen compact" hidden aria-labelledby="journey-title">
+      <div id="journey-scores" class="scoreboard"></div>
+      <p class="eyebrow">LE CARNET DE ROUTE</p>
+      <h1 id="journey-title" tabindex="-1">Six manches.<br><em>Un grand voyage.</em></h1>
+      <p class="intro">Voici l’itinéraire. Pour cette première escale, testez notre énigme de démonstration.</p>
+      <div id="rounds" class="round-grid"></div>
+      <div class="demo-launch"><div><span class="eyebrow">UNE ESCALE POUR ESSAYER</span><p>Un pays, une spécialité… à vous de jouer !</p></div><button class="primary" id="play">LANCER LA DÉMO <span>→</span></button></div>
+      <p class="tiny">Les jokers et les cartes interactives seront ajoutés plus tard.</p>
+    </section>
+
+    <section id="challenge" class="screen compact challenge" hidden aria-labelledby="challenge-title">
+      <div id="challenge-scores" class="scoreboard"></div>
+      <div class="challenge-heading"><div><p class="eyebrow">ESCALE DÉMO / SPÉCIALITÉ MYSTÈRE</p><h1 id="challenge-title" tabindex="-1">Ça vous dit <em>quelque chose ?</em></h1></div><span class="ticket" id="points"></span></div>
+      <div class="clue-card"><div class="clue-top"><span id="clue-number"></span><span id="clue-progress" aria-hidden="true"></span></div><p id="clue" aria-live="polite"></p><span class="clue-note">CONCERTEZ-VOUS ET RÉPONDEZ À VOIX HAUTE.</span></div>
+      <div class="turn-panel"><div><p class="eyebrow">AU TOUR DE</p><h2 id="active-team"></h2><p id="attempt-status"></p></div><div class="validation"><span>LE FORMATEUR VALIDE LA RÉPONSE</span><div><button id="wrong" class="secondary">✕ Mauvaise réponse</button><button id="correct" class="primary">✓ Bonne réponse</button></div></div></div>
+      <p id="feedback" class="feedback" role="status"></p>
+    </section>
+
+    <section id="result" class="screen compact" hidden aria-labelledby="result-title">
+      <div id="result-scores" class="scoreboard"></div>
+      <p class="eyebrow">LE MYSTÈRE EST DANS LE CORNET</p>
+      <h1 id="result-title" tabindex="-1">C’étaient <em>les frites !</em></h1>
+      <p id="outcome" class="outcome" role="status"></p>
+      <div class="correction"><span class="flag" aria-label="Drapeau belge">🇧🇪</span><div><h2>Petite escale en Belgique</h2><p>La Belgique est un pays d’Europe voisin de la France. Sa capitale, <strong>Bruxelles</strong>, accueille plusieurs grandes institutions de l’Union européenne. Les frites y sont une spécialité emblématique, souvent servie en cornet avec de la sauce.</p></div></div>
+      <div class="result-actions"><button class="primary" id="back-to-journey">LE CARNET DE ROUTE <span>→</span></button><button class="text-button" id="replay">Rejouer la démonstration ↻</button></div>
+      <p class="tiny">Rejouer conserve les scores et alterne l’équipe qui commence.</p>
+    </section>
+  </main>
+  <footer><span>LABO ÉPICÉ × E2C COUTRAS</span><span>LE SAVOIR A DU GOÛT.</span><span>VERSION DÉCOUVERTE · 01</span></footer>
+  <dialog id="reset-dialog" aria-labelledby="reset-title"><h2 id="reset-title">On repart de zéro ?</h2><p>Les noms, les scores et la progression seront effacés.</p><div><button class="secondary" id="cancel-reset">Continuer le voyage</button><button class="primary" id="confirm-reset">Réinitialiser</button></div></dialog>
+</body>
+</html>
