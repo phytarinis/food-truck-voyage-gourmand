@@ -159,3 +159,38 @@ Crédits fournis par l’utilisateur : Brücke-Osteuropa / CC0 1.0 (choucroute),
 `node --test tests/*.test.cjs` couvre notamment les 16 combinaisons de réussites/échecs des deux équipes, pour les trois énigmes et dans les deux ordres de validation, les indices verrouillés, les jetons périmés, les drapeaux, le +5 unique, le bonus sans points et le cumul réel des trois manches.
 
 `FRANCE_TEST_URL=http://127.0.0.1:8007 node tests/france.browser.cjs` teste le parcours complet, les clics réels dans les 18 régions, le masquage corail jusque dans les sélections accessibles, les drapeaux côte à côte, la sélection au clavier, les scores, la reprise, le bonus, la pause Réceptionniste et le reset. Le rendu est vérifié en Chromium à 1920×1080, 1366×768, 1024×768, 390×844 et 320×640, sans débordement horizontal. Les parcours navigateur des manches 1, 2 et des cinq pauses métiers sont également vérifiés. Ces dimensions simulent Chromebook et projection ; aucun appareil physique n’est utilisé.
+
+## Manche 4 — Le GPS a perdu la boule !
+
+Branche issue de `main` après fusion de la manche 3 (PR n° 10). Depuis la quatrième escale : introduction → Pyrénées → comparaison et correction → fleuves → comparaison et correction → Alpes → comparaison et correction → bonus fleuve/rivière → bilan → pause métier n° 4 Entretien hôtelier → carnet. La manche 5 reste non jouable.
+
+### Placements et scores
+
+Les deux équipes jouent successivement : corail déplace et valide ; sa proposition disparaît entièrement pendant le tour sauge ; les deux placements réapparaissent après validation sauge. Le formateur déclenche ensuite la correction. Les points ne sont attribués qu’à cette révélation, une seule fois. Les choix sont modifiables avant validation et verrouillés ensuite. Retourner au carnet conserve les réponses, leur confidentialité, la phase et les chronomètres.
+
+- Pyrénées : chaîne stylisée corail/sauge déplaçable horizontalement et verticalement, sans rotation. 15 points si le point de placement est dans la zone de tolérance, sinon 0.
+- Fleuves : trois étiquettes GARONNE/SEINE/RHIN à glisser sur les tracés ou leurs grands repères anonymes A/B/C. Une étiquette sur une zone occupée échange les positions ; aucune zone n’accueille deux étiquettes de la même équipe. Les **trois placements sont obligatoires**, selon la clarification de l’utilisateur. Le barème est 5 points par bonne association ; avec trois étiquettes exclusives et toutes placées, les gains possibles sont mathématiquement **0, 5 ou 15**, pas 10. Les deux séries de réponses restent visibles et décalées à la correction.
+- Alpes : miniature du food truck rouge d’origine, encadrée dans la couleur de l’équipe ; aucune nouvelle illustration de véhicule. 15 points pour une localisation correcte des Alpes françaises, sinon 0. Deux camions proches sont décalés visuellement, avec des traits vers leurs positions réelles ; la note utilise toujours les positions enregistrées, jamais les positions d’affichage.
+
+Maximum : 45 points par équipe. Le bonus collectif B (un fleuve se jette dans la mer ou l’océan, une rivière dans un autre cours d’eau) ne modifie ni scores ni jokers. Le bilan détaille les trois défis et le score cumulé. La réinitialisation et le rechargement effacent la partie, comme auparavant.
+
+### Chronomètres et accessibilité
+
+45 secondes pour les fleuves, 30 pour les Alpes. Le formateur lance le chronomètre corail ; un nouveau compte à rebours complet commence au passage à sauge. L’expiration affiche zéro et une invitation à terminer : elle ne valide rien, ne bloque aucun placement et n’affecte pas les points. Le temps est calculé depuis une échéance de `performance.now()` ; les rafraîchissements n’allongent pas le délai. Une reprise depuis le carnet conserve le temps écoulé.
+
+Les interactions utilisent les événements de pointeur (souris, pavé tactile, tactile). Les objets possèdent de grandes zones de saisie et ne tournent jamais. Alternatives : clic sur la carte pour positionner un pion ; flèches au clavier sur le pion (Maj pour un pas plus grand) ; sélection d’une étiquette puis clic, Entrée ou Espace sur un repère. L’aide est consultable dans un volet. Les boutons de validation/révélation et le chronomètre apparaissent en haut du panneau pour rester faciles d’accès en projection.
+
+### Fichiers et données
+
+- `gps.js` : moteur, réponses propres à chaque équipe, verrous, temps, scoring, bonus et bilan.
+- `gps-ui.js` : écrans, glisser-déposer, alternatives clavier, affichage confidentiel et corrections.
+- `gps-geography.js`, `assets/maps/gps-source.geojson`, `tools/generate-gps-geography.py` : vrais tracés Natural Earth (domaine public), massifs et zones de tolérance reproductibles de 25 km ; contours français IGN réutilisés. Sources, méthode et limites pédagogiques dans `assets/maps/ATTRIBUTION.md`.
+- `index.html`, `styles.css`, `app.js` : intégration de la quatrième escale et composants visuels limités à cette manche. Accueil, logos, photos, camion, personnage et moteurs des manches précédentes conservés.
+
+Le générateur est réservé au développement : installer `shapely==2.1.2` puis lancer `python3 tools/generate-gps-geography.py`. Les données nécessaires sont locales et le jeu fonctionne hors ligne sans installation.
+
+### Tests
+
+`node --test tests/*.test.cjs` couvre les localisations bonnes/fausses, les 36 combinaisons de réponses aux fleuves, les échanges exclusifs, les validations anticipées/répétées/périmées, les deux chronomètres et leur expiration sans blocage, le bonus sans points, la reprise, le cumul et la conservation des manches précédentes. Un contrôle géographique vérifie expressément que le Rhin contient le segment frontalier amont et pas seulement sa partie aval.
+
+`GPS_TEST_URL=http://127.0.0.1:8007 node tests/gps.browser.cjs` teste le parcours complet : véritables glisser-déposer à la souris dans les deux axes, dépôt sur un tracé hors de son repère, trois étiquettes obligatoires, échanges, confidentialité, six réponses simultanées, placements proches sans chevauchement visible, clavier, chronomètres 45/30 secondes avec horloge contrôlée, scores, correction explicite, bonus, bilan, entretien hôtelier et reset. Tests à 1920×1080, 1366×768, 1024×768, 390×844 et 320×640, sans débordement horizontal. Les suites navigateur des manches 1, 2, 3, de la démonstration et des cinq pauses métiers vérifient les régressions. Chromebook et projection sont simulés par ces dimensions dans Chromium, sans appareil physique.
