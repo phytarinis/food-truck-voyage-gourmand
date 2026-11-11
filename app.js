@@ -12,7 +12,8 @@ function show(id) {
     if (game.sauce?.phase === 'complete') completed.push(1);
     if (game.france?.phase === 'complete') completed.push(2);
     if (game.gps?.phase === 'complete') completed.push(3);
-    const current = game.routeCurrent ?? (game.gps ? 3 : game.france ? 2 : game.sauce ? 1 : game.apero ? 0 : null);
+    if (game.passport?.phase === 'complete') completed.push(4);
+    const current = game.routeCurrent ?? (game.passport ? 4 : game.gps ? 3 : game.france ? 2 : game.sauce ? 1 : game.apero ? 0 : null);
     renderRoute({ current, completed });
   }
   const heading = $(id).querySelector('h1');
@@ -88,7 +89,7 @@ $('team-form').addEventListener('submit', event => {
 });
 $('rules-next').addEventListener('click', () => show('journey'));
 [$('team-one'), $('team-two')].forEach(input => input.addEventListener('input', () => input.setCustomValidity('')));
-// Les quatre premières manches font progresser l’itinéraire ; la démo reste indépendante.
+// Les cinq premières manches font progresser l’itinéraire ; la démo reste indépendante.
 function renderRoute({ current = null, completed = [] } = {}) {
   $('rounds').replaceChildren();
   rounds.forEach((title, index) => {
@@ -98,12 +99,12 @@ function renderRoute({ current = null, completed = [] } = {}) {
     if (state === 'active') card.setAttribute('aria-current', 'step');
     const number = document.createElement('span'); number.className = 'stop-number'; number.textContent = `0${index + 1}`;
     const name = document.createElement('h2');
-    if (index <= 3) {
+    if (index <= 4) {
       const open = document.createElement('button');
       open.type = 'button'; open.className = 'route-round-open'; open.textContent = title;
-      const progress = index === 0 ? game?.apero : index === 1 ? game?.sauce : index === 2 ? game?.france : game?.gps;
+      const progress = index === 0 ? game?.apero : index === 1 ? game?.sauce : index === 2 ? game?.france : index === 3 ? game?.gps : game?.passport;
       open.setAttribute('aria-label', `${title} : ${progress?.phase === 'complete' ? 'voir le bilan' : progress ? 'reprendre la manche' : 'jouer la manche'}`);
-      open.addEventListener('click', () => { game.routeCurrent = index; if (index === 0) openApero(); else if (index === 1) openSauce(); else if (index === 2) openFrance(); else openGps(); }); name.append(open);
+      open.addEventListener('click', () => { game.routeCurrent = index; if (index === 0) openApero(); else if (index === 1) openSauce(); else if (index === 2) openFrance(); else if (index === 3) openGps(); else openPassport(); }); name.append(open);
     } else name.textContent = title;
     const status = document.createElement('small'); status.textContent = { pending: 'À venir', active: 'En cours', complete: 'Terminée' }[state];
     card.append(number, name, status); $('rounds').append(card);

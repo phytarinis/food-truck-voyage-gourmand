@@ -48,3 +48,19 @@ La zone de correction des Pyrénées provient de `PYRENEES`, sur les deux versan
 La tolérance de validation ajoute **25 km autour de ces surfaces**. Ce tampon pédagogique est calculé dans un plan équirectangulaire en kilomètres à latitude de référence 46° (`x = longitude × 111,32 × cos(46°)`, `y = latitude × 111,32`). Il est reproductible et reste limité au territoire français pour les Alpes. Il ne prétend pas mesurer une distance géodésique au kilomètre près. `gps.js` teste le point déposé dans les polygones de tolérance, trous exclus ; les décalages visuels des pions n’interviennent jamais dans le calcul.
 
 Les points de Toulouse, Bordeaux, Paris, Rouen, Strasbourg et du Mont-Blanc sont des repères pédagogiques arrondis, visibles à la correction uniquement. Aucun repère urbain n’est utilisé pour noter les réponses.
+
+## Manche 5 : Passeport gourmand — Europe et capitales
+
+`europe-countries.geojson` provient de [Natural Earth Vector, ne_10m_admin_0_countries.geojson](https://github.com/nvkelso/natural-earth-vector/blob/master/geojson/ne_10m_admin_0_countries.geojson), téléchargé le 11 novembre 2026. Les 47 entités européennes utilisées sont conservées avec leurs noms français et identifiants Natural Earth (`ADM0_A3` enregistré sous `code`, `NAME_FR` sous `nom`, `NE_ID`). La Turquie et Chypre sont incluses ; les dépendances périphériques ne font pas partie de la sélection. Les données Natural Earth sont dans le **domaine public** ([conditions d’utilisation](https://www.naturalearthdata.com/about/terms-of-use/)). Le fond reprend leur représentation cartographique de référence, y compris les espaces au statut disputé ; ce support pédagogique ne prétend pas trancher ces statuts.
+
+La géométrie est découpée automatiquement dans une fenêtre −25° à 45° de longitude, 34° à 72° de latitude : la Russie et certains territoires périphériques sont donc partiellement hors cadre. Les lignes de découpage aux bords du fond ne sont pas des frontières nationales. Les îles et territoires hors de cette fenêtre ne sont pas dessinés. Aucune frontière entre les destinations demandées et leurs voisins n’est inventée. Natural Earth 1:10 millions est un fond généralisé ; la précision d’affichage n’est pas celle d’un plan cadastral.
+
+`passport-cities.geojson` conserve les quatre points `Brussels`, `Lisbon`, `Bucharest` et `Strasbourg` de [ne_10m_populated_places_simple.geojson](https://github.com/nvkelso/natural-earth-vector/blob/master/geojson/ne_10m_populated_places_simple.geojson), même source et domaine public. Les points représentent les villes à l’échelle cartographique, pas une adresse ou un bâtiment institutionnel.
+
+`python3 tools/generate-europe-map.py` produit hors ligne :
+
+- `europe-map.js` : surfaces cliquables et repères intérieurs, obtenus par la géométrie de chaque pays, ainsi que les points des trois capitales.
+- `passport-bel.svg`, `passport-prt.svg`, `passport-rou.svg` : vues des pays et de leurs capitales, pour les corrections.
+- `passport-strasbourg.svg` : Strasbourg repérée sur le fond métropolitain IGN / france-geojson existant (Licence Ouverte Etalab), avec le point de ville Natural Earth (domaine public).
+
+Projection de l’Europe : Lambert azimutale équivalente centrée sur 10°E / 52°N, sans simplification supplémentaire des frontières. Les coordonnées SVG sont arrondies à 0,001 unité d’affichage. Le générateur nécessite `shapely==2.1.2` en développement ; aucun accès réseau ni dépendance externe n’est nécessaire pour jouer. Les données sources figées sont conservées localement. Les noms des pays ne sont pas dessinés sur le plateau avant correction ; les libellés accessibles restent également anonymes. Le zoom et le déplacement ne changent aucune géométrie ni le code du pays réellement sélectionné.
