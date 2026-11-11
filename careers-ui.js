@@ -22,7 +22,7 @@ function renderCareerPause() {
   const state = game.careerPauses[currentCareerIndex], job = CareerPauses.jobs[currentCareerIndex];
   scores();
   $('career-progress').textContent = `PAUSE MÉTIER ${currentCareerIndex + 1} / ${job.name.toLocaleUpperCase('fr')} · ENTRE LES MANCHES ${job.afterRound} ET ${job.afterRound + 1}`;
-  $('career-title').textContent = job.title;
+  $('career-title').textContent = job.name;
   $('career-quote').hidden = !state.revealed;
   $('career-quote').textContent = state.revealed ? job.quote : '';
   const illustration = CareerIllustrations[currentCareerIndex];

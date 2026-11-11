@@ -11,7 +11,7 @@ function renderSauce() {
   if (s.phase === 'search') { renderSauceSearch(); show('sauce-search'); return; }
   if (s.phase === 'correction') { renderSauceCorrection(); show('sauce-correction'); return; }
   if (s.phase === 'bonus') { renderSauceBonus(); show('sauce-bonus'); return; }
-  $('sauce-totals').textContent = SauceGame.totals(game).map((total, team) => `${game.teams[team].name} : ${total} / 60 points sur cette manche`).join(' · ');
+  $('sauce-totals').textContent = 'Trois spécialités découvertes. En route pour la pause cuisine !';
   show('sauce-end');
 }
 function renderSauceSearch() {

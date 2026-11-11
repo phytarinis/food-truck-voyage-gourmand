@@ -3,7 +3,7 @@
   'use strict';
   const jobs = [
     {
-      name: 'Serveur / Serveuse', afterRound: 1,
+      name: 'Serveuse', afterRound: 1,
       title: "Serveur ? C'est juste porter des assiettes !",
       statements: [
         'On peut débuter dans certains établissements sans diplôme et apprendre sur le terrain.',
@@ -19,7 +19,7 @@
       ]
     },
     {
-      name: 'Cuisinier / Cuisinière', afterRound: 2,
+      name: 'Cuisinière', afterRound: 2,
       title: 'En cuisine, ça chauffe !',
       statements: [
         'Un cuisinier peut évoluer vers des postes comme chef de partie ou chef de cuisine.',
@@ -51,14 +51,14 @@
       ]
     },
     {
-      name: "Personnel d'entretien hôtelier", afterRound: 4,
+      name: 'Agente d’entretien hôtelier', afterRound: 4,
       title: 'Chambre impeccable, mission essentielle !',
       statements: [
         'Ce métier contribue directement au confort et à la satisfaction des clients.',
-        "Ce métier ne demande aucune compétence : n'importe qui peut le faire sans apprentissage !",
+        "Dans ce métier, on travaille toujours seul, sans contact avec les autres salariés.",
         "Avec de l'expérience, on peut évoluer vers la coordination d'une équipe d'entretien."
       ], falseIndex: 1,
-      explanation: "Le métier demande de maîtriser des techniques d'entretien, des règles d'hygiène et de sécurité, ainsi qu'une organisation efficace.",
+      explanation: "Les professionnels de l’entretien hôtelier échangent avec leurs collègues et coordonnent leur travail avec la réception et les autres services. Organisation, techniques d’entretien et règles d’hygiène restent essentielles.",
       quote: "Ah oui… faire une chambre impeccable, c'est tout un savoir-faire !",
       facts: [
         { icon: 'door', text: 'Métier indispensable au fonctionnement des établissements.' },
@@ -67,7 +67,7 @@
       ]
     },
     {
-      name: 'Équipier polyvalent en restauration rapide', afterRound: 5,
+      name: 'Équipière polyvalente en restauration rapide', afterRound: 5,
       title: 'Le rush du siècle !',
       statements: [
         "Certains postes permettent de débuter sans diplôme et d'être formé sur place.",

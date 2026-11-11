@@ -40,6 +40,8 @@
   <script defer src="spicy-ui.js"></script>
   <script defer src="final.js"></script>
   <script defer src="final-ui.js"></script>
+  <script defer src="ergonomics.js"></script>
+  <script defer src="persistence.js"></script>
 </head>
 <body class="welcome-mode">
   <svg class="art-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -55,7 +57,7 @@
     <div class="partners" aria-label="Partenaires">
       <img class="partner-logo partner-labo" src="assets/Logo%20sans%20fond.png" width="60" height="60" alt="Le Labo Épicé">
       <svg class="partner-logo partner-afept" viewBox="105 85 475 185" width="150" height="58" role="img" aria-label="AFEPT, formation, insertion et éducation permanente"><image href="assets/Logo_AFEPT-removebg-preview.png" width="696" height="359"/></svg>
-      <figure class="partner-e2c"><svg class="partner-logo" viewBox="500 440 1370 1510" width="52" height="58" role="img" aria-label="École de la Deuxième Chance, E2C Gironde"><image href="assets/Copie%20de%20Gironde_1%20(1).png" width="2363" height="2363"/></svg><figcaption>Site de Coutras</figcaption></figure>
+      <figure class="partner-e2c"><svg class="partner-logo" viewBox="500 440 1370 1510" width="52" height="58" role="img" aria-label="École de la Deuxième Chance, E2C Gironde"><image href="assets/Copie%20de%20Gironde_1%20(1).png" width="2363" height="2363"/></svg></figure>
     </div>
     <button class="text-button" id="spicy-open" type="button" hidden>🌶️ Plat piégé !</button>
     <button class="text-button" id="reset" hidden>↺ Réinitialiser</button>
@@ -65,7 +67,7 @@
     <section id="welcome" class="screen welcome" aria-labelledby="welcome-title">
       <h1 id="welcome-title" class="visually-hidden">Le grand voyage gourmand</h1>
       <div class="welcome-scene">
-        <img class="welcome-illustration" src="assets/Le%20grand%20voyage%20gourmand%20%C3%A0%20Coutras.png" width="1672" height="941" fetchpriority="high" alt="À Coutras, un personnage accompagne un food truck rouge vintage dans un décor de petite ville et de campagne, illustré dans un style bande dessinée coloré.">
+        <img class="welcome-illustration" src="assets/Le%20grand%20voyage%20gourmand.png" width="1672" height="941" fetchpriority="high" alt="À Coutras, un personnage accompagne un food truck rouge vintage dans un décor de petite ville et de campagne, illustré dans un style bande dessinée coloré.">
         <button id="onward" class="welcome-start" type="button"><span class="visually-hidden">En route ! Préparer les deux équipes</span></button>
       </div>
     </section>
@@ -85,9 +87,9 @@
       <p class="eyebrow">LE BRIEF AVANT LE DÉPART</p>
       <h1 id="rules-title" tabindex="-1">Avant de prendre <em>la route !</em></h1>
       <div class="rules-grid">
-        <article class="rule-card"><span class="rule-number">01</span><h2><svg class="rule-icon" aria-hidden="true"><use href="#teams-icon"/></svg>Deux équipes, six manches</h2><p>Concertez-vous ! Les défis à indices se jouent à tour de rôle. Les autres défis pourront suivre une mécanique différente.</p></article>
-        <article class="rule-card"><span class="rule-number">02</span><h2><svg class="rule-icon" aria-hidden="true"><use href="#points-icon"/></svg>Des points à gagner</h2><p>Énigmes à trois indices :</p><ul class="point-scale"><li>1er indice <b>20 points</b></li><li>2e indice <b>15 points</b></li><li>3e indice <b>10 points</b></li></ul><p class="rule-note">Autres défis : barèmes à définir.</p></article>
-        <article class="rule-card"><span class="rule-number">03</span><h2><svg class="rule-icon" aria-hidden="true"><use href="#turn-icon"/></svg>Une tentative par indice</h2><p>Chaque équipe tente une fois. Une erreur : la main passe à l’autre équipe. Deux erreurs : indice suivant.</p><p>La première bonne réponse termine l’énigme et rapporte les points de l’indice. Après trois indices sans réussite : 0 point.</p></article>
+        <article class="rule-card"><span class="rule-number">01</span><h2><svg class="rule-icon" aria-hidden="true"><use href="#teams-icon"/></svg>Deux équipes, six manches</h2><p>Concertez-vous en équipe. Le formateur valide séparément vos réponses. Les défis de carte suivent leur consigne.</p></article>
+        <article class="rule-card"><span class="rule-number">02</span><h2><svg class="rule-icon" aria-hidden="true"><use href="#points-icon"/></svg>Des points à gagner</h2><p>Énigmes à trois indices :</p><ul class="point-scale"><li>1er indice <b>20 points</b></li><li>2e indice <b>15 points</b></li><li>3e indice <b>10 points</b></li></ul><p class="rule-note">Autres défis : suivez le barème affiché sur leur écran.</p></article>
+        <article class="rule-card"><span class="rule-number">03</span><h2><svg class="rule-icon" aria-hidden="true"><use href="#turn-icon"/></svg>Une tentative par indice</h2><p>Un indice commun, une tentative par équipe. L’indice suivant attend la réponse de chaque équipe encore en recherche.</p><p>Une équipe qui trouve garde ses points ; l’autre poursuit sa recherche. Après trois indices sans réussite : 0 point. La démonstration suit sa règle de tour de rôle.</p></article>
         <article class="rule-card trapped-rule"><span class="rule-number">04</span><h2><span class="pepper-pair" aria-hidden="true"><svg><use href="#pepper-icon"/></svg><svg><use href="#pepper-icon"/></svg></span>Le Plat piégé !</h2><p><strong>Deux jokers par équipe pour toute la partie.</strong> À jouer entre deux défis, pour soi ou contre l’adversaire. Une seule activation entre deux défis.</p><p><strong>Pour soi :</strong> bonne réponse +10, erreur 0. <strong>Contre l’autre équipe :</strong> +10 à l’équipe défiée si elle trouve, sinon +10 à celle qui a lancé le défi. Aucun retrait de points.</p><p class="rule-note">Hors questions, corrections et pauses métiers. Les derniers piments peuvent être joués en finale ; une question ne revient jamais.</p></article>
       </div>
       <div class="rules-bottom"><aside class="companion"><svg aria-hidden="true"><use href="#companion-art"/></svg><p class="speech">J’ai le permis du food truck… mais pour la géographie, je compte sur vous !</p></aside><button class="primary" id="rules-next">C’EST PARTI ! <span>→</span></button></div>
@@ -97,8 +99,8 @@
       <div id="journey-scores" class="scoreboard"></div>
       <p class="eyebrow">LE CARNET DE ROUTE</p>
       <h1 id="journey-title" tabindex="-1">Six manches. <em>Un grand voyage.</em></h1>
-      <p class="intro">Choisissez L’apéro local ou À quelle sauce ? pour poursuivre le voyage. La démo reste disponible à part.</p>
-      <div class="route-map" aria-label="Itinéraire des six manches : les deux premières sont jouables">
+      <p class="intro">Choisissez une escale pour poursuivre le voyage. Le camion avance à chaque manche terminée.</p>
+      <div class="route-map" aria-label="Itinéraire des six manches jouables">
         <svg class="board-art" viewBox="0 0 1200 440" preserveAspectRatio="none" aria-hidden="true">
           <path d="M0 0H400Q322 90 220 124T0 222Z" fill="#d9dfc8"/>
           <path d="M1200 0H855Q812 51 891 91T1200 185Z" fill="#e8dcc0"/>
@@ -114,12 +116,14 @@
         <div class="board-landmark board-mountains" aria-hidden="true"><svg viewBox="0 0 190 110"><g stroke="#172e39" stroke-width="2.5" stroke-linejoin="round"><path d="m6 102 61-94 65 95Z" fill="#91aa83"/><path d="m68 9 64 94-54-1-15-48Z" fill="#718f8c" stroke="none"/><path d="m93 102 41-69 49 70Z" fill="#547f94"/><path d="m134 34 49 69-39-1-12-37Z" fill="#365f75" stroke="none"/><path d="m45 42 22-34 25 36-17-8-8 10-10-11Z" fill="#fff4d8"/><path d="m119 59 15-26 19 26-13-5-6 8-6-9Z" fill="#fff4d8"/></g></svg></div>
         <div class="board-landmark board-beach" aria-hidden="true"><svg viewBox="0 0 170 125"><g stroke="#172e39" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 96Q45 79 82 89t80-1l-4 30-147 1Z" fill="#548fa8"/><path d="M8 94q40-24 74-10t77 7l-24 26-126 2Z" fill="#d6ad65"/><path d="M87 94q25 7 58-1m-27 14 29-2" fill="none" stroke="#fff4d8" stroke-width="2"/><path d="m82 13-12 82" stroke-width="3"/><path d="M28 48Q78-9 134 47l-26-2-24 5-25-3Z" fill="#d94532"/><path d="M82 13Q62 24 59 47m23-34q23 8 26 32" fill="none" stroke="#fff4d8"/><path d="m18 103 13-4m20-4 5 2M12 17l12-3 11 6m-11-6 2-8" fill="none"/></g></svg></div>
         <div class="board-landmark board-sign" aria-hidden="true"><svg viewBox="0 0 115 90"><g transform="rotate(-9 55 45)" stroke="#172e39" stroke-width="2.5" stroke-linejoin="round"><path d="M53 24v61"/><path d="M8 8h74l25 17-25 17H8Z" fill="#f4efdf"/><path d="M21 25h58m-9-7 9 7-9 7" fill="none"/></g></svg></div>
+        <div class="board-landmark board-postcard" aria-hidden="true"><svg viewBox="0 0 70 55"><g transform="rotate(-10 35 28)" stroke="#172e39" stroke-width="2" stroke-linejoin="round"><rect x="4" y="5" width="62" height="45" rx="4" fill="#fffaf0"/><path d="M37 12v31M43 31h15m-15 7h11" fill="none"/><path d="m10 40 9-17 10 17Z" fill="#c5cbb3"/><circle cx="27" cy="17" r="4" fill="#d94532"/><rect x="49" y="11" width="10" height="12" fill="#c5cbb3"/></g></svg></div>
+        <div class="board-landmark board-globe" aria-hidden="true"><svg viewBox="0 0 60 60"><g stroke="#172e39" stroke-width="2" fill="none"><circle cx="30" cy="27" r="20" fill="#c5cbb3"/><ellipse cx="30" cy="27" rx="9" ry="20"/><path d="M10 27h40M14 15h32M14 39h32M20 53h20m-10-6v6"/></g></svg></div>
         <ol id="rounds" class="route-stops"></ol>
         <div class="route-truck" id="route-truck"><svg role="img" aria-label="Notre food truck rouge, prêt au départ"><use href="#truck-art"/></svg><span>AU DÉPART</span></div>
       </div>
       <div class="route-legend" aria-label="États prévus des manches"><span class="pending">○ À venir</span><span class="active">◉ En cours</span><span class="complete">✓ Terminée</span></div>
       <div class="demo-launch"><div><span class="eyebrow">UNE ESCALE POUR ESSAYER</span><p>Un pays, une spécialité… à vous de jouer !</p></div><button class="primary" id="play">LANCER LA DÉMO <span>→</span></button></div>
-      <p class="tiny">Les manches 3 à 6 et les jokers sont à venir. La démo est une escale indépendante.</p>
+      <p class="tiny">Votre progression est conservée sur cet appareil. La démo est une escale indépendante.</p>
     </section>
 
     <section id="apero-intro" class="screen compact apero-screen" hidden aria-labelledby="apero-intro-title">
@@ -156,7 +160,7 @@
     </section>
 
     <section id="apero-end" class="screen compact apero-screen" hidden aria-labelledby="apero-end-title">
-      <div class="scoreboard"></div><p class="eyebrow">LES TROIS LIVRAISONS SONT ARRIVÉES !</p><h1 id="apero-end-title" tabindex="-1">L’apéro local : <em>manche terminée.</em></h1><p id="apero-totals" class="outcome"></p><p class="intro">Le bonus ne rapporte aucun point. La deuxième escale reste à venir.</p><button class="primary" id="career-start">PAUSE MÉTIER <span>→</span></button>
+      <div class="scoreboard"></div><p class="eyebrow">LES TROIS LIVRAISONS SONT ARRIVÉES !</p><h1 id="apero-end-title" tabindex="-1">L’apéro local : <em>manche terminée.</em></h1><p id="apero-totals" class="outcome"></p><p class="intro">Le bonus ne rapporte aucun point. Direction la prochaine escale !</p><button class="primary" id="career-start">PAUSE MÉTIER <span>→</span></button>
     </section>
 
     <section id="sauce-intro" class="screen compact sauce-screen" hidden aria-labelledby="sauce-intro-title">
@@ -187,7 +191,7 @@
     </section>
 
     <section id="sauce-end" class="screen compact sauce-screen" hidden aria-labelledby="sauce-end-title">
-      <div class="scoreboard"></div><p class="eyebrow">TROIS SPÉCIALITÉS DÉCOUVERTES</p><h1 id="sauce-end-title" tabindex="-1">À quelle sauce ? <em>Manche terminée.</em></h1><p id="sauce-totals" class="outcome"></p><p class="intro">La troisième escale reste à venir. Avant de repartir, une pause avec les métiers de la cuisine !</p><button id="sauce-career" class="primary">PAUSE MÉTIER : CUISINE <span>→</span></button>
+      <div class="scoreboard"></div><p class="eyebrow">TROIS SPÉCIALITÉS DÉCOUVERTES</p><h1 id="sauce-end-title" tabindex="-1">À quelle sauce ? <em>Manche terminée.</em></h1><p id="sauce-totals" class="outcome"></p><p class="intro">Le voyage continue. Avant de repartir, une pause avec les métiers de la cuisine !</p><button id="sauce-career" class="primary">PAUSE MÉTIER : CUISINE <span>→</span></button>
     </section>
 
     <section id="france-intro" class="screen compact france-screen" hidden aria-labelledby="france-intro-title">
@@ -237,7 +241,7 @@
       <div class="scoreboard"></div><p class="eyebrow">MANCHE 4</p><h1 id="gps-intro-title" tabindex="-1">MANCHE 4 — LE GPS A PERDU LA BOULE !</h1>
       <aside class="companion sauce-intro-scene"><svg aria-hidden="true"><use href="#companion-art"/></svg><p class="speech">Bon… Le GPS vient de m'envoyer dans les Pyrénées pour traverser la Seine. Je crois qu'il a besoin d'une mise à jour !</p></aside>
       <p class="intro">Le GPS est complètement perdu ! Aidez notre food truck à retrouver les montagnes, les fleuves et sa prochaine destination.</p>
-      <ol class="gps-itinerary"><li>Les Pyrénées</li><li>Les fleuves</li><li>La livraison dans les Alpes</li></ol>
+
       <p class="gps-principle">Corail place, puis sauge place sans voir son choix. On compare ensuite les deux propositions avant de révéler la correction. <strong>45 points maximum par équipe.</strong></p>
       <div class="result-actions"><button id="gps-begin" class="primary">RETROUVER LES PYRÉNÉES <span>→</span></button><button class="text-button gps-back">Le carnet de route</button></div>
     </section>
@@ -273,7 +277,7 @@
       <div class="scoreboard"></div><p id="passport-progress" class="eyebrow"></p><h1 id="passport-search-title" tabindex="-1"><span id="passport-destination-title">Destination mystère : où va-t-on manger ?</span></h1>
       <p class="sauce-confidential">Écrivez votre réponse et transmettez-la discrètement au formateur.</p>
       <aside id="passport-mystery" class="passport-mystery" hidden><p id="passport-mystery-quote" class="speech"></p><button id="passport-sound" class="text-button" type="button">Ambiance mystère · 1 seconde</button><span id="passport-sound-status" role="status"></span></aside>
-      <div id="passport-panels" class="sauce-panels"></div><div id="passport-clue-gate" class="sauce-clue-gate" hidden><p>Chaque équipe a répondu ou a déjà trouvé.</p><button type="button" id="passport-next-clue" class="primary">Dévoiler l’indice suivant <span aria-hidden="true">→</span></button></div>
+      <div id="passport-panels" class="sauce-panels"></div>
       <p id="passport-live" class="feedback" role="status"></p><button class="text-button passport-back">Le carnet de route · progression conservée</button>
     </section>
     <section id="passport-answer" class="screen compact passport-screen" hidden aria-labelledby="passport-answer-title">

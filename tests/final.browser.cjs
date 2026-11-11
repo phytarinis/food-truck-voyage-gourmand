@@ -2,7 +2,7 @@ const{chromium}=require('playwright'),assert=require('node:assert/strict');
 (async()=>{
  const browser=await chromium.launch({executablePath:'/usr/bin/chromium',args:['--no-sandbox']});const p=await browser.newPage({viewport:{width:1366,height:768}}),errors=[];p.on('pageerror',e=>errors.push(e.message));
  const url=process.env.FINAL_TEST_URL||'http://127.0.0.1:8008';
- const fixture=async(scores=[300,280])=>{await p.goto(url);await p.evaluate(scores=>{game=FoodTruckGame.createGame(['Corail','Sauge']);game.teams.forEach((t,i)=>t.score=scores[i]);
+ const fixture=async(scores=[300,280])=>{await p.addInitScript(()=>localStorage.removeItem('voyage-gourmand:partie:v1'));await p.goto(url);await p.evaluate(scores=>{game=FoodTruckGame.createGame(['Corail','Sauge']);game.teams.forEach((t,i)=>t.score=scores[i]);
  const catalogs=[AperoGame.deliveries,SauceGame.puzzles,FranceGame.puzzles,GpsGame.challenges,PassportGame.puzzles,WorldGame.challenges];
  SpicyGame.roundKeys.forEach((key,r)=>game[key]={phase:'complete',results:catalogs[r].map(()=>r===3||r===5?{choices:['Asia','Africa'],awards:[10,0]}:[{points:10,locationPoints:0,region:'44'},{points:0,locationPoints:0,region:'53'}])});game.careerPauses={};CareerPauses.jobs.forEach((j,i)=>game.careerPauses[i]={index:i,selected:j.falseIndex,revealed:true});scores&&renderWorld();},scores)};
  await fixture();await p.locator('#world-finish-journey').click();assert.equal(await p.locator('#spicy-finale').isVisible(),true);assert.match(await p.locator('#spicy-finale-title').innerText(),/DERNIER COUP/);

@@ -15,7 +15,7 @@
     { id: 'chocolatine', answer: 'chocolatine / pain au chocolat', title: 'Chocolatine ou pain au chocolat ?', clues: [
       'Je peux être préparée avec une pâte pur beurre.',
       'Je cache deux barres de chocolat.',
-      "Dans le Sud-Ouest, on m'appelle chocolatine. Ailleurs, je porte souvent un autre nom !"
+      "Passé au nord de la Garonne, je ne porte pas toujours le même nom."
     ], facts: [
       'Une viennoiserie à base de pâte levée feuilletée et de chocolat.',
       'Le nom « chocolatine » est particulièrement employé dans le Sud-Ouest.',
