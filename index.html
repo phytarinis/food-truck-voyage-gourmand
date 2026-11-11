@@ -9,7 +9,7 @@
   <script defer src="game.js"></script>
   <script defer src="app.js"></script>
 </head>
-<body>
+<body class="welcome-mode">
   <header class="topbar">
     <a class="brand" href="index.html" aria-label="Food Truck, accueil">FT<span>★</span><small>LE GRAND VOYAGE GOURMAND</small></a>
     <div class="partners" aria-label="Emplacements provisoires des logos"><span>LABO <b>ÉPICÉ</b><small>EMPLACEMENT LOGO</small></span><i>×</i><span class="e2c">E2C <small>COUTRAS · EMPLACEMENT LOGO</small></span></div>
@@ -18,15 +18,11 @@
 
   <main>
     <section id="welcome" class="screen welcome" aria-labelledby="welcome-title">
-      <div class="hero-copy">
-        <p class="eyebrow"><span class="dot"></span> DEUX ÉQUIPES. UN FOOD TRUCK. LE MONDE À GOÛTER.</p>
-        <h1 id="welcome-title">Le grand<br>voyage <em>gourmand.</em></h1>
-        <p class="intro">On prend la route ?<br>Des spécialités à deviner, des coins du monde à découvrir… et quelques détours au menu.</p>
-        <button class="primary" id="onward">EN ROUTE ! <span>→</span></button>
-        <p class="tiny">Un voyage à partager · Animé par votre formateur</p>
+      <h1 id="welcome-title" class="visually-hidden">Le grand voyage gourmand</h1>
+      <div class="welcome-scene">
+        <img class="welcome-illustration" src="assets/Le%20grand%20voyage%20gourmand%20%C3%A0%20Coutras.png" width="1672" height="941" fetchpriority="high" alt="À Coutras, un personnage accompagne un food truck rouge vintage dans un décor de petite ville et de campagne, illustré dans un style bande dessinée coloré.">
+        <button id="onward" class="welcome-start" type="button"><span class="visually-hidden">En route ! Préparer les deux équipes</span></button>
       </div>
-      <div class="hero-art"><span class="art-label">LA CURIOSITÉ, ÇA OUVRE L’APPÉTIT.</span><img src="assets/road-trip.svg" alt="Un food truck rouge vintage et un jeune compagnon en tablier bleu nuit, prêts à prendre la route."><span class="postmark">FRANCE<br>EUROPE<br><b>LE MONDE !</b></span></div>
-      <div class="hero-bottom"><span>01 — ON EMBARQUE</span><span>GÉOGRAPHIE + GASTRONOMIE + UN PEU D’AUDACE</span><span>06 ESCALES</span></div>
     </section>
 
     <section id="setup" class="screen compact" hidden aria-labelledby="setup-title">

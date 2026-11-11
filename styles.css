@@ -4,3 +4,17 @@
 @media(max-width:1000px){.topbar{height:90px;padding:18px 4%}.brand{font-size:35px}.brand small{display:none}.welcome{padding:45px 5% 0;min-height:570px;grid-template-columns:1fr 1fr}h1{letter-spacing:-2px}.intro{font-size:15px}.hero-art{margin-left:-25px}.postmark{display:none}.art-label{font-size:8px}.compact{padding:25px 5%}.validation>div{flex-direction:column}.turn-panel{align-items:flex-start}.round h2{font-size:15px}}
 @media(max-width:650px){.topbar{gap:10px;height:auto;min-height:85px}.partners{gap:10px}.partners>span{font-size:12px}.partners .e2c{font-size:22px}.partners small{font-size:6px}.brand>span{margin-right:0}.topbar .text-button{font-size:10px;max-width:85px}.welcome{display:flex;flex-direction:column;padding-top:25px}.welcome h1{font-size:52px}.hero-art{width:100%;margin:20px 0 0}.hero-art img{min-width:0}.hero-bottom{margin-top:0;font-size:8px;gap:20px}.hero-bottom>span:nth-child(2){display:none}.hero-copy .intro{max-width:440px}.team-fields{grid-template-columns:1fr;gap:14px;margin:25px 0}.team-fields label{padding:18px}.team-fields input{font-size:19px}.round-grid{grid-template-columns:1fr 1fr}.round{padding:16px 12px;grid-template-columns:24px 1fr}.compact h1{letter-spacing:-2px}.compact h1 em{letter-spacing:-2px}.scoreboard{gap:12px}.score{padding-left:8px;gap:5px;grid-template-columns:1fr}.score strong{font-size:14px}.score-points{font-size:20px}.score small{font-size:8px}.demo-launch,.turn-panel,.result-actions{align-items:stretch;flex-direction:column}.validation>span{text-align:left}.validation>div{flex-direction:row;flex-wrap:wrap}.validation button{flex:1}.challenge-heading{align-items:flex-start}.ticket{font-size:13px;padding:12px;margin-top:20px}.clue-card{padding:22px}.clue-card>p{font-size:24px}.correction{padding:20px;gap:16px}.flag{font-size:32px}.correction p{font-size:16px}footer{font-size:7px;line-height:1.6}footer>span:nth-child(2){display:none}dialog>div{flex-direction:column}.result-actions{gap:10px}.intro br{display:none}}
 @media(prefers-reduced-motion:reduce){.screen{animation:none}button{transform:none!important}}
+
+/* Accueil illustré : coordonnées relatives à l’image entière (1672 × 941).
+   Aucun recadrage : le bouton HTML reste aligné sur le bouton dessiné. */
+.visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+body.welcome-mode{background:var(--ink)}
+.welcome-mode>.topbar,.welcome-mode>footer{display:none}
+.welcome-mode>main{max-width:none;min-height:100vh;min-height:100svh}
+#welcome.welcome{display:grid;place-items:center;grid-template-columns:1fr;padding:0;min-height:100vh;min-height:100svh;overflow:visible;animation:none}
+.welcome-scene{position:relative;width:min(100%,calc(100vh * 1672 / 941));width:min(100%,calc(100svh * 1672 / 941));aspect-ratio:1672 / 941}
+.welcome-illustration{display:block;width:100%;height:auto}
+.welcome-start{position:absolute;left:12%;top:77%;width:24.5%;height:14%;min-width:44px;min-height:44px;margin:0;padding:0;background:transparent;border:0;border-radius:8px;box-shadow:none;touch-action:manipulation}
+.welcome-start:hover{outline:3px solid #fff3cd;outline-offset:2px}
+.welcome-start:focus-visible{outline:4px solid #fff3cd;outline-offset:3px;box-shadow:0 0 0 8px #172e39}
+@media(forced-colors:active){.welcome-start{border:2px solid ButtonText}.welcome-start:focus-visible{outline-color:Highlight}}
