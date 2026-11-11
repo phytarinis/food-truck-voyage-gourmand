@@ -3,6 +3,7 @@ const { clues, rounds, createGame, startChallenge, answer } = FoodTruckGame;
 const $ = id => document.getElementById(id);
 let game;
 function show(id) {
+  document.body.classList.toggle('welcome-mode', id === 'welcome');
   document.querySelectorAll('.screen').forEach(screen => { screen.hidden = screen.id !== id; });
   $('reset').hidden = id === 'welcome';
   const heading = $(id).querySelector('h1');
