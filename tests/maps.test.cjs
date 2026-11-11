@@ -21,3 +21,10 @@ test('Chaque correction garde le contexte métropolitain, le département et les
     assert.match(svg,/IGN \/ Admin Express COG 2018/);
   }
 });
+test('localisation d’Arcachon : contours des 12 départements de Nouvelle-Aquitaine et commune INSEE',()=>{
+ const svg=read('nouvelle-aquitaine-arcachon.svg');
+ assert.deepEqual([...svg.matchAll(/data-code="([^"]+)"/g)].map(m=>m[1]).sort(),['16','17','19','23','24','33','40','47','64','79','86','87']);
+ const town=JSON.parse(read('arcachon.geojson'));
+ assert.equal(town.properties.code,'33009');assert.equal(town.properties.nom,'Arcachon');
+ assert.match(svg,/repère communal/);assert.match(svg,/IGN \/ Admin Express COG 2018/);
+});

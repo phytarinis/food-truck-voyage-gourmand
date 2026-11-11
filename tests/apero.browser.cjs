@@ -10,7 +10,7 @@ const assert=require('node:assert/strict');
     await p.locator('#career-continue').click();
   } else await p.locator('section:not([hidden]) .apero-back').click();
  };
- const reopen=async()=>p.locator('.route-round-open').click();
+ const reopen=async()=>p.locator('.route-stop:nth-child(1) .route-round-open').click();
  const choose=async(t,d,n)=>{await p.locator(`input[name="team-${t}-department"][value="${d}"]`).check();await p.locator(`input[name="team-${t}-number"][value="${n}"]`).check();};
  await p.goto((process.env.APERO_TEST_URL || 'http://127.0.0.1:8000'));await p.locator('#onward').click();await p.locator('#team-one').fill('Corail');await p.locator('#team-two').fill('Sauge');await p.locator('#team-form button').click();await p.locator('#rules-next').click();await reopen();assert.equal(await p.locator('#apero-intro').isVisible(),true);await p.locator('#apero-begin').click();
  assert.equal(await p.locator('#delivery input[type=radio]').count(),16);assert.equal(await p.locator('#delivery-validate').isDisabled(),true);assert.equal(await p.locator('#delivery-correction').isVisible(),false);
