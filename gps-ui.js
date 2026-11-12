@@ -8,14 +8,7 @@ function renderGps(){
  if(s.phase==='intro'){show('gps-intro');return;}
  if(['placement','compare','correction'].includes(s.phase)){renderGpsPlacement();show('gps-placement');return;}
  if(s.phase==='bonus'){renderGpsBonus();show('gps-bonus');return;}
- $('gps-totals').replaceChildren(...GpsGame.totals(game).map((total,team)=>{
-  const card=document.createElement('article');card.className=`delivery-award team-${team}`;
-  const title=document.createElement('h2');title.textContent=game.teams[team].name;
-  const list=document.createElement('ul');s.results.forEach((result,index)=>{const li=document.createElement('li');li.textContent=`${['Pyrénées','Fleuves','Alpes'][index]} : +${result.awards[team]} points`;list.append(li)});
-  const sum=document.createElement('p');sum.textContent=`Manche 4 : ${total} / 45 points`;
-  const cumulative=document.createElement('strong');cumulative.textContent=`Score cumulé : ${game.teams[team].score} points`;
-  card.append(title,list,sum,cumulative);return card;
- }));show('gps-end');
+ $('gps-totals').textContent='Le GPS a retrouvé sa route !';show('gps-end');
 }
 function renderGpsPlacement(){
  const s=game.gps,data=GpsGame.challenges[s.index],active=s.phase==='placement',corrected=s.phase==='correction',stamp=GpsGame.token(game);

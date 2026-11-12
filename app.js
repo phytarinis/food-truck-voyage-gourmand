@@ -14,7 +14,7 @@ function show(id) {
     if (game.gps?.phase === 'complete') completed.push(3);
     if (game.passport?.phase === 'complete') completed.push(4);
     if (game.world?.phase === 'complete') completed.push(5);
-    const current = game.routeCurrent ?? (game.world ? 5 : game.passport ? 4 : game.gps ? 3 : game.france ? 2 : game.sauce ? 1 : game.apero ? 0 : null);
+    const current = completed.length ? Math.max(...completed) : null;
     renderRoute({ current, completed });
   }
   const heading = $(id).querySelector('h1');
@@ -22,6 +22,8 @@ function show(id) {
   window.scrollTo(0, 0);
   if(typeof syncSpicyAccess==='function')syncSpicyAccess(id);
   if(typeof syncFinalAccess==='function')syncFinalAccess(id);
+  if(typeof harmonizeActions==='function')harmonizeActions();
+  if(typeof saveProgress==='function')saveProgress();
 }
 function scores() {
   if(typeof spicyObserveProgress==='function')spicyObserveProgress();
@@ -115,9 +117,9 @@ function renderRoute({ current = null, completed = [] } = {}) {
     card.append(number, name, status); $('rounds').append(card);
   });
   const truck = $('route-truck');
-  // Coordonnées du pion sur les deux tracés du plateau, sans progression jouable.
-  const positions = [[6.5, 75], [31.67, 28.41], [80, 23.86], [72.5, 55.68], [40.83, 63.64], [76.67, 88.64]];
-  const mobilePositions = [[50, 6], [80, 20], [15, 36], [60, 56], [15, 68], [50, 95]];
+  // Positions près des escales, dépendant exclusivement des manches terminées.
+  const positions = [[7, 20], [39, 15], [92, 20], [68, 52], [43, 90], [94, 90.7]];
+  const mobilePositions = [[50, 6], [80, 20], [18, 34], [80, 51], [26, 67], [28, 93]];
   if (current !== null) {
     truck.style.setProperty('--truck-x', `${positions[current][0]}%`);
     truck.style.setProperty('--truck-y', `${positions[current][1]}%`);

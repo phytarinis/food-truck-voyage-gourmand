@@ -5,19 +5,15 @@ function renderWorld(){
  scores();const s=game.world;
  if(s.phase==='intro'){show('world-intro');return;}
  if(s.phase==='complete'){
-  $('world-totals').replaceChildren(...WorldGame.totals(game).map((total,team)=>{
-   const card=document.createElement('article');card.className=`delivery-award team-${team}`;
-   const title=document.createElement('h2');title.textContent=game.teams[team].name;
-   const list=document.createElement('ul');s.results.forEach((r,index)=>{const li=document.createElement('li');li.textContent=`${WorldGame.challenges[index].destination} : +${r.awards[team]} points`;list.append(li)});
-   const sum=document.createElement('p');sum.textContent=`Manche 6 : ${total} / 60 points`;
-   const cumulative=document.createElement('strong');cumulative.textContent=`Score cumulé : ${game.teams[team].score} points`;
-   card.append(title,list,sum,cumulative);return card;
-  }));show('world-end');return;
+  $('world-totals').textContent='Le tour du monde est terminé !';show('world-end');return;
  }
  renderWorldChallenge();show('world-challenge');
 }
 function renderWorldChallenge(){
  const s=game.world,l=s.location,data=WorldGame.challenges[s.index],bothLocked=l.locked.every(Boolean),corrected=s.phase==='correction',stamp=WorldGame.token(game);
+ $('world-challenge').classList.toggle('is-correction',corrected);
+ const layout=$('world-challenge').querySelector('.world-layout');
+ if(corrected)layout.insertBefore($('world-discovery'),layout.querySelector('.world-controls'));else $('world-challenge').append($('world-discovery'));
  $('world-progress').textContent=`MANCHE 06 / DÉFI ${s.index+1} SUR 6`;
  $('world-challenge-title').textContent=data.title;$('world-instruction').textContent=data.instruction;
  $('world-turn').textContent=bothLocked?(corrected?'Destination révélée':'Les deux drapeaux sont plantés !'):`${game.teams[l.activeTeam].name} · drapeau ${l.activeTeam===0?'corail':'sauge'}`;

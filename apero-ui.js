@@ -15,7 +15,7 @@ function renderApero() {
     $('apero-finish').hidden = !s.bonusRevealed;
     show('apero-bonus'); return;
   }
-  $('apero-totals').textContent = AperoGame.totals(game).map((total, i) => `${game.teams[i].name} : ${total} / 30 points sur cette manche`).join(' · ');
+  $('apero-totals').textContent = 'Les trois livraisons sont arrivées !';
   show('apero-end');
 }
 function updateDeliveryStatus() {

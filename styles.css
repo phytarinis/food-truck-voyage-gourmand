@@ -678,3 +678,39 @@ body:not(.welcome-mode) h1 em{background:linear-gradient(transparent 85%,#e9b44b
 @media(prefers-reduced-motion:reduce){.final-screen *{animation:none!important;transition:none!important}}
 
 .final-souvenirs li:nth-child(5){color:var(--red)}
+
+/* Retouches ciblées : accueil validé, boutons van et espaces de lecture. */
+.welcome-start{left:3.8%;top:83%;width:34%;height:14%}
+.team-fields label{border-radius:20px;box-shadow:none}.team-fields input{border-radius:10px}
+.setup-companion{max-width:540px;gap:20px;margin-top:0}.setup-companion svg{width:165px;height:285px;flex-shrink:0}.setup-companion .speech{font-size:21px;max-width:340px}
+.rule-card{border-color:var(--line);border-radius:16px;box-shadow:none;background:#fffaf099}.trapped-rule{border-top:3px solid var(--red)}.rules-bottom .companion{flex:1;max-width:780px}.rules-bottom .companion svg{width:100px;height:185px;flex-shrink:0}.rules-bottom .speech{font-size:20px;max-width:580px}
+#sauce-intro .sauce-intro-scene{flex-direction:row-reverse;gap:35px}#sauce-intro .sauce-intro-scene>svg{width:170px;height:300px}
+[id$="-bonus"] .companion svg{width:115px;height:210px;flex-shrink:0}[id$="-bonus"] .companion{gap:20px}
+button.van-action{display:inline-flex;align-items:center;justify-content:center;gap:12px;padding:9px 18px;min-height:56px;max-width:100%;border-radius:12px;text-align:left}button.van-action .action-van{display:block;width:64px;height:48px;flex-shrink:0;border-radius:7px;overflow:hidden}button.text-button.van-action{justify-content:flex-start;padding:6px 0;min-height:48px}button.text-button.van-action .action-van{width:48px;height:38px}
+.delivery-heading{display:flex;align-items:center;justify-content:space-between;gap:20px}.delivery-heading h1{margin-bottom:16px}.delivery-city-van{width:110px;height:80px;flex-shrink:0;border-radius:12px;overflow:hidden}.delivery-choices label{border-radius:14px!important}
+#world-challenge.is-correction .world-layout{grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr)}#world-challenge.is-correction .world-controls{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:12px;align-items:center}#world-challenge.is-correction .world-controls>p{flex-basis:100%}#world-challenge.is-correction #world-verdict{flex:1}#world-challenge.is-correction #world-discovery{margin-top:0}#world-challenge.is-correction .world-discovery-grid{display:block}#world-challenge.is-correction #world-photo img{width:100%;max-height:340px;height:clamp(230px,25vw,340px);object-fit:contain}#world-challenge.is-correction #world-planisphere{min-height:0}#world-challenge.is-correction #world-fact{font-size:18px;line-height:1.45}#world-challenge.is-correction #world-photo figcaption{font-size:12px}
+#apero-totals,#sauce-totals,#france-totals,#gps-totals,#passport-totals,#world-totals{display:block;font-size:21px;margin:24px 0;line-height:1.5}
+#journey .route-truck{transition:left .65s ease,top .65s ease}
+@media(min-width:1001px){.rules-grid{grid-template-columns:1fr 1fr}.rule-card:nth-child(-n+3){grid-column:auto}.trapped-rule{grid-row:auto;grid-column:auto}.rule-card{padding:16px 20px 16px 48px}.rules-bottom{margin-top:10px}.rules-bottom .companion svg{height:150px;width:84px}}
+@media(max-width:800px){#world-challenge.is-correction .world-layout{grid-template-columns:1fr}#world-challenge.is-correction .world-controls{grid-column:auto}.setup-companion{max-width:460px}.setup-companion svg{width:125px;height:220px}#sauce-intro .sauce-intro-scene>svg{width:125px;height:230px}}
+@media(max-width:650px){.setup-companion{float:none;max-width:none;gap:14px}.setup-companion svg{width:105px;height:190px}.setup-companion .speech{font-size:18px}.rules-bottom .companion svg{width:80px;height:145px}.rules-bottom .speech{font-size:18px}button.van-action .action-van{width:50px;height:40px}button.van-action{gap:10px;padding:8px 12px}.delivery-city-van{width:75px;height:60px}#sauce-intro .sauce-intro-scene{gap:14px}#sauce-intro .sauce-intro-scene>svg{width:95px;height:180px}[id$="-bonus"] .companion svg{width:85px;height:160px}}
+@media(prefers-reduced-motion:reduce){#journey .route-truck{transition:none}}
+#delivery .delivery-choices input{inset:0;width:100%;height:100%;z-index:1;cursor:pointer}
+/* Les corrections montrent d’abord les deux supports, puis une légende commune. */
+#world-challenge.is-correction #world-discovery,#world-challenge.is-correction .world-discovery-grid{display:contents}
+#world-challenge.is-correction .world-map-figure{grid-column:1;grid-row:1}
+#world-challenge.is-correction #world-photo{grid-column:2;grid-row:1;margin:0}
+#world-challenge.is-correction .world-discovery-grid>div{grid-column:1 / -1;grid-row:3}
+#world-challenge.is-correction .world-controls{grid-row:2;justify-content:space-between;flex-direction:row;padding:12px}
+#world-challenge.is-correction #world-turn,#world-challenge.is-correction #world-choice{display:none}
+#world-challenge.is-correction #world-verdict{margin:0;padding:10px 14px}
+#world-challenge.is-correction #world-verdict h2{margin:0;font-size:20px}
+#world-challenge.is-correction #world-verdict p{margin:6px 0 0;font-size:16px}
+#world-challenge.is-correction #world-photo img{height:280px;max-height:280px}
+#world-challenge.is-correction #world-fact{margin:8px 0}
+#world-challenge.is-correction #world-photo-note{margin:10px 0;padding:10px 14px}
+#world-challenge.is-correction #world-final-quote{font-size:18px;margin:12px 0;padding:14px 18px}
+@media(max-width:800px){#world-challenge.is-correction .world-map-figure,#world-challenge.is-correction #world-photo,#world-challenge.is-correction .world-controls,#world-challenge.is-correction .world-discovery-grid>div{grid-column:1;grid-row:auto}}
+#journey .board-postcard{left:6%;top:49%;width:60px;height:48px}#journey .board-globe{left:50%;top:81%;width:50px;height:50px}
+@media(max-width:900px){#journey .board-postcard,#journey .board-globe{display:none}}
+@media(min-width:1001px) and (max-width:1450px){.career-screen .career-bottom{margin-top:4px}.career-screen .career-bottom .van-action{min-height:54px;padding:6px 12px}.career-screen .career-bottom .action-van{height:36px;width:48px}.career-screen .career-revelation{margin-top:8px;padding-top:8px}}

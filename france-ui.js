@@ -16,13 +16,7 @@ function renderFrance() {
   if (s.phase === 'location') { renderFranceLocation(); show('france-location'); return; }
   if (s.phase === 'correction') { renderFranceCorrection(); show('france-correction'); return; }
   if (s.phase === 'bonus') { renderFranceBonus(); show('france-bonus'); return; }
-  $('france-totals').replaceChildren(...FranceGame.totals(game).map((total, team) => {
-    const card = document.createElement('article'); card.className = `delivery-award team-${team}`;
-    const title = document.createElement('h2'); title.textContent = game.teams[team].name;
-    const round = document.createElement('p'); round.textContent = `Manche 3 : +${total} / 75 points`;
-    const cumulative = document.createElement('strong'); cumulative.textContent = `Score cumulé : ${game.teams[team].score} points`;
-    card.append(title, round, cumulative); return card;
-  })); show('france-end');
+  $('france-totals').textContent='La France et ses spécialités : mission accomplie !';show('france-end');
 }
 
 function renderFranceSearch() {

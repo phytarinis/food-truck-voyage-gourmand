@@ -5,7 +5,7 @@ const assert = require('node:assert/strict');
   const browser=await chromium.launch({executablePath:'/usr/bin/chromium',args:['--no-sandbox']});
   const p=await browser.newPage({viewport:{width:1366,height:768},reducedMotion:'reduce'});
   const errors=[];p.on('pageerror',e=>errors.push(e.message));
-  await p.goto(process.env.CAREER_TEST_URL || 'http://127.0.0.1:8000');
+  await p.addInitScript(()=>localStorage.removeItem('voyage-gourmand:partie:v1'));await p.goto(process.env.CAREER_TEST_URL || 'http://127.0.0.1:8000');
   for(let job=0;job<5;job++)for(let choice=0;choice<3;choice++){
     // Test du composant réutilisable, sans simuler l’achèvement d’une manche.
     await p.evaluate(index=>{game=FoodTruckGame.createGame(['Corail','Sauge']);game.teams[0].score=30;game.teams[1].score=15;openCareerPause(index)},job);

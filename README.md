@@ -18,7 +18,7 @@ python3 -m http.server 8000 --bind 0.0.0.0
 - Carnet des six manches jouables, de « L’apéro local » à « Tour du monde ». La démo est indépendante.
 - Démonstration : trois indices, une tentative par équipe à chaque indice. Le formateur valide la réponse orale. Les deux échecs ouvrent l’indice suivant ; une réussite termine le défi et attribue les points. Après six échecs, personne ne marque.
 - L’équipe 1 commence la première démonstration. L’équipe de départ alterne à chaque nouvelle démonstration ; elle commence aussi chaque indice de ce défi. Rejouer conserve les scores.
-- Correction et bouton de réinitialisation avec confirmation. Les données restent en mémoire : recharger ou fermer la page efface la partie.
+- Correction et bouton de réinitialisation avec confirmation. La partie est sauvegardée localement sur cet appareil ; recharger reprend la progression. Seule une nouvelle partie confirmée l’efface.
 
 Les deux piments de chaque équipe permettent maintenant de jouer aux « Plats piégés », entre les défis ou pendant la phase des derniers piments. L’illustration d’accueil validée est conservée ; les trois logos partenaires sont intégrés dans l’en-tête. Rien n’est publié automatiquement.
 
@@ -54,7 +54,7 @@ Le personnage et le camion des pages intérieures sont des vignettes SVG réutil
 
 Le nom « L’apéro local » sur le plateau ouvre la manche : introduction, Montpon-Ménestérol, Jonzac, Barbezieux-Saint-Hilaire, bonus sans points puis bilan. Les deux équipes répondent simultanément, sans indices ni alternance. Les quatre départements et les quatre numéros restent visibles dans chaque espace de réponse. La correction exige les quatre choix (deux par équipe).
 
-`apero.js` contient les livraisons et les règles ; `apero-ui.js` gère les nouveaux écrans. Chaque bonne composante vaut 5 points, indépendamment de l’autre ; maximum 30 points par équipe. Une validation fige la correction et attribue les points une seule fois. Reprendre une question conserve les choix ; reprendre une correction ou un bilan ne modifie pas les scores. Le bonus ne modifie jamais les scores. La manche terminée ne peut pas être recommencée sans réinitialiser la partie. Recharger la page efface toujours toute la partie, comme auparavant.
+`apero.js` contient les livraisons et les règles ; `apero-ui.js` gère les nouveaux écrans. Chaque bonne composante vaut 5 points, indépendamment de l’autre ; maximum 30 points par équipe. Une validation fige la correction et attribue les points une seule fois. Reprendre une question conserve les choix ; reprendre une correction ou un bilan ne modifie pas les scores. Le bonus ne modifie jamais les scores. La manche terminée ne peut pas être recommencée sans réinitialiser la partie. Recharger la page conserve désormais la partie grâce à la sauvegarde locale.
 
 Les cartes proviennent de contours IGN Admin Express COG 2018, distribués par france-geojson sous Licence Ouverte. Départements et communes sont dessinés d’après ces données, sans tracés inventés ; les points sont des repères communaux. Voir `assets/maps/ATTRIBUTION.md`. Le générateur standard Python `tools/generate-maps.py` recrée les SVG hors ligne à partir de `assets/maps/source.geojson`. Les cartes n’exigent aucun service distant lorsque l’on joue.
 
@@ -98,7 +98,7 @@ Depuis la deuxième escale : introduction → trois énigmes (foie gras, chocola
 
 `sauce.js` gère un indice commun et des réponses propres à chaque équipe. Une erreur aux indices 1 ou 2 enregistre la réponse et met l’équipe en attente, sans changer l’indice. « Dévoiler l’indice suivant » apparaît seulement quand chaque équipe a répondu ou a déjà trouvé ; le formateur déclenche alors la révélation commune. Une équipe ayant trouvé conserve ses points et ne répond plus, tandis que l’autre peut poursuivre seule. La troisième erreur termine sa recherche à zéro. Une réussite attribue 20, 15 ou 10 points selon l’indice commun, une seule fois. La correction attend la fin des deux recherches. Maximum : 60 points par équipe sur cette manche, ajoutés aux scores généraux.
 
-Chaque bouton de validation ouvre une confirmation annulable. Un jeton propre au jeu, à l’énigme, à l’indice commun, à l’équipe et à son état refuse les confirmations répétées ou périmées. Un second jeton protège la révélation commune contre les clics répétés. Une équipe en attente ne peut pas répondre une deuxième fois au même indice. Les validations n’affectent ni la réponse de l’autre équipe ni les jokers. Revenir au carnet puis reprendre la manche conserve les indices et les résultats, sans réattribuer les points. La réinitialisation et le rechargement effacent la partie, comme auparavant.
+Chaque bouton de validation ouvre une confirmation annulable. Un jeton propre au jeu, à l’énigme, à l’indice commun, à l’équipe et à son état refuse les confirmations répétées ou périmées. Un second jeton protège la révélation commune contre les clics répétés. Une équipe en attente ne peut pas répondre une deuxième fois au même indice. Les validations n’affectent ni la réponse de l’autre équipe ni les jokers. Revenir au carnet puis reprendre la manche conserve les indices et les résultats, sans réattribuer les points. La réinitialisation confirmée efface la partie ; le rechargement la conserve.
 
 `sauce-ui.js` gère ces nouveaux écrans. Trois visuels fournis sont intégrés via `sauce-photos.js` : photographie de foie gras, illustration de boulangère et photographie d’huîtres. L’utilisateur a expressément demandé de conserver l’illustration IA pour la chocolatine : elle porte la mention « Illustration générée par intelligence artificielle », sans auteur ni licence Wikimedia attribués à tort. Les deux photographies reprennent les références Wikimedia fournies par l’utilisateur ; la comparaison avec les originaux reste bloquée par HTTP 403. Aucun réglage réseau n’a été modifié.
 
@@ -140,7 +140,7 @@ La troisième escale est désormais jouable : introduction → choucroute → dr
 
 Le formateur choisit directement une région par clic sur sa véritable surface, ou au clavier (Tab, Entrée/Espace). Une liste de boutons permet aussi de sélectionner les très petites zones. Le drapeau est déplaçable avant validation. Après validation corail, le rendu ne conserve ni drapeau, ni surbrillance, ni texte indiquant son choix pendant le tour sauge. Les deux drapeaux réapparaissent après validation sauge ; s’ils partagent la même région, ils sont décalés côte à côte. La bonne région ne s’affiche qu’après le clic explicite de révélation, qui ajoute exactement 5 points par bon choix, sans pénalité. Une équipe n’ayant pas trouvé la spécialité peut gagner les points géographiques.
 
-Le maximum de cette manche est donc de 75 points par équipe, ajoutés aux scores cumulés. Les jetons empêchent les confirmations et validations périmées ; les transitions et la révélation géographique sont protégées contre les répétitions. Revenir au carnet puis reprendre conserve la phase et les choix, y compris le masquage du drapeau corail. Le rechargement et la réinitialisation effacent la partie, comme auparavant.
+Le maximum de cette manche est donc de 75 points par équipe, ajoutés aux scores cumulés. Les jetons empêchent les confirmations et validations périmées ; les transitions et la révélation géographique sont protégées contre les répétitions. Revenir au carnet puis reprendre conserve la phase et les choix, y compris le masquage du drapeau corail. Le rechargement conserve la partie ; la réinitialisation confirmée l’efface.
 
 ### Bonus et photographies
 
@@ -172,7 +172,7 @@ Les deux équipes jouent successivement : corail déplace et valide ; sa proposi
 - Fleuves : trois étiquettes GARONNE/SEINE/RHIN à glisser sur les tracés ou leurs grands repères anonymes A/B/C. Une étiquette sur une zone occupée échange les positions ; aucune zone n’accueille deux étiquettes de la même équipe. Les **trois placements sont obligatoires**, selon la clarification de l’utilisateur. Le barème est 5 points par bonne association ; avec trois étiquettes exclusives et toutes placées, les gains possibles sont mathématiquement **0, 5 ou 15**, pas 10. Les deux séries de réponses restent visibles et décalées à la correction.
 - Alpes : miniature du food truck rouge d’origine, encadrée dans la couleur de l’équipe ; aucune nouvelle illustration de véhicule. 15 points pour une localisation correcte des Alpes françaises, sinon 0. Deux camions proches sont décalés visuellement, avec des traits vers leurs positions réelles ; la note utilise toujours les positions enregistrées, jamais les positions d’affichage.
 
-Maximum : 45 points par équipe. Le bonus collectif B (un fleuve se jette dans la mer ou l’océan, une rivière dans un autre cours d’eau) ne modifie ni scores ni jokers. Le bilan détaille les trois défis et le score cumulé. La réinitialisation et le rechargement effacent la partie, comme auparavant.
+Maximum : 45 points par équipe. Le bonus collectif B (un fleuve se jette dans la mer ou l’océan, une rivière dans un autre cours d’eau) ne modifie ni scores ni jokers. La transition conserve le score cumulé sans tableau détaillé. La réinitialisation confirmée efface la partie ; le rechargement la conserve.
 
 ### Chronomètres et accessibilité
 
@@ -205,7 +205,7 @@ Branche issue de `main` après fusion de la manche 4 (PR n° 11). Cinquième esc
 
 Le même moteur gère les drapeaux : corail choisit et valide, son choix disparaît pendant le tour sauge, les deux drapeaux réapparaissent, puis le formateur révèle le pays. Une bonne localisation rapporte exactement 5 points, ajoutés une seule fois. Les jetons sont propres à la manche, la partie, la destination, l’indice et l’équipe : les confirmations répétées ou périmées et les jetons d’une autre manche sont refusés. `flag-map.js` reprend le dessin des drapeaux de la manche 3, leurs couleurs, leur masquage et leur décalage côte à côte.
 
-Le maximum de la manche est 75 points par équipe. Le bilan détaille les points d’identification et de localisation pour chacun des trois pays, puis le total de manche et le score cumulé. Revenir au carnet reprend la phase et les réponses. Le rechargement et la réinitialisation effacent la partie, comme auparavant.
+Le maximum de la manche est 75 points par équipe. La transition conserve les scores cumulés sans tableau détaillé ; les points détaillés restent dans les corrections et les données de partie. Revenir au carnet reprend la phase et les réponses. Le rechargement conserve la partie ; la réinitialisation confirmée l’efface.
 
 ### Carte et contenu
 
@@ -248,7 +248,7 @@ Les cinq premières destinations utilisent **le même planisphère et le même c
 
 `flag-choices.js` extrait la gestion commune des choix, verrous et révélations des manches 3 et 5. Ces dernières continuent de l’utiliser via `clue-flags.js` avec leurs barèmes de 5 points inchangés. La manche 6 utilise la même logique de confidentialité : choix corail modifiable, validation, disparition complète de son drapeau, choix sauge, validation, deux drapeaux côte à côte si nécessaire. Aucun nom de continent n’est dessiné ni fourni dans les libellés accessibles pendant les réponses. La correction colore le continent et situe la destination (pays source mis en évidence pour les quatre premiers défis).
 
-Une bonne localisation donne **10 points par équipe et par défi**, une seule fois au clic de révélation. La manche rapporte au maximum **60 points par équipe**, ajoutés aux scores cumulés. Les jokers restent inchangés. Le retour au carnet conserve la phase, les réponses et leur masquage ; réinitialisation et rechargement effacent la partie comme auparavant.
+Une bonne localisation donne **10 points par équipe et par défi**, une seule fois au clic de révélation. La manche rapporte au maximum **60 points par équipe**, ajoutés aux scores cumulés. Les jokers restent inchangés. Le retour au carnet conserve la phase, les réponses et leur masquage ; le rechargement conserve la partie ; la réinitialisation confirmée l’efface.
 
 ### Défi surprise : placement libre
 
@@ -314,3 +314,28 @@ Branche `feat/grand-final`, mise à jour depuis `main` après la fusion de la PR
 Validation du final : `node --test tests/*.test.cjs` et `FINAL_TEST_URL=http://127.0.0.1:8008 node tests/final.browser.cjs`. Le navigateur couvre un dernier joker réel, le verrou définitif, l’absence de révélation prématurée, corail/sauge/égalité, les onze consultations sans mutation, annulation/confirmation du reset, les nouveaux piments et la réduction des animations. Les cinq dimensions habituelles sont vérifiées sans débordement horizontal. Les essais utilisent Chromium avec des dimensions Chromebook/vidéoprojecteur simulées, sans matériel physique.
 
 Résultat de validation : **709 tests unitaires réussis**, ainsi que les neuf suites navigateur (final, jokers, six manches et pauses métiers, démonstration comprise).
+
+
+## Corrections graphiques et ergonomiques
+
+L’accueil utilise maintenant la nouvelle illustration validée `assets/Le grand voyage gourmand.png`. L’ancien fichier reste intact et continue de fournir le personnage et le camion d’origine sur les autres écrans. Le bouton invisible « En route ! » suit le bouton dessiné de la nouvelle image, avec focus clavier. Les partenaires de l’en-tête restent masqués sur l’accueil ; ailleurs, la mention « Site de Coutras » a été retirée sans remplacer le logo E2C.
+
+`ergonomics.js` harmonise les actions principales avec le visuel existant « Livraison suivante ». Les réponses bonne/mauvaise, les choix et les petites commandes restent distincts. Les champs des équipes, les cartes de réponse et les règles sont arrondis/allégés ; le personnage est agrandi et inversé avec sa bulle dans l’introduction de la manche 2. Les cinq métiers ont des titres féminins explicites. Les ressources manquantes sont détaillées dans [le bilan des corrections](docs/ERGONOMIE.md).
+
+Le pion dépend exclusivement des manches terminées, jamais de la manche ouverte. Six positions sont prévues, sans masquer les intitulés sur ordinateur ou mobile. La route et les escales existantes restent en place, avec deux petits souvenirs vectoriels supplémentaires. Le déplacement utilise une courte transition de position, désactivée en réduction des animations ; il ne simule pas une trajectoire exacte le long de chaque courbe.
+
+### Sauvegarde locale
+
+`persistence.js` conserve la partie dans `localStorage` sous `voyage-gourmand:partie:v1` : noms, scores, manches, choix/drapeaux, pauses métiers, jokers et clôture finale. Au rechargement, le carnet reprend les étapes réellement terminées. Un joker interrompu reprend sa question ou sa correction et sa continuation, sans consommer un second piment ni attribuer deux fois les points. Les chronos ajustent leur origine au rechargement. La nouvelle partie confirmée efface la sauvegarde ; annuler ne change rien. Si le stockage du navigateur est indisponible, le jeu reste utilisable en mémoire. Cette sauvegarde reste propre au navigateur et à l’adresse du site, sans serveur ni compte.
+
+### Ajustements pédagogiques et transitions
+
+L’indice 3 de la chocolatine devient « Passé au nord de la Garonne, je ne porte pas toujours le même nom. ». L’idée reçue de l’entretien hôtelier concerne le travail solitaire ; la correction rappelle la coordination avec les collègues et les autres services. Les deux affirmations vraies sont conservées.
+
+Dans la manche 5 uniquement, l’interface appelle automatiquement la transition existante vers l’indice suivant après les réponses de toutes les équipes encore en recherche. Le bandeau et la commande manuelle sont retirés. Les jetons, les gains 20/15/10 et les révélations distinctes de la réponse et de la carte restent identiques. Portugal : « Destination mystère n° 2 » ; Roumanie : « Livraison urgente », sans château en Transylvanie dans le préambule. Le moteur partagé des manches 3 et 5 n’est pas modifié.
+
+Les six corrections de la manche 6 placent la carte et la grande photo côte à côte sur ordinateur, puis les explications communes et la navigation, sans perdre les drapeaux, crédits ou informations sur la pollution. Sur mobile, les supports s’empilent. Les récapitulatifs détaillés de fin des six manches sont remplacés par des transitions courtes ; les données, gains, scores cumulés et pauses restent disponibles. Le grand final est conservé.
+
+### Vérification
+
+709 tests unitaires et dix suites navigateur : six manches, pauses métiers, jokers, final et corrections. Les tests des anciennes manches isolent explicitement leur stockage afin de conserver des parties indépendantes. Le nouveau test `ERGONOMICS_TEST_URL=http://127.0.0.1:8008 node tests/ergonomics.browser.cjs` vérifie clavier/accueil, sauvegarde et reprise d’un joker avant et après gain, synchronisation automatique, six positions persistantes du pion, absence de chevauchement avec les intitulés, reset et six photos aux formats 1920×1080, 1366×768, 1024×768, 390×844 et 320×640.

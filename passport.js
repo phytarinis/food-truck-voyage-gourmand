@@ -9,12 +9,12 @@
    'Ma capitale est Bruxelles et je partage une frontière avec la France.',
    'Je suis célèbre pour mes frites, mes gaufres et mon chocolat.'
   ]},
-  {id:'portugal',answer:'Portugal',searchTitle:'Destination pastéis de nata !',title:'Direction le Portugal !',region:'PRT',capital:'Lisbonne',heading:'Cap sur Lisbonne !',photo:'Photographie de pastéis de nata à venir',fact:"Le Portugal se situe à l'ouest de l'Espagne, au bord de l'océan Atlantique. Sa capitale est Lisbonne. Les pastéis de nata sont des petites pâtisseries traditionnelles à base de crème.",clues:[
+  {id:'portugal',answer:'Portugal',searchTitle:'Destination mystère n° 2',title:'Direction le Portugal !',region:'PRT',capital:'Lisbonne',heading:'Cap sur Lisbonne !',photo:'Photographie de pastéis de nata à venir',fact:"Le Portugal se situe à l'ouest de l'Espagne, au bord de l'océan Atlantique. Sa capitale est Lisbonne. Les pastéis de nata sont des petites pâtisseries traditionnelles à base de crème.",clues:[
    'Je suis un pays européen connu pour ses explorateurs qui ont parcouru les océans.',
    "Je possède une longue façade sur l'océan Atlantique et je partage ma seule frontière terrestre avec l'Espagne.",
    "Ma capitale est Lisbonne et l'une de mes spécialités sucrées est le pastel de nata."
   ]},
-  {id:'romania',answer:'Roumanie',searchTitle:'Une livraison qui donne les crocs !',title:'Direction la Roumanie !',region:'ROU',capital:'Bucarest',heading:'Bienvenue au pays de Dracula !',quote:'Livraison urgente ! Le client habite un château en Transylvanie… et il a demandé sa viande très, très saignante !',photo:'Photographie du château de Bran à venir',fact:"La Roumanie se situe en Europe de l'Est et sa capitale est Bucarest. La Transylvanie est une région historique associée aux légendes de vampires et au personnage fictif de Dracula.",clues:[
+  {id:'romania',answer:'Roumanie',searchTitle:'Livraison urgente',title:'Direction la Roumanie !',region:'ROU',capital:'Bucarest',heading:'Bienvenue au pays de Dracula !',quote:'Livraison urgente ! Le client a demandé sa viande très, très saignante !',photo:'Photographie du château de Bran à venir',fact:"La Roumanie se situe en Europe de l'Est et sa capitale est Bucarest. La Transylvanie est une région historique associée aux légendes de vampires et au personnage fictif de Dracula.",clues:[
    "Je suis un pays d'Europe traversé par les montagnes des Carpates.",
    'Une de mes régions les plus célèbres est la Transylvanie, associée à de nombreuses légendes.',
    'Ma capitale est Bucarest et je suis souvent associé à la légende de Dracula.'
