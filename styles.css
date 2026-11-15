@@ -769,3 +769,35 @@ body.compact-header .topbar{height:auto;min-height:48px;padding:4px 5%;gap:12px;
 #delivery #delivery-record.team-1{background:var(--sage);color:var(--ink)}
 #delivery #delivery-record.team-1:hover{background:#b4c2a7}
 #delivery .delivery-turn{overflow-wrap:anywhere}
+
+/* Démarrage et pauses métiers : retouches de présentation uniquement. */
+body.setup-mode .topbar{height:auto;min-height:48px;padding-top:4px;padding-bottom:4px}
+.setup-mode .topbar .partner-labo,.setup-mode .topbar .partner-e2c,.setup-mode>footer>span:first-child{display:none}
+.setup-mode .topbar .partner-afept{width:110px;height:40px}
+#setup{padding-top:16px}#setup .setup-companion{margin:0 0 12px 24px;max-width:350px;gap:22px}
+#setup .setup-companion>svg{width:94px;height:168px;flex-shrink:0}
+#setup .setup-partners{display:flex;align-items:center;gap:14px}
+#setup .setup-partners img{width:80px;height:80px;object-fit:contain}
+#setup .setup-partners svg{width:72px;height:80px;flex-shrink:0}
+#setup h1{font-size:clamp(34px,3.5vw,48px);margin:14px 0}
+#setup .intro{max-width:550px;font-size:19px;line-height:1.5}
+#setup .team-fields{margin:20px 0}#setup .team-fields label{padding:20px}
+#setup .primary,#rules .primary,#career-reveal{border-radius:8px;min-height:48px;padding:12px 20px;gap:16px}
+#rules{max-width:1200px}#rules>h1{font-size:clamp(32px,3vw,44px);margin:8px 0 24px}
+#rules .rules-grid{grid-template-columns:1fr 1fr;gap:16px}
+#rules .rule-card{grid-column:auto;grid-row:auto;padding:20px 22px 20px 52px;border-radius:14px;box-shadow:none}
+#rules .rule-card h2{font-size:22px;line-height:1.25}#rules .rule-card p{font-size:19px;line-height:1.5;margin:10px 0 0}#rules .rule-number{top:23px}
+#rules .rules-bottom{margin-top:22px}
+#career-pause .career-layout{grid-template-columns:minmax(0,1fr) 210px;gap:28px;align-items:start}
+#career-pause .career-content>h1{font-size:clamp(28px,2.8vw,38px);margin:0 0 10px;line-height:1.15}
+#career-pause .career-invitation{margin:0 0 14px}#career-pause .career-invitation p{font-size:22px;line-height:1.3;margin:0}
+#career-pause .career-content .career-statement{font-size:19px;line-height:1.4}
+#career-pause .career-content .career-card{padding:12px 14px}#career-pause .career-content .career-card:has(input:checked){padding:11.5px 13.5px}
+#career-pause .career-companion{display:flex;flex-direction:column;gap:14px}
+#career-pause .career-portrait{width:110px;height:200px}
+#career-pause .career-companion>.speech{font-size:17px;line-height:1.35;padding:12px;width:100%}
+#career-pause .career-companion>.speech::after{display:none}
+@media(max-width:1000px){#career-pause .career-layout{grid-template-columns:minmax(0,1fr) 175px;gap:18px}#career-pause .career-portrait{width:95px;height:175px}}
+@media(max-width:700px){#setup .setup-companion{float:none;justify-content:center;margin:0 0 14px;max-width:none}#setup .setup-companion>svg{width:72px;height:130px}#setup .setup-partners{gap:10px}#setup .setup-partners img{width:65px;height:65px}#setup .setup-partners svg{width:58px;height:65px}#rules .rules-grid{grid-template-columns:1fr}#rules .rule-card{padding:18px 18px 18px 46px}#rules .rule-card p{font-size:18px}#career-pause .career-layout{grid-template-columns:1fr}#career-pause .career-companion{flex-direction:row;align-items:center}#career-pause .career-portrait{width:80px;height:145px;flex-shrink:0}#career-pause .career-companion>.speech{max-width:310px}#career-pause .career-content .career-statement{font-size:18px}}
+
+#setup .setup-partners svg{border:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible}

@@ -21,8 +21,6 @@ const careerIcons = {
 function renderCareerPause() {
   const state = game.careerPauses[currentCareerIndex], job = CareerPauses.jobs[currentCareerIndex];
   scores();
-  $('career-progress').textContent = `PAUSE MÉTIER ${currentCareerIndex + 1} / ${job.name.toLocaleUpperCase('fr')} · ENTRE LES MANCHES ${job.afterRound} ET ${job.afterRound + 1}`;
-  $('career-title').textContent = job.name;
   $('career-quote').hidden = !state.revealed;
   $('career-quote').textContent = state.revealed ? job.quote : '';
   const illustration = CareerIllustrations[currentCareerIndex];
@@ -61,7 +59,7 @@ function renderCareerPause() {
   $('career-reveal').disabled = state.selected === null;
   $('career-reveal').hidden = state.revealed;
   $('career-choice-status').hidden = state.revealed;
-  if (!state.revealed) $('career-choice-status').textContent = state.selected === null ? 'Le formateur sélectionne votre proposition.' : `Proposition ${String.fromCharCode(65 + state.selected)} retenue collectivement.`;
+  if (!state.revealed) $('career-choice-status').textContent = state.selected === null ? '' : `Proposition ${String.fromCharCode(65 + state.selected)} retenue collectivement.`;
   $('career-revelation').hidden = !state.revealed;
   $('career-continue').hidden = !state.revealed;
   // Ne placer la correction et les informations dans le DOM qu’à la révélation.

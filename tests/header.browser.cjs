@@ -4,7 +4,7 @@ const{chromium}=require('playwright'),assert=require('node:assert/strict');
  for(const[width,height]of[[1366,768],[1920,1080],[1024,768],[390,844]]){
   await p.setViewportSize({width,height});
   await p.evaluate(()=>show('welcome'));assert.equal(await p.locator('.welcome-illustration').isVisible(),true);assert.equal(await p.locator('.topbar').isVisible(),false);
-  await p.evaluate(()=>show('setup'));assert.equal(await p.locator('.partners').isVisible(),true);assert.equal(await p.locator('.partner-logo:visible').count(),3);
+  await p.evaluate(()=>show('setup'));assert.equal(await p.locator('.partners').isVisible(),true);assert.equal(await p.locator('.partner-logo:visible').count(),1);assert.equal(await p.locator('.setup-partners>img,.setup-partners>svg').count(),2);
   const original=await p.evaluate(()=>JSON.stringify(game));
   for(const id of await p.locator('.screen').evaluateAll(ns=>ns.map(n=>n.id).filter(id=>!['welcome','setup'].includes(id)))){
    await p.evaluate(id=>{scores();show(id)},id);
@@ -21,10 +21,10 @@ const{chromium}=require('playwright'),assert=require('node:assert/strict');
   await p.evaluate(()=>renderSauce());assert.match(await p.locator('#screen-context').innerText(),/Manche 2.*quelle sauce/i);
   if(width>=1024)assert.ok((await p.locator('.topbar').boundingBox()).height<=56);
   if(width===1366)await p.screenshot({path:'/tmp/bandeau-captures/apres.png'});
-  await p.evaluate(()=>{openCareerPause(2)});assert.match(await p.locator('#screen-context').innerText(),/Pause métier 3.*Réceptionniste/);
+  await p.evaluate(()=>{openCareerPause(2)});assert.match(await p.locator('#screen-context').innerText(),/Pause métier 3.*Réceptionniste/i);
  }
  // Validation réelle des deux équipes : scores et navigation préservés.
  await p.setViewportSize({width:1366,height:768});await p.evaluate(()=>{game=FoodTruckGame.createGame(['Corail','Sauge']);SauceGame.start(game);SauceGame.begin(game);renderSauce()});
  for(let team=0;team<2;team++){await p.locator(`#sauce-panels button[data-team="${team}"][data-correct="true"]`).click();await p.locator('#sauce-confirm-answer').click()}
- assert.deepEqual(await p.evaluate(()=>game.teams.map(t=>t.score)),[20,20]);assert.equal(await p.locator('#sauce-correction').isVisible(),true);assert.match(await p.locator('#screen-context').innerText(),/Manche 2/);assert.deepEqual(errors,[]);await b.close();console.log('Bandeaux : tous écrans, logos limités aux pages 1/2, scores côte à côte, quatre formats et validation réelle OK');
+ assert.deepEqual(await p.evaluate(()=>game.teams.map(t=>t.score)),[20,20]);assert.equal(await p.locator('#sauce-correction').isVisible(),true);assert.match(await p.locator('#screen-context').innerText(),/Manche 2/i);assert.deepEqual(errors,[]);await b.close();console.log('Bandeaux : tous écrans, logos limités aux pages 1/2, scores côte à côte, quatre formats et validation réelle OK');
 })().catch(e=>{console.error(e);process.exit(1)});
