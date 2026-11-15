@@ -39,6 +39,8 @@ function updateHeaderContext(id) {
   const prefix = id.startsWith('delivery') ? 'apero' : id.split('-')[0];
   const round = keys.indexOf(prefix);
   if (['delivery','delivery-correction'].includes(id) && game?.apero) label.textContent = `Manche 1 · L'apéro local / Livraison ${game.apero.index + 1} sur 3 · ${AperoGame.deliveries[game.apero.index].city} · En équipes`;
+  else if(['sauce-search','sauce-correction'].includes(id)&&game?.sauce)label.textContent=`Manche 2 · À quelle sauce ? / Énigme ${game.sauce.puzzleIndex+1} sur 3 · En équipes`;
+  else if(id==='sauce-bonus')label.textContent='Manche 2 · À quelle sauce ? / Défi découverte · Collectif · Sans points';
   else if (id === 'apero-bonus') label.textContent = "Manche 1 · L'apéro local / Défi découverte · Collectif · Sans points";
   else if (id === 'world-transition') label.textContent = 'Le grand final';
   else if (round >= 0) label.textContent = `Manche ${round + 1} · ${rounds[round]}`;

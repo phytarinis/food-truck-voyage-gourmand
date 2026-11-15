@@ -7,7 +7,7 @@
   {id:'eggs',topic:'Chine — Les œufs de cent ans',question:'En Chine, que sont les fameux « œufs de cent ans » ?',options:['Des œufs couvés pendant cent jours.','Des œufs conservés selon une méthode traditionnelle.','Des œufs cuits dans du thé pendant une semaine.'],correctIndex:1,explanation:"Les œufs de cent ans sont conservés pendant plusieurs semaines ou mois grâce à une méthode traditionnelle. Ils n'ont pas réellement cent ans !",quote:"Cent ans ?! Heureusement que la date limite n'est pas écrite sur la coquille !"},
   {id:'scorpions',topic:'Chine — Brochettes au marché',question:'Sur certains marchés chinois, quelle brochette insolite peut-on trouver ?',options:['Des étoiles de mer fourrées au riz.','Des scorpions grillés.','Des scarabées au caramel salé.'],correctIndex:1,explanation:"On trouve des brochettes de scorpions sur certains marchés touristiques chinois. Il ne s'agit pas d'une pratique représentative de l'ensemble de la cuisine chinoise.",quote:'Je préfère quand même les brochettes qui ne piquent pas avant la cuisson !'}
  ];
- const normalScreens=new Set(['delivery-correction','spicy-break','journey','apero-intro','apero-end','sauce-intro','sauce-end','france-intro','france-end','gps-intro','gps-end','passport-intro','passport-end','world-intro','world-end','world-transition']);
+ const normalScreens=new Set(['sauce-correction','delivery-correction','spicy-break','journey','apero-intro','apero-end','sauce-intro','sauce-end','france-intro','france-end','gps-intro','gps-end','passport-intro','passport-end','world-intro','world-end','world-transition']);
  const roundKeys=['apero','sauce','france','gps','passport','world'];let nextSession=1;
  function state(game){if(!game.spicy)game.spicy={id:nextSession++,serial:0,seen:[],window:null,used:[],active:null,history:[],finale:null};return game.spicy;}
  function allComplete(game){return Boolean(game&&roundKeys.every(key=>game[key]?.phase==='complete'));}
@@ -28,7 +28,7 @@
  function release(game,key){const s=observe(game);if(!s?.window||s.window.key!==key)return false;s.window.ready=true;return true;}
  function available(game){const s=state(game);return questions.filter(q=>!s.used.includes(q.id));}
  function canNormal(game,context){
-  if(!game||!normalScreens.has(context)||(context==='delivery-correction'&&game.apero?.phase!=='correction'))return false;const s=observe(game);
+  if(!game||!normalScreens.has(context)||(context==='delivery-correction'&&game.apero?.phase!=='correction')||(context==='sauce-correction'&&game.sauce?.phase!=='correction'))return false;const s=observe(game);
   return Boolean(!s.active&&!s.finale&&!allComplete(game)&&!hasQuestion(game)&&s.window?.ready&&!s.window.spent&&available(game).length&&game.teams.some(t=>t.jokers>0));
  }
  function windowToken(game,context){if(!canNormal(game,context))return null;const s=state(game);return `spicy:${s.id}:window:${s.window.key}`;}

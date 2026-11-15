@@ -25,6 +25,6 @@ const{chromium}=require('playwright'),assert=require('node:assert/strict');
  }
  // Validation réelle des deux équipes : scores et navigation préservés.
  await p.setViewportSize({width:1366,height:768});await p.evaluate(()=>{game=FoodTruckGame.createGame(['Corail','Sauge']);SauceGame.start(game);SauceGame.begin(game);renderSauce()});
- for(let team=0;team<2;team++){await p.locator(`#sauce-panels button[data-team="${team}"][data-correct="true"]`).click();await p.locator('#sauce-confirm-answer').click()}
+ for(let team=0;team<2;team++){await p.locator(`#sauce-response-controls button[data-team="${team}"][data-correct="true"]`).click();}
  assert.deepEqual(await p.evaluate(()=>game.teams.map(t=>t.score)),[20,20]);assert.equal(await p.locator('#sauce-correction').isVisible(),true);assert.match(await p.locator('#screen-context').innerText(),/Manche 2/i);assert.deepEqual(errors,[]);await b.close();console.log('Bandeaux : tous écrans, logos limités aux pages 1/2, scores côte à côte, quatre formats et validation réelle OK');
 })().catch(e=>{console.error(e);process.exit(1)});
