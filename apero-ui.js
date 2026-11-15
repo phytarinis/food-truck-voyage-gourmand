@@ -7,7 +7,7 @@ function renderApero() {
   scores();
   const s = game.apero;
   if (s.phase === 'intro') { AperoGame.begin(game); renderApero(); return; }
-  if (s.phase === 'question') { renderDelivery(); show('delivery'); return; }
+  if (s.phase === 'question') { if(AperoGame.entriesReady(game)){AperoGame.validate(game);renderApero();return;} renderDelivery(); show('delivery'); return; }
   if (s.phase === 'correction') { renderDeliveryCorrection(); show('delivery-correction'); return; }
   if (s.phase === 'bonus') {
     $('bonus-answer').hidden = !s.bonusRevealed;
@@ -19,17 +19,17 @@ function renderApero() {
   show('apero-end');
 }
 function updateDeliveryStatus() {
-  const e=AperoGame.entry(game),done=AperoGame.entriesReady(game);
+  const e=AperoGame.entry(game);
   $('delivery-record').hidden=e.team===null;
   $('delivery-record').disabled=e.draft.department===null||e.draft.number===null;
-  $('delivery-validate').hidden=!done;$('delivery-validate').disabled=!done;
-  $('delivery-status').textContent=done?'Les deux réponses sont enregistrées. Vous pouvez les modifier ou valider la correction.':'Les réponses et les points seront révélés après la validation commune.';
+
+  $('delivery-status').textContent='La correction apparaît après l’enregistrement de la deuxième équipe.';
 }
 function renderDelivery() {
   const s=game.apero,d=AperoGame.deliveries[s.index],e=AperoGame.entry(game),stamp=AperoGame.entryToken(game);
   $('delivery-progress').textContent=`L’APÉRO LOCAL / LIVRAISON ${s.index+1} SUR 3`;
   $('delivery-title').textContent=`Dans quel département se situe ${d.city} et quel est le numéro de ce département ?`;
-  $('delivery-turn').textContent=e.team===null?'Les deux équipes ont répondu.':`À ${game.teams[e.team].name} de répondre`;
+  $('delivery-turn').textContent=e.team===null?'':`À ${game.teams[e.team].name} de répondre`;
   $('delivery-turn').className=`delivery-turn${e.team===null?'':` team-${e.team}`}`;
   $('delivery-answers').replaceChildren();
   if(e.team!==null){
@@ -113,11 +113,11 @@ function renderCulturePhotos(department) {
   }));
   $('department-illustrations').hidden = false;
 }
-function recordDeliveryAnswer(){if(AperoGame.record(game,AperoGame.entryToken(game))){renderDelivery();$('delivery-turn').focus();saveProgress()}}
+function recordDeliveryAnswer(){if(AperoGame.record(game,AperoGame.entryToken(game))){renderApero();if(game.apero.phase==='question')$('delivery-turn').focus();saveProgress()}}
 $('delivery-record').addEventListener('click',recordDeliveryAnswer);
 $('delivery-form').addEventListener('submit', event => {
   event.preventDefault();
-  if(AperoGame.entriesReady(game)){if(AperoGame.validate(game))renderApero();}else recordDeliveryAnswer();
+  recordDeliveryAnswer();
 });
 $('delivery-next').addEventListener('click', () => { if (AperoGame.next(game)) renderApero(); });
 $('bonus-reveal').addEventListener('click', () => {
