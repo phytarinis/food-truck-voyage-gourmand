@@ -680,7 +680,7 @@ body:not(.welcome-mode) h1 em{background:linear-gradient(transparent 85%,#e9b44b
 .final-souvenirs li:nth-child(5){color:var(--red)}
 
 /* Retouches ciblées : accueil validé, boutons van et espaces de lecture. */
-.welcome-start{left:3.8%;top:83%;width:34%;height:14%}
+.welcome-start{left:8.2%;top:84%;width:27.5%;height:11%}
 .team-fields label{border-radius:20px;box-shadow:none}.team-fields input{border-radius:10px}
 .setup-companion{max-width:540px;gap:20px;margin-top:0}.setup-companion svg{width:165px;height:285px;flex-shrink:0}.setup-companion .speech{font-size:21px;max-width:340px}
 .rule-card{border-color:var(--line);border-radius:16px;box-shadow:none;background:#fffaf099}.trapped-rule{border-top:3px solid var(--red)}.rules-bottom .companion{flex:1;max-width:780px}.rules-bottom .companion svg{width:100px;height:185px;flex-shrink:0}.rules-bottom .speech{font-size:20px;max-width:580px}
@@ -812,3 +812,15 @@ body.delivery-mode #screen-context{font-size:clamp(16px,1.3vw,18px)}
 #delivery .delivery-team .delivery-field-number{border-top:3px solid #8b9f80}
 #delivery .delivery-team .delivery-field legend{font-size:18px;font-weight:bold;padding:0 6px;color:var(--ink)}
 @media(max-width:700px){#delivery .delivery-team{gap:14px}#delivery .delivery-team .delivery-field{padding:10px 12px 12px}}
+
+/* Carnet : le plateau reste prioritaire, sans changer son tracé. */
+body.journey-mode main{min-height:0}
+@media(min-width:901px){
+ body.journey-mode #journey{padding:12px 5% 8px}
+ #journey #journey-title.visually-hidden{margin:0;padding:0}
+ #journey .scoreboard{margin-bottom:8px;padding-bottom:8px}
+ #journey .route-map{margin-top:8px;height:auto;aspect-ratio:1200 / 440}
+ #journey .route-legend{margin:8px 0}
+ body.journey-mode footer{padding-top:12px;padding-bottom:12px}
+}
+@media(min-width:901px) and (max-width:1050px){#journey .route-map{height:420px;aspect-ratio:auto}}

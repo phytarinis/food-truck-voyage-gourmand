@@ -7,7 +7,7 @@ function syncFinalAccess(id){
  if(finalGameRef!==game){clearTimeout(finalRevealTimer);finalRevealTimer=null;finalGameRef=game;$('final-scores').replaceChildren();$('final-winner').textContent='';$('final-tie').hidden=true;}
  finalReturn.hidden=!finalIsClosed()||id==='final-results';
  if(finalIsClosed()){
-  $('play').disabled=true;$('spicy-open').hidden=true;
+  $('spicy-open').hidden=true;
   if(id==='journey'){
    renderRoute({current:5,completed:[0,1,2,3,4,5]});
    let panel=$('final-career-links');if(!panel){panel=document.createElement('nav');panel.id='final-career-links';panel.className='final-career-links';panel.setAttribute('aria-label','Revoir les cinq pauses métiers');$('journey').append(panel);}

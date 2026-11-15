@@ -74,7 +74,7 @@ function renderDeliveryCorrection() {
   $('department-prefecture').textContent = `PRÉFECTURE : ${d.prefecture}`;
   $('department-facts').replaceChildren();
   renderCulturePhotos(d.number);
-  $('delivery-next-label').textContent = s.index === 2 ? 'Le bonus final' : 'Livraison suivante';
+  $('delivery-next-label').textContent = s.index === 2 ? 'Défi découverte' : 'Livraison suivante';
 }
 function renderCulturePhotos(department) {
   $('department-illustrations').replaceChildren(...CulturePhotos[department].map(photo => {

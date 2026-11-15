@@ -67,7 +67,7 @@
     <section id="welcome" class="screen welcome" aria-labelledby="welcome-title">
       <h1 id="welcome-title" class="visually-hidden">Le grand voyage gourmand</h1>
       <div class="welcome-scene">
-        <img class="welcome-illustration" src="assets/Le%20grand%20voyage%20gourmand.png" width="1672" height="941" fetchpriority="high" alt="À Coutras, un personnage accompagne un food truck rouge vintage dans un décor de petite ville et de campagne, illustré dans un style bande dessinée coloré.">
+        <img class="welcome-illustration" src="assets/Le%20grand%20voyage%20gourmand%20en%20van.png" width="1672" height="941" fetchpriority="high" alt="Une cuisinière devant le food truck rouge, le logo Labo Épicé et le titre Le grand voyage gourmand, dans un paysage de campagne.">
         <button id="onward" class="welcome-start" type="button"><span class="visually-hidden">En route ! Préparer les deux équipes</span></button>
       </div>
     </section>
@@ -96,9 +96,7 @@
 
     <section id="journey" class="screen compact" hidden aria-labelledby="journey-title">
       <div id="journey-scores" class="scoreboard"></div>
-      <p class="eyebrow">LE CARNET DE ROUTE</p>
-      <h1 id="journey-title" tabindex="-1">Six manches. <em>Un grand voyage.</em></h1>
-      <p class="intro">Choisissez une escale pour poursuivre le voyage. Le camion avance à chaque manche terminée.</p>
+      <h1 id="journey-title" class="visually-hidden" tabindex="-1">Carnet de route</h1>
       <div class="route-map" aria-label="Itinéraire des six manches jouables">
         <svg class="board-art" viewBox="0 0 1200 440" preserveAspectRatio="none" aria-hidden="true">
           <path d="M0 0H400Q322 90 220 124T0 222Z" fill="#d9dfc8"/>
@@ -121,14 +119,11 @@
         <div class="route-truck" id="route-truck"><svg role="img" aria-label="Notre food truck rouge, prêt au départ"><use href="#truck-art"/></svg><span>AU DÉPART</span></div>
       </div>
       <div class="route-legend" aria-label="États prévus des manches"><span class="pending">○ À venir</span><span class="active">◉ En cours</span><span class="complete">✓ Terminée</span></div>
-      <div class="demo-launch"><div><span class="eyebrow">UNE ESCALE POUR ESSAYER</span><p>Un pays, une spécialité… à vous de jouer !</p></div><button class="primary" id="play">LANCER LA DÉMO <span>→</span></button></div>
-      <p class="tiny">Votre progression est conservée sur cet appareil. La démo est une escale indépendante.</p>
     </section>
 
     <section id="delivery" class="screen compact apero-screen" hidden aria-labelledby="delivery-title">
       <div class="scoreboard"></div>
       <h1 id="delivery-title" tabindex="-1"></h1>
-      <p class="delivery-instruction">Chaque équipe répond à son tour. Le formateur enregistre les deux propositions avant la correction.</p>
       <p id="delivery-turn" class="delivery-turn" role="status" tabindex="-1"></p><form id="delivery-form"><div id="delivery-answers" class="delivery-answers"></div><button class="primary" id="delivery-record" type="button" disabled>Enregistrer la réponse <span>→</span></button><div id="delivery-records" class="delivery-records"></div><div class="delivery-actions"><p id="delivery-status" role="status"></p></div></form>
       <button class="text-button apero-back">Le carnet de route · réponses conservées</button>
     </section>
@@ -351,25 +346,6 @@
       </div>
       <div id="career-revelation" class="career-revelation" hidden tabindex="-1" aria-labelledby="career-feedback"><h2 id="career-feedback"></h2><p id="career-explanation"></p><ul id="career-facts" class="career-facts"></ul></div>
       <div class="career-bottom"><p class="tiny">Une découverte pour tout le monde · Aucun point attribué · Aucun joker utilisé</p><button id="career-continue" class="primary" hidden>LE CARNET DE ROUTE <span>→</span></button></div>
-    </section>
-
-    <section id="challenge" class="screen compact challenge" hidden aria-labelledby="challenge-title">
-      <div id="challenge-scores" class="scoreboard"></div>
-      <div class="challenge-heading"><svg class="challenge-truck" role="img" aria-label="Le food truck rouge de notre voyage"><use href="#truck-art"/></svg><div><p class="eyebrow">ESCALE DÉMO / SPÉCIALITÉ MYSTÈRE</p><h1 id="challenge-title" tabindex="-1">Ça vous dit <em>quelque chose ?</em></h1></div><span class="ticket" id="points"></span></div>
-      <div class="clue-card"><div class="clue-top"><span id="clue-number"></span><span id="clue-progress" aria-hidden="true"></span></div><p id="clue" aria-live="polite"></p><span class="clue-note">CONCERTEZ-VOUS ET RÉPONDEZ À VOIX HAUTE.</span></div>
-      <div class="turn-panel"><div><p class="eyebrow">AU TOUR DE</p><h2 id="active-team"></h2><p id="attempt-status"></p></div><div class="validation"><span>LE FORMATEUR VALIDE LA RÉPONSE</span><div><button id="wrong" class="secondary">✕ Mauvaise réponse</button><button id="correct" class="primary">✓ Bonne réponse</button></div></div></div>
-      <p id="feedback" class="feedback" role="status"></p>
-    </section>
-
-    <section id="result" class="screen compact" hidden aria-labelledby="result-title">
-      <div id="result-scores" class="scoreboard"></div>
-      <p class="eyebrow">LE MYSTÈRE EST DANS LE CORNET</p>
-      <h1 id="result-title" tabindex="-1">C’étaient <em>les frites !</em></h1>
-      <p id="outcome" class="outcome" role="status"></p>
-      <div class="correction"><img class="specialty-art" src="assets/frites.svg" alt="Un cornet de frites dorées avec une portion de sauce"><div><p class="eyebrow">BELGIQUE / BRUXELLES</p><h2>Une escale qui croustille</h2><p>Voisine de la France, la <strong>Belgique</strong> est célèbre pour ses frites servies en cornet avec de la sauce.</p><p><strong>Bruxelles</strong>, sa capitale, accueille plusieurs grandes institutions de l’Union européenne.</p></div></div>
-      <aside class="companion result-companion"><svg aria-hidden="true"><use href="#companion-art"/></svg><p class="speech">Pour la prochaine escale, je prends une carte… et un cornet !</p></aside>
-      <div class="result-actions"><button class="primary" id="back-to-journey">LE CARNET DE ROUTE <span>→</span></button><button class="text-button" id="replay">Rejouer la démonstration ↻</button></div>
-      <p class="tiny">Rejouer conserve les scores et alterne l’équipe qui commence.</p>
     </section>
   </main>
   <footer><span>LABO ÉPICÉ × E2C COUTRAS</span><span>LE SAVOIR A DU GOÛT.</span><button id="photo-credits-open" class="footer-credits" type="button">Crédits photos</button><span>VERSION DÉCOUVERTE · 01</span></footer>
