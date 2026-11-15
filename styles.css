@@ -714,3 +714,17 @@ button.van-action{display:inline-flex;align-items:center;justify-content:center;
 #journey .board-postcard{left:6%;top:49%;width:60px;height:48px}#journey .board-globe{left:50%;top:81%;width:50px;height:50px}
 @media(max-width:900px){#journey .board-postcard,#journey .board-globe{display:none}}
 @media(min-width:1001px) and (max-width:1450px){.career-screen .career-bottom{margin-top:4px}.career-screen .career-bottom .van-action{min-height:54px;padding:6px 12px}.career-screen .career-bottom .action-van{height:36px;width:48px}.career-screen .career-revelation{margin-top:8px;padding-top:8px}}
+
+/* Étape 1 : bandeau secondaire compact dès la troisième page. */
+body.compact-header .topbar{height:auto;min-height:48px;padding:4px 5%;gap:12px;flex-wrap:wrap}
+.compact-header .topbar .partners,.compact-header .topbar .game-signature,.compact-header>footer>span:first-child{display:none}
+#screen-context{font-size:18px;font-weight:bold;line-height:1.35;flex:1;min-width:180px}
+.compact-header .topbar .text-button{font-size:14px;max-width:none;margin:0;flex-shrink:0}
+.compact-header .screen.compact{padding-top:12px}
+.compact-header .screen .scoreboard{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;margin:0 0 12px;padding:0 0 8px;border-bottom:1px solid var(--line)}
+.compact-header .scoreboard .score{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;min-width:0;padding:0 0 0 10px;border-left-width:3px}
+.compact-header .scoreboard .score>strong{font-size:18px;line-height:1.3;overflow-wrap:anywhere}
+.compact-header .scoreboard .score-points{font-size:23px;line-height:1.25;white-space:nowrap}
+.compact-header .scoreboard .joker-counter{grid-column:1 / -1;display:flex;align-items:center;gap:6px;font-size:12px;line-height:1.4}
+.compact-header .scoreboard .joker-pepper{width:14px;height:16px}
+@media(max-width:650px){.compact-header .topbar{padding:4px 5%;gap:4px 10px}#screen-context{font-size:16px;min-width:140px}.compact-header .topbar .text-button{font-size:13px}.compact-header .screen .scoreboard{gap:12px}.compact-header .scoreboard .score{grid-template-columns:minmax(0,1fr);gap:2px;padding-left:6px}.compact-header .scoreboard .score>strong{font-size:16px}.compact-header .scoreboard .score-points{font-size:22px}.compact-header .scoreboard .joker-counter{font-size:11px;flex-wrap:wrap}}
