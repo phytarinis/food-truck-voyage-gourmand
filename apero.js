@@ -42,7 +42,10 @@
     if(!e||!stamp||stamp!==entryToken(game)||e.draft.department===null||e.draft.number===null)return false;
     game.apero.answers[e.team]={...e.draft};e.recorded[e.team]=true;e.revision++;
     e.team=e.recorded.every(Boolean)?null:e.recorded.indexOf(false);
-    e.draft=e.team===null?{department:null,number:null}:{...game.apero.answers[e.team]};return true;
+    e.draft=e.team===null?{department:null,number:null}:{...game.apero.answers[e.team]};
+    // Le second enregistrement ferme la question et attribue les points une seule fois.
+    if(e.team===null)return validate(game);
+    return true;
   }
   function edit(game,team) {
     const e=entry(game);if(!e||![0,1].includes(team)||!e.recorded[team])return false;
