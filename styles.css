@@ -728,3 +728,21 @@ body.compact-header .topbar{height:auto;min-height:48px;padding:4px 5%;gap:12px;
 .compact-header .scoreboard .joker-counter{grid-column:1 / -1;display:flex;align-items:center;gap:6px;font-size:12px;line-height:1.4}
 .compact-header .scoreboard .joker-pepper{width:14px;height:16px}
 @media(max-width:650px){.compact-header .topbar{padding:4px 5%;gap:4px 10px}#screen-context{font-size:16px;min-width:140px}.compact-header .topbar .text-button{font-size:13px}.compact-header .screen .scoreboard{gap:12px}.compact-header .scoreboard .score{grid-template-columns:minmax(0,1fr);gap:2px;padding-left:6px}.compact-header .scoreboard .score>strong{font-size:16px}.compact-header .scoreboard .score-points{font-size:22px}.compact-header .scoreboard .joker-counter{font-size:11px;flex-wrap:wrap}}
+
+/* Manche 1 uniquement : une question et une saisie successive, sans panneau doublé. */
+#delivery #delivery-title{font-size:clamp(25px,2.8vw,37px);line-height:1.18;letter-spacing:-1px;margin:8px 0 12px;max-width:1120px}
+#delivery .delivery-instruction{font-size:16px;margin:6px 0 10px}
+#delivery .delivery-turn{font-size:19px;font-weight:bold;margin:10px 0;padding-left:10px;border-left:4px solid var(--ink)}
+#delivery .delivery-turn.team-0{border-color:var(--red)}#delivery .delivery-turn.team-1{border-color:#819778}
+#delivery .delivery-answers{display:block;margin:0}
+#delivery .delivery-team{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(0,1fr);gap:20px;padding:14px 16px;border-radius:12px;box-shadow:none}
+#delivery .delivery-team fieldset{margin:0;min-width:0}#delivery .delivery-team legend{font-size:17px;margin-bottom:8px}
+#delivery .delivery-choices label{min-height:48px;font-size:17px;padding:8px 10px;gap:8px}#delivery .delivery-choices.number{grid-template-columns:1fr 1fr}
+#delivery .delivery-choices.number label{flex-direction:row;padding:8px 10px;font-size:20px}
+#delivery #delivery-record{margin-top:12px;min-height:48px;padding:10px 18px}
+#delivery .delivery-records{display:flex;flex-wrap:wrap;gap:10px 24px;margin:6px 0}
+#delivery .delivery-record{display:flex;align-items:center;gap:10px;font-size:15px}#delivery .delivery-record .text-button{font-size:14px;min-height:36px;padding:6px}
+#delivery .delivery-actions{margin-top:6px;gap:16px}#delivery #delivery-status{font-size:14px;margin:6px 0}
+.apero-screen .apero-map-back{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:9px 14px;font-size:14px;border-radius:8px;margin-top:10px}.apero-map-back svg{width:25px;height:24px;flex-shrink:0}
+#delivery-correction #delivery-next{min-height:48px;padding:12px 20px;border-radius:8px}#delivery-correction .apero-map-back{margin-top:0}
+@media(max-width:700px){#delivery .delivery-team{grid-template-columns:1fr;padding:12px;gap:12px}#delivery .delivery-choices.number{grid-template-columns:repeat(4,minmax(0,1fr))}#delivery .delivery-choices.number .option-letter{display:none}#delivery .delivery-choices label{font-size:16px}#delivery .delivery-records{gap:4px 12px}#delivery .delivery-actions{align-items:stretch;flex-direction:column;gap:6px}}

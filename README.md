@@ -339,3 +339,17 @@ Les six corrections de la manche 6 placent la carte et la grande photo côte à 
 ### Vérification
 
 709 tests unitaires et dix suites navigateur : six manches, pauses métiers, jokers, final et corrections. Les tests des anciennes manches isolent explicitement leur stockage afin de conserver des parties indépendantes. Le nouveau test `ERGONOMICS_TEST_URL=http://127.0.0.1:8008 node tests/ergonomics.browser.cjs` vérifie clavier/accueil, sauvegarde et reprise d’un joker avant et après gain, synchronisation automatique, six positions persistantes du pion, absence de chevauchement avec les intitulés, reset et six photos aux formats 1920×1080, 1366×768, 1024×768, 390×844 et 320×640.
+
+## Manche 1 — Saisie successive des livraisons
+
+La manche s’ouvre directement sur Montpon-Ménestérol, sans introduction. Chaque livraison présente une seule question commune et les mêmes quatre départements/quatre numéros qu’auparavant, dans une zone de sélection unique.
+
+Corail choisit, puis « Enregistrer la réponse » mémorise sa proposition sans points ni correction. Les sélections disparaissent pour la saisie de Sauge. Après les deux enregistrements, la validation commune ouvre la correction existante et attribue +5 par département correct et +5 par numéro correct. Les noms personnalisés et les couleurs restent utilisés. « Modifier » permet de reprendre une réponse avant correction ; la validation est alors suspendue jusqu’au nouvel enregistrement. Les sélections de l’autre équipe ne sont pas affichées. Les brouillons et enregistrements sont inclus dans la sauvegarde locale existante.
+
+`apero.js` ajoute `entry`, `pick`, `record`, `edit`, `entryToken` et `entriesReady` ; le calcul des points et les résultats pédagogiques sont conservés. Les anciennes parties à l’étape d’introduction passent à la question ; les sélections déjà présentes sont reprises. Les corrections, cartes, photos et crédits restent inchangés.
+
+Les actions de la manche 1 utilisent des boutons sobres, sans van. Le carnet utilise une icône de carte. Depuis chaque correction, « 🌶️ Jouer un piment » ouvre le système existant et reste facultatif ; « Livraison suivante » poursuit directement, sans écran intermédiaire. Après le piment, la continuation normale est exécutée une seule fois, y compris après rafraîchissement. La question du piment, ses deux modes, les deux piments par équipe, les quatre questions uniques et la limite d’une activation par intervalle sont inchangés.
+
+Les seuls raccords partagés sont l’autorisation de `delivery-correction` dans `spicy.js`, les branches correspondantes de `spicy-ui.js` et l’exclusion des boutons de la manche 1 dans `ergonomics.js`. Les autres manches conservent leurs introductions, boutons et interludes.
+
+Validation : 760 tests unitaires réussis, dont les 16 combinaisons de points des deux équipes pour chacune des trois livraisons, ainsi que modification, jetons périmés, sauvegarde/migration et joker unique depuis correction. Onze suites navigateur réussies : manche 1, cinq autres manches, métiers, jokers, finale, ergonomie et bandeaux. `APERO_TEST_URL=http://127.0.0.1:8008 node tests/apero.browser.cjs` vérifie la saisie successive privée, le retour au carnet, les éditions, les rafraîchissements avant/après joker, les points uniques et la reprise à Jonzac ou au bonus. Les trois questions sont testées sans défilement nécessaire pour répondre à 1920×1080, 1366×768 et 1024×768 ; l’absence de débordement horizontal est aussi vérifiée à 390×844 et 320×640. Dimensions simulées dans Chromium, sans vidéoprojecteur physique.

@@ -1,4 +1,4 @@
-/* Manche 1 : réponses simultanées, indépendante du moteur de la démo. */
+/* Manche 1 : saisie successive indépendante, barème inchangé. */
 (function (root) {
   'use strict';
   const deliveries = [
@@ -8,7 +8,7 @@
   ];
   const emptyAnswers = () => [{ department: null, number: null }, { department: null, number: null }];
   function start(game) {
-    if (!game.apero) game.apero = { index: 0, phase: 'intro', answers: emptyAnswers(), results: [], bonusRevealed: false };
+    if (!game.apero) game.apero = { index: 0, phase: 'question', answers: emptyAnswers(), results: [], bonusRevealed: false };
     return game.apero;
   }
   function begin(game) { const s = start(game); if (s.phase === 'intro') s.phase = 'question'; }
@@ -20,9 +20,38 @@
     s.answers[team][field] = value;
     return true;
   }
+  let nextEntryId = 1;
+  function entry(game) {
+    const s = game?.apero;
+    if (s?.phase !== 'question') return null;
+    if (!s.entry || s.entry.index !== s.index) {
+      const recorded = s.answers.map(a => a.department !== null && a.number !== null);
+      const team = recorded.every(Boolean) ? null : recorded.indexOf(false);
+      s.entry = { id: nextEntryId++, index: s.index, team, recorded, draft: team === null ? {department:null,number:null} : {...s.answers[team]}, revision: 0 };
+    }
+    return s.entry;
+  }
+  function entryToken(game) { const e=entry(game);return e&&e.team!==null?`${e.id}:${e.index}:${e.team}:${e.revision}`:null; }
+  function pick(game,field,value,stamp) {
+    const e=entry(game),d=deliveries[game?.apero?.index];
+    if(!e||!stamp||stamp!==entryToken(game)||!['department','number'].includes(field)||!(field==='department'?d.departments:d.numbers).includes(value))return false;
+    e.draft[field]=value;return true;
+  }
+  function record(game,stamp) {
+    const e=entry(game);
+    if(!e||!stamp||stamp!==entryToken(game)||e.draft.department===null||e.draft.number===null)return false;
+    game.apero.answers[e.team]={...e.draft};e.recorded[e.team]=true;e.revision++;
+    e.team=e.recorded.every(Boolean)?null:e.recorded.indexOf(false);
+    e.draft=e.team===null?{department:null,number:null}:{...game.apero.answers[e.team]};return true;
+  }
+  function edit(game,team) {
+    const e=entry(game);if(!e||![0,1].includes(team)||!e.recorded[team])return false;
+    e.team=team;e.draft={...game.apero.answers[team]};e.revision++;return true;
+  }
+  function entriesReady(game) { const e=entry(game);return Boolean(e&&e.team===null&&e.recorded.every(Boolean)); }
   function ready(game) { return game.apero?.phase === 'question' && game.apero.answers.every(a => a.department !== null && a.number !== null); }
   function validate(game) {
-    if (!ready(game)) return false;
+    if (!ready(game) || (game.apero.entry && !entriesReady(game))) return false;
     const s = game.apero, d = deliveries[s.index];
     const result = s.answers.map(a => {
       const departmentCorrect = a.department === d.department, numberCorrect = a.number === d.number;
@@ -47,7 +76,7 @@
     game.apero.phase = 'complete'; return true;
   }
   function totals(game) { return game.teams.map((_, team) => (game.apero?.results || []).reduce((sum, r) => sum + r[team].points, 0)); }
-  const api = { deliveries, start, begin, choose, ready, validate, next, revealBonus, finish, totals };
+  const api = { entry, entryToken, pick, record, edit, entriesReady, deliveries, start, begin, choose, ready, validate, next, revealBonus, finish, totals };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.AperoGame = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);
