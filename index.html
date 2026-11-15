@@ -74,26 +74,25 @@
     </section>
 
     <section id="setup" class="screen compact" hidden aria-labelledby="setup-title">
-      <aside class="companion setup-companion"><svg role="img" aria-label="Notre compagnon de voyage, extrait de l’illustration validée"><use href="#companion-art"/></svg><p class="speech">Bon, le camion est prêt… mais qui monte à bord ?</p></aside>
+      <aside class="companion setup-companion"><svg role="img" aria-label="Notre personnage féminin, extrait de l’illustration validée"><use href="#companion-art"/></svg><div class="setup-partners" aria-label="Labo Épicé et E2C Coutras"><img src="assets/Logo%20sans%20fond.png" width="80" height="80" alt="Le Labo Épicé"><svg viewBox="500 440 1370 1510" width="72" height="80" role="img" aria-label="E2C Gironde, Coutras"><image href="assets/Copie%20de%20Gironde_1%20(1).png" width="2363" height="2363"/></svg></div></aside>
       <p class="eyebrow">AVANT DE TOURNER LA CLÉ</p>
       <h1 id="setup-title" tabindex="-1">Qui monte <em>à bord ?</em></h1>
-      <p class="intro">Deux équipes, deux noms. Le formateur tient le volant,<br>vous vous concertez et répondez à voix haute.</p>
+      <p class="intro">Formez deux équipes, choisissez un nom et préparez-vous à relever les défis !</p>
       <form id="team-form">
         <div class="team-fields"><label><span>01 / ÉQUIPE CORAIL</span><input id="team-one" name="teamOne" maxlength="32" placeholder="Le nom de votre équipe" required autocomplete="off"><small>0 point · 2 jokers en réserve</small></label><label><span>02 / ÉQUIPE SAUGE</span><input id="team-two" name="teamTwo" maxlength="32" placeholder="Le nom de votre équipe" required autocomplete="off"><small>0 point · 2 jokers en réserve</small></label></div>
-        <button class="primary" type="submit">C’EST PARTI ! <span>→</span></button>
+        <button class="primary" type="submit">C’est parti ! <span>→</span></button>
       </form>
     </section>
 
     <section id="rules" class="screen compact rules" hidden aria-labelledby="rules-title">
-      <p class="eyebrow">LE BRIEF AVANT LE DÉPART</p>
-      <h1 id="rules-title" tabindex="-1">Avant de prendre <em>la route !</em></h1>
+      <h1 id="rules-title" tabindex="-1">Les règles du voyage</h1>
       <div class="rules-grid">
-        <article class="rule-card"><span class="rule-number">01</span><h2><svg class="rule-icon" aria-hidden="true"><use href="#teams-icon"/></svg>Deux équipes, six manches</h2><p>Concertez-vous en équipe. Le formateur valide séparément vos réponses. Les défis de carte suivent leur consigne.</p></article>
-        <article class="rule-card"><span class="rule-number">02</span><h2><svg class="rule-icon" aria-hidden="true"><use href="#points-icon"/></svg>Des points à gagner</h2><p>Énigmes à trois indices :</p><ul class="point-scale"><li>1er indice <b>20 points</b></li><li>2e indice <b>15 points</b></li><li>3e indice <b>10 points</b></li></ul><p class="rule-note">Autres défis : suivez le barème affiché sur leur écran.</p></article>
-        <article class="rule-card"><span class="rule-number">03</span><h2><svg class="rule-icon" aria-hidden="true"><use href="#turn-icon"/></svg>Une tentative par indice</h2><p>Un indice commun, une tentative par équipe. L’indice suivant attend la réponse de chaque équipe encore en recherche.</p><p>Une équipe qui trouve garde ses points ; l’autre poursuit sa recherche. Après trois indices sans réussite : 0 point. La démonstration suit sa règle de tour de rôle.</p></article>
-        <article class="rule-card trapped-rule"><span class="rule-number">04</span><h2><span class="pepper-pair" aria-hidden="true"><svg><use href="#pepper-icon"/></svg><svg><use href="#pepper-icon"/></svg></span>Le Plat piégé !</h2><p><strong>Deux jokers par équipe pour toute la partie.</strong> À jouer entre deux défis, pour soi ou contre l’adversaire. Une seule activation entre deux défis.</p><p><strong>Pour soi :</strong> bonne réponse +10, erreur 0. <strong>Contre l’autre équipe :</strong> +10 à l’équipe défiée si elle trouve, sinon +10 à celle qui a lancé le défi. Aucun retrait de points.</p><p class="rule-note">Hors questions, corrections et pauses métiers. Les derniers piments peuvent être joués en finale ; une question ne revient jamais.</p></article>
+        <article class="rule-card"><span class="rule-number">01</span><h2>Deux équipes, six manches</h2><p>Jouez en équipe ou tous ensemble selon le défi.</p></article>
+        <article class="rule-card"><span class="rule-number">02</span><h2>Des points à gagner</h2><p>Les bonnes réponses rapportent des points. Plus vous utilisez d'indices, moins vous en gagnez.</p></article>
+        <article class="rule-card"><span class="rule-number">03</span><h2>Deux piments par équipe</h2><p>Tentez votre chance ou défiez l'autre équipe. Un seul Plat piégé entre deux défis.</p></article>
+        <article class="rule-card"><span class="rule-number">04</span><h2>Réfléchissez et décidez</h2><p>Notez vos réponses. Le formateur les enregistre et le jeu calcule les points.</p></article>
       </div>
-      <div class="rules-bottom"><aside class="companion"><svg aria-hidden="true"><use href="#companion-art"/></svg><p class="speech">J’ai le permis du food truck… mais pour la géographie, je compte sur vous !</p></aside><button class="primary" id="rules-next">C’EST PARTI ! <span>→</span></button></div>
+      <div class="rules-bottom"><button class="primary" id="rules-next">C’est parti ! <span>→</span></button></div>
     </section>
 
     <section id="journey" class="screen compact" hidden aria-labelledby="journey-title">
@@ -345,9 +344,9 @@
       <div class="scoreboard"></div>
       <div class="career-layout">
         <div class="career-content">
-          <p id="career-progress" class="eyebrow"></p><h1 id="career-title" tabindex="-1"></h1>
-          <div class="career-invitation"><div><h2>Deux vérités, une idée reçue !</h2><p>Échangez tous ensemble. Quelle affirmation est fausse ?</p></div></div>
-          <form id="career-form"><fieldset id="career-choices"><legend class="visually-hidden">Choix collectif : quelle affirmation est fausse ?</legend><div id="career-cards" class="career-cards"></div></fieldset><div class="career-choice-actions"><p id="career-choice-status" role="status">Le formateur sélectionne votre proposition.</p><button id="career-reveal" class="primary" type="submit" disabled>RÉVÉLER L’IDÉE REÇUE <span>→</span></button></div></form>
+          <h1 id="career-title" tabindex="-1">Deux vérités, une idée reçue !</h1>
+          <div class="career-invitation"><p>Quelle affirmation est fausse ?</p></div>
+          <form id="career-form"><fieldset id="career-choices"><legend class="visually-hidden">Choix collectif : quelle affirmation est fausse ?</legend><div id="career-cards" class="career-cards"></div></fieldset><div class="career-choice-actions"><p id="career-choice-status" class="visually-hidden" role="status"></p><button id="career-reveal" class="primary" type="submit" disabled>RÉVÉLER L’IDÉE REÇUE <span>→</span></button></div></form>
         </div>
         <aside class="career-companion" aria-label="Notre compagnon de voyage"><div id="career-portrait" class="career-portrait"></div><p class="speech" id="career-quote" hidden></p></aside>
       </div>

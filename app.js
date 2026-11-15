@@ -4,6 +4,7 @@ const $ = id => document.getElementById(id);
 let game;
 function show(id) {
   document.body.classList.toggle('welcome-mode', id === 'welcome');
+  document.body.classList.toggle('setup-mode', id === 'setup');
   updateHeaderContext(id);
   document.querySelectorAll('.screen').forEach(screen => { screen.hidden = screen.id !== id; });
   $('reset').hidden = id === 'welcome';
@@ -39,11 +40,11 @@ function updateHeaderContext(id) {
   if (id === 'apero-bonus') label.textContent = "Manche 1 · L'apéro local / Défi découverte · Collectif · Sans points";
   else if (id === 'world-transition') label.textContent = 'Le grand final';
   else if (round >= 0) label.textContent = `Manche ${round + 1} · ${rounds[round]}`;
-  else if (id === 'career-pause') label.textContent = `Pause métier ${currentCareerIndex + 1} · ${CareerPauses.jobs[currentCareerIndex].name}`;
+  else if (id === 'career-pause') label.textContent = `Pause métier ${currentCareerIndex + 1} · ${['Serveuse','Cuisinier','Réceptionniste','Entretien hôtelier','Équipier polyvalent en restauration rapide'][currentCareerIndex]} / Collectif · Sans points`;
   else if (id.startsWith('spicy-')) {
     const source = game?.spicy?.finale ? -1 : keys.indexOf(game?.spicy?.window?.key?.split(':')[0]);
     label.textContent = source >= 0 ? `Manche ${source + 1} · ${rounds[source]} · Plat piégé !` : 'Plat piégé !';
-  } else label.textContent = id.startsWith('final-') ? 'Le grand final' : ({rules:'Les règles du voyage',journey:'Carnet de route',challenge:'Démonstration',result:'Démonstration'})[id] || 'Le grand voyage gourmand';
+  } else label.textContent = id.startsWith('final-') ? 'Le grand final' : ({rules:'Avant le départ',journey:'Carnet de route',challenge:'Démonstration',result:'Démonstration'})[id] || 'Le grand voyage gourmand';
 }
 function scores() {
   if(typeof spicyObserveProgress==='function')spicyObserveProgress();
