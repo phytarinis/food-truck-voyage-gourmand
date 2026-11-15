@@ -17,12 +17,14 @@ function renderApero() {
     $('apero-finish').hidden = !s.bonusRevealed;
     show('apero-bonus'); return;
   }
-  $('apero-totals').textContent = 'Les trois livraisons sont arrivées !';
-  show('apero-end');
+  openCareerPause(0);
 }
 function updateDeliveryStatus() {
   const e=AperoGame.entry(game);
-  $('delivery-record').hidden=e.team===null;
+  const record=$('delivery-record'),arrow=document.createElement('span');arrow.textContent='→';
+  record.replaceChildren(document.createTextNode(e.team===null?'Enregistrer la réponse':`Enregistrer la réponse de ${game.teams[e.team].name}`),arrow);
+  record.classList.toggle('team-0',e.team===0);record.classList.toggle('team-1',e.team===1);
+  record.hidden=e.team===null;
   $('delivery-record').disabled=e.draft.department===null||e.draft.number===null;
 
   $('delivery-status').textContent='La correction apparaît après l’enregistrement de la deuxième équipe.';
