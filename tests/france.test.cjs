@@ -61,7 +61,7 @@ test('cartographie : 18 régions, codes sources, anneaux complets, génération 
 });
 test('les trois manches se cumulent sans altérer les résultats précédents',()=>{
  const A=require('../apero.js'),S=require('../sauce.js');const g=createGame(['Corail','Sauge']);A.start(g);A.begin(g);
- for(const d of A.deliveries){for(const t of [0,1]){A.choose(g,t,'department',d.department);A.choose(g,t,'number',d.number);}A.validate(g);A.next(g);}A.revealBonus(g);A.finish(g);
+ for(const d of A.deliveries){for(const t of [0,1]){A.choose(g,t,'department',d.department);A.choose(g,t,'number',d.number);}A.validate(g);A.next(g);}A.chooseBonus(g,1);A.revealBonus(g);A.finish(g);
  S.start(g);S.begin(g);for(let q=0;q<3;q++){for(const t of [0,1])S.validate(g,t,true,S.token(g,t));S.next(g);}S.chooseBonus(g,0);S.revealBonus(g);S.finish(g);
  const previous=structuredClone({apero:g.apero,sauce:g.sauce});assert.deepEqual(g.teams.map(t=>t.score),[90,90]);
  F.start(g);F.begin(g);for(let q=0;q<3;q++){play(g,[0,0]);locate(g,[F.puzzles[q].region,F.puzzles[q].region]);F.next(g);}F.chooseBonus(g,1);F.revealBonus(g);F.finish(g);
