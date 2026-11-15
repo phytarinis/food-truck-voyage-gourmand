@@ -746,3 +746,20 @@ body.compact-header .topbar{height:auto;min-height:48px;padding:4px 5%;gap:12px;
 .apero-screen .apero-map-back{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:9px 14px;font-size:14px;border-radius:8px;margin-top:10px}.apero-map-back svg{width:25px;height:24px;flex-shrink:0}
 #delivery-correction #delivery-next{min-height:48px;padding:12px 20px;border-radius:8px}#delivery-correction .apero-map-back{margin-top:0}
 @media(max-width:700px){#delivery .delivery-team{grid-template-columns:1fr;padding:12px;gap:12px}#delivery .delivery-choices.number{grid-template-columns:repeat(4,minmax(0,1fr))}#delivery .delivery-choices.number .option-letter{display:none}#delivery .delivery-choices label{font-size:16px}#delivery .delivery-records{gap:4px 12px}#delivery .delivery-actions{align-items:stretch;flex-direction:column;gap:6px}}
+/* Complément manche 1 : titre unique et découverte collective sur le même écran. */
+#apero-discovery-choices{border:0;padding:0;margin:0;min-width:0}
+#apero-discovery-choices label{display:flex;align-items:center;gap:12px;cursor:pointer}
+#apero-discovery-choices input{width:18px;height:18px;flex-shrink:0;accent-color:var(--ink)}
+#apero-discovery-choices li:has(input:checked){background:#e7e9dc;border-color:var(--ink)}
+#apero-discovery-choices li:focus-within{outline:3px solid #237d9b;outline-offset:3px}
+#apero-bonus #apero-bonus-title{font-size:clamp(26px,2.8vw,37px);line-height:1.15;margin:10px 0 16px}
+#apero-bonus .bonus-options{font-size:19px;gap:8px;margin:10px 0 16px}
+#apero-bonus .bonus-options li{padding:10px 16px}
+#apero-bonus .bonus-answer{margin-top:12px;padding:14px 18px}
+#apero-bonus .bonus-answer h2{font-size:20px;margin:0 0 8px}
+#apero-bonus .bonus-answer p{font-size:16px;line-height:1.45;margin:0}
+#apero-bonus .result-actions{margin-top:12px}
+#apero-discovery-choices .bonus-options{list-style:none}
+#apero-discovery-choices label>span{font-weight:bold;flex-shrink:0}
+#apero-bonus #apero-finish{min-height:48px;padding:10px 16px;gap:12px}
+#apero-bonus .bonus-answer{margin-top:8px;padding:12px 16px}

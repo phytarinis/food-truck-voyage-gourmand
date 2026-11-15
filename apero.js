@@ -8,7 +8,7 @@
   ];
   const emptyAnswers = () => [{ department: null, number: null }, { department: null, number: null }];
   function start(game) {
-    if (!game.apero) game.apero = { index: 0, phase: 'question', answers: emptyAnswers(), results: [], bonusRevealed: false };
+    if (!game.apero) game.apero = { index: 0, phase: 'question', answers: emptyAnswers(), results: [], bonusRevealed: false, bonusChoice: null };
     return game.apero;
   }
   function begin(game) { const s = start(game); if (s.phase === 'intro') s.phase = 'question'; }
@@ -42,7 +42,8 @@
     if(!e||!stamp||stamp!==entryToken(game)||e.draft.department===null||e.draft.number===null)return false;
     game.apero.answers[e.team]={...e.draft};e.recorded[e.team]=true;e.revision++;
     e.team=e.recorded.every(Boolean)?null:e.recorded.indexOf(false);
-    e.draft=e.team===null?{department:null,number:null}:{...game.apero.answers[e.team]};return true;
+    e.draft=e.team===null?{department:null,number:null}:{...game.apero.answers[e.team]};
+    if(e.team===null)validate(game);return true;
   }
   function edit(game,team) {
     const e=entry(game);if(!e||![0,1].includes(team)||!e.recorded[team])return false;
@@ -70,13 +71,20 @@
     else { s.index++; s.answers = emptyAnswers(); s.phase = 'question'; }
     return true;
   }
-  function revealBonus(game) { if (game.apero?.phase === 'bonus') game.apero.bonusRevealed = true; }
+  function chooseBonus(game,choice) {
+    const s=game?.apero;if(s?.phase!=='bonus'||s.bonusRevealed||![0,1,2].includes(choice))return false;
+    s.bonusChoice=choice;return true;
+  }
+  function revealBonus(game) {
+    const s=game?.apero;if(s?.phase!=='bonus'||s.bonusRevealed||![0,1,2].includes(s.bonusChoice))return false;
+    s.bonusRevealed=true;return true;
+  }
   function finish(game) {
     if (game.apero?.phase !== 'bonus' || !game.apero.bonusRevealed) return false;
     game.apero.phase = 'complete'; return true;
   }
   function totals(game) { return game.teams.map((_, team) => (game.apero?.results || []).reduce((sum, r) => sum + r[team].points, 0)); }
-  const api = { entry, entryToken, pick, record, edit, entriesReady, deliveries, start, begin, choose, ready, validate, next, revealBonus, finish, totals };
+  const api = { entry, entryToken, pick, record, edit, entriesReady, deliveries, start, begin, choose, ready, validate, next, chooseBonus, revealBonus, finish, totals };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.AperoGame = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

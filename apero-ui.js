@@ -7,9 +7,11 @@ function renderApero() {
   scores();
   const s = game.apero;
   if (s.phase === 'intro') { AperoGame.begin(game); renderApero(); return; }
-  if (s.phase === 'question') { renderDelivery(); show('delivery'); return; }
+  if (s.phase === 'question') { if(AperoGame.entriesReady(game)){AperoGame.validate(game);renderApero();return;} renderDelivery(); show('delivery'); return; }
   if (s.phase === 'correction') { renderDeliveryCorrection(); show('delivery-correction'); return; }
   if (s.phase === 'bonus') {
+    document.querySelectorAll('input[name=apero-discovery-choice]').forEach(input=>{input.checked=Number(input.value)===s.bonusChoice;input.disabled=s.bonusRevealed;});
+    $('bonus-reveal').disabled=![0,1,2].includes(s.bonusChoice);
     $('bonus-answer').hidden = !s.bonusRevealed;
     $('bonus-reveal').hidden = s.bonusRevealed;
     $('apero-finish').hidden = !s.bonusRevealed;
@@ -19,17 +21,17 @@ function renderApero() {
   show('apero-end');
 }
 function updateDeliveryStatus() {
-  const e=AperoGame.entry(game),done=AperoGame.entriesReady(game);
+  const e=AperoGame.entry(game);
   $('delivery-record').hidden=e.team===null;
   $('delivery-record').disabled=e.draft.department===null||e.draft.number===null;
-  $('delivery-validate').hidden=!done;$('delivery-validate').disabled=!done;
-  $('delivery-status').textContent=done?'Les deux réponses sont enregistrées. Vous pouvez les modifier ou valider la correction.':'Les réponses et les points seront révélés après la validation commune.';
+
+  $('delivery-status').textContent='La correction apparaîtra après l’enregistrement de la deuxième équipe.';
 }
 function renderDelivery() {
   const s=game.apero,d=AperoGame.deliveries[s.index],e=AperoGame.entry(game),stamp=AperoGame.entryToken(game);
-  $('delivery-progress').textContent=`L’APÉRO LOCAL / LIVRAISON ${s.index+1} SUR 3`;
+
   $('delivery-title').textContent=`Dans quel département se situe ${d.city} et quel est le numéro de ce département ?`;
-  $('delivery-turn').textContent=e.team===null?'Les deux équipes ont répondu.':`À ${game.teams[e.team].name} de répondre`;
+  $('delivery-turn').textContent=e.team===null?'':`À ${game.teams[e.team].name} de répondre`;
   $('delivery-turn').className=`delivery-turn${e.team===null?'':` team-${e.team}`}`;
   $('delivery-answers').replaceChildren();
   if(e.team!==null){
@@ -54,7 +56,7 @@ function renderDelivery() {
 }
 function renderDeliveryCorrection() {
   const s = game.apero, d = AperoGame.deliveries[s.index];
-  $('correction-progress').textContent = `LIVRAISON ${s.index + 1} / ${d.city.toLocaleUpperCase('fr')}`;
+
   $('delivery-correction-title').textContent = d.title;
   $('delivery-solution').textContent = `Département : ${d.department} (${d.number}).`;
   $('delivery-awards').replaceChildren(...s.results[s.index].map((r, i) => {
@@ -69,7 +71,7 @@ function renderDeliveryCorrection() {
   $('department-prefecture').textContent = `PRÉFECTURE : ${d.prefecture}`;
   $('department-facts').replaceChildren();
   renderCulturePhotos(d.number);
-  $('delivery-next-label').textContent = s.index === 2 ? 'Le bonus final' : 'Livraison suivante';
+  $('delivery-next-label').textContent = s.index === 2 ? 'Le défi découverte' : 'Livraison suivante';
 }
 function renderCulturePhotos(department) {
   $('department-illustrations').replaceChildren(...CulturePhotos[department].map(photo => {
@@ -113,17 +115,17 @@ function renderCulturePhotos(department) {
   }));
   $('department-illustrations').hidden = false;
 }
-function recordDeliveryAnswer(){if(AperoGame.record(game,AperoGame.entryToken(game))){renderDelivery();$('delivery-turn').focus();saveProgress()}}
+function recordDeliveryAnswer(){if(AperoGame.record(game,AperoGame.entryToken(game))){renderApero();if(game.apero.phase==='question')$('delivery-turn').focus();saveProgress()}}
 $('delivery-record').addEventListener('click',recordDeliveryAnswer);
 $('delivery-form').addEventListener('submit', event => {
   event.preventDefault();
-  if(AperoGame.entriesReady(game)){if(AperoGame.validate(game))renderApero();}else recordDeliveryAnswer();
+  recordDeliveryAnswer();
 });
 $('delivery-next').addEventListener('click', () => { if (AperoGame.next(game)) renderApero(); });
+document.querySelectorAll('input[name=apero-discovery-choice]').forEach(input=>input.addEventListener('change',()=>{if(AperoGame.chooseBonus(game,Number(input.value)))$('bonus-reveal').disabled=false;}));
 $('bonus-reveal').addEventListener('click', () => {
-  AperoGame.revealBonus(game);
-  $('bonus-answer').hidden = false; $('bonus-reveal').hidden = true; $('apero-finish').hidden = false;
-  $('bonus-answer').setAttribute('tabindex', '-1'); $('bonus-answer').focus();
+  if(!AperoGame.revealBonus(game))return;
+  renderApero();$('bonus-answer').setAttribute('tabindex','-1');$('bonus-answer').focus();
 });
 $('apero-finish').addEventListener('click', () => { if (AperoGame.finish(game)) renderApero(); });
 document.querySelectorAll('.apero-back').forEach(button => button.addEventListener('click', () => { scores(); show('journey'); }));

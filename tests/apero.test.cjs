@@ -39,7 +39,7 @@ test('30 points maximum, bonus sans points, reprise sans réinitialisation', () 
     A.next(g);assert.equal(A.next(g),false);
   }
   assert.equal(g.apero.phase,'bonus');assert.equal(A.finish(g),false);
-  A.revealBonus(g);A.revealBonus(g);assert.equal(A.finish(g),true);assert.equal(A.finish(g),false);
+  A.chooseBonus(g,1);A.revealBonus(g);A.chooseBonus(g,1);A.revealBonus(g);assert.equal(A.finish(g),true);assert.equal(A.finish(g),false);
   assert.deepEqual(A.totals(g),[30,30]);assert.deepEqual(g.teams.map(t=>t.score),[30,30]);
   assert.equal(A.start(g).phase,'complete');assert.deepEqual(g.teams.map(t=>t.jokers),[2,2]);
 });

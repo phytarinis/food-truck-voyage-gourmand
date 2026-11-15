@@ -36,7 +36,8 @@ function updateHeaderContext(id) {
   const keys = ['apero', 'sauce', 'france', 'gps', 'passport', 'world'];
   const prefix = id.startsWith('delivery') ? 'apero' : id.split('-')[0];
   const round = keys.indexOf(prefix);
-  if (id === 'world-transition') label.textContent = 'Le grand final';
+  if (['delivery','delivery-correction'].includes(id) && game?.apero) label.textContent = `Manche 1 · ${rounds[0]} / Livraison ${game.apero.index + 1} · ${AperoGame.deliveries[game.apero.index].city}`;
+  else if (id === 'world-transition') label.textContent = 'Le grand final';
   else if (round >= 0) label.textContent = `Manche ${round + 1} · ${rounds[round]}`;
   else if (id === 'career-pause') label.textContent = `Pause métier ${currentCareerIndex + 1} · ${CareerPauses.jobs[currentCareerIndex].name}`;
   else if (id.startsWith('spicy-')) {
