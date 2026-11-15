@@ -31,15 +31,16 @@ function updateDeliveryStatus() {
 }
 function renderDelivery() {
   const s=game.apero,d=AperoGame.deliveries[s.index],e=AperoGame.entry(game),stamp=AperoGame.entryToken(game);
-  $('delivery-progress').textContent=`L’APÉRO LOCAL / LIVRAISON ${s.index+1} SUR 3`;
-  $('delivery-title').textContent=`Dans quel département se situe ${d.city} et quel est le numéro de ce département ?`;
+
+  const city=document.createElement('span');city.className='delivery-city';city.textContent=d.city;
+  $('delivery-title').replaceChildren(document.createTextNode('Dans quel département se situe '),city,document.createTextNode(' et quel est le numéro de ce département ?'));
   $('delivery-turn').textContent=e.team===null?'':`À ${game.teams[e.team].name} de répondre`;
   $('delivery-turn').className=`delivery-turn${e.team===null?'':` team-${e.team}`}`;
   $('delivery-answers').replaceChildren();
   if(e.team!==null){
     const panel=document.createElement('section');panel.className=`delivery-team team-${e.team}`;
     for(const field of ['department','number']){
-      const group=document.createElement('fieldset'),legend=document.createElement('legend');legend.textContent=field==='department'?'Le département':'Son numéro';group.append(legend);
+      const group=document.createElement('fieldset'),legend=document.createElement('legend');group.className=`delivery-field delivery-field-${field}`;legend.textContent=field==='department'?'01 — Le département':'02 — Son numéro';group.append(legend);
       const choices=document.createElement('div');choices.className=`delivery-choices ${field}`;
       (field==='department'?d.departments:d.numbers).forEach((value,i)=>{
         const label=document.createElement('label'),radio=document.createElement('input'),letter=document.createElement('span'),text=document.createElement('span');
@@ -58,7 +59,7 @@ function renderDelivery() {
 }
 function renderDeliveryCorrection() {
   const s = game.apero, d = AperoGame.deliveries[s.index];
-  $('correction-progress').textContent = `LIVRAISON ${s.index + 1} / ${d.city.toLocaleUpperCase('fr')}`;
+
   $('delivery-correction-title').textContent = d.title;
   $('delivery-solution').textContent = `Département : ${d.department} (${d.number}).`;
   $('delivery-awards').replaceChildren(...s.results[s.index].map((r, i) => {
