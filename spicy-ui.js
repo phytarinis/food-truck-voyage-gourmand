@@ -14,7 +14,6 @@ function syncSpicyAccess(id){
  const s=SpicyGame.observe(game);
  $('delivery-spicy').hidden=true;
  if(id==='delivery-correction'&&game.apero?.phase==='correction'&&!s.active&&!s.finale){SpicyGame.release(game,`apero:${game.apero.index}`);$('delivery-spicy').hidden=!SpicyGame.canNormal(game,id);}
- $('play').disabled=Boolean(s.active||s.finale);
  if(!s.active&&['journey','apero-end','sauce-end','france-end','gps-end','passport-end','world-end','world-transition', 'apero-intro','sauce-intro','france-intro','gps-intro','passport-intro','world-intro'].includes(id)){
   if(SpicyGame.allComplete(game)&&!SpicyGame.hasQuestion(game)){button.hidden=false;button.textContent=s.finale?.phase==='closed'?'Scores définitifs':'🌶️ Les derniers piments';}
   else if(SpicyGame.canNormal(game,id)){button.hidden=false;button.textContent='🌶️ Plat piégé !';}
