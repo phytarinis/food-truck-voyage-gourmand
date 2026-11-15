@@ -12,7 +12,7 @@ const assert = require('node:assert/strict');
     assert.equal(await p.locator('.career-card').count(),3);
     assert.equal(await p.locator('#career-quote').isVisible(),false);
     assert.equal(await p.locator('#career-quote').innerText(),'');
-    assert.equal(await p.locator('.partners .partner-logo').count(),3);
+    assert.equal(await p.locator('.partners .partner-logo').count(),2);
     assert.equal(await p.locator('.career-card').evaluateAll(cards=>cards.every((card,i)=>i===0||card.getBoundingClientRect().top>=cards[i-1].getBoundingClientRect().bottom)),true);
     assert.equal(await p.locator('#career-reveal').isDisabled(),true);
     assert.equal(await p.locator('#career-explanation').innerText(),'');

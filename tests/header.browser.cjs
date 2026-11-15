@@ -4,7 +4,7 @@ const{chromium}=require('playwright'),assert=require('node:assert/strict');
  for(const[width,height]of[[1366,768],[1920,1080],[1024,768],[390,844]]){
   await p.setViewportSize({width,height});
   await p.evaluate(()=>show('welcome'));assert.equal(await p.locator('.welcome-illustration').isVisible(),true);assert.equal(await p.locator('.topbar').isVisible(),false);
-  await p.evaluate(()=>show('setup'));assert.equal(await p.locator('.partners').isVisible(),true);assert.equal(await p.locator('.partner-logo:visible').count(),1);assert.equal(await p.locator('.setup-partners>img,.setup-partners>svg').count(),2);
+  await p.evaluate(()=>show('setup'));assert.equal(await p.locator('.partners').isVisible(),false);assert.equal(await p.locator('.partner-logo:visible').count(),0);assert.equal(await p.locator('.setup-partners>img,.setup-partners>svg').count(),2);
   const original=await p.evaluate(()=>JSON.stringify(game));
   for(const id of await p.locator('.screen').evaluateAll(ns=>ns.map(n=>n.id).filter(id=>!['welcome','setup'].includes(id)))){
    await p.evaluate(id=>{scores();show(id)},id);

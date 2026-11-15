@@ -801,3 +801,14 @@ body.setup-mode .topbar{height:auto;min-height:48px;padding-top:4px;padding-bott
 @media(max-width:700px){#setup .setup-companion{float:none;justify-content:center;margin:0 0 14px;max-width:none}#setup .setup-companion>svg{width:72px;height:130px}#setup .setup-partners{gap:10px}#setup .setup-partners img{width:65px;height:65px}#setup .setup-partners svg{width:58px;height:65px}#rules .rules-grid{grid-template-columns:1fr}#rules .rule-card{padding:18px 18px 18px 46px}#rules .rule-card p{font-size:18px}#career-pause .career-layout{grid-template-columns:1fr}#career-pause .career-companion{flex-direction:row;align-items:center}#career-pause .career-portrait{width:80px;height:145px;flex-shrink:0}#career-pause .career-companion>.speech{max-width:310px}#career-pause .career-content .career-statement{font-size:18px}}
 
 #setup .setup-partners svg{border:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible}
+
+/* Trois livraisons : titre regroupé et deux champs visuellement distincts. */
+body.delivery-mode #screen-context{font-size:clamp(16px,1.3vw,18px)}
+#delivery #delivery-title{font-size:clamp(25px,2.4vw,33px);line-height:1.2;margin:8px 0 12px}
+#delivery .delivery-city{color:#b1372b;background:none;font-weight:800}
+#delivery .delivery-team{padding:0;border:0;background:transparent;box-shadow:none;gap:18px}
+#delivery .delivery-team .delivery-field{border:1px solid var(--line);border-radius:12px;padding:12px 14px 14px;background:var(--cream);margin:0;min-width:0}
+#delivery .delivery-team .delivery-field-department{border-top:3px solid #c77568}
+#delivery .delivery-team .delivery-field-number{border-top:3px solid #8b9f80}
+#delivery .delivery-team .delivery-field legend{font-size:18px;font-weight:bold;padding:0 6px;color:var(--ink)}
+@media(max-width:700px){#delivery .delivery-team{gap:14px}#delivery .delivery-team .delivery-field{padding:10px 12px 12px}}
