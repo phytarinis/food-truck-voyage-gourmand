@@ -764,3 +764,8 @@ body.compact-header .topbar{height:auto;min-height:48px;padding:4px 5%;gap:12px;
 #apero-bonus .bonus-answer p{font-size:16px;line-height:1.45;margin:0}
 #apero-bonus .result-actions{margin-top:12px}
 #apero-bonus #apero-finish{min-height:48px;padding:10px 16px;gap:12px}
+/* Manche 1 : nom de l’équipe active et couleurs du bouton d’enregistrement. */
+#delivery #delivery-record{overflow-wrap:anywhere}
+#delivery #delivery-record.team-1{background:var(--sage);color:var(--ink)}
+#delivery #delivery-record.team-1:hover{background:#b4c2a7}
+#delivery .delivery-turn{overflow-wrap:anywhere}

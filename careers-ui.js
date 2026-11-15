@@ -79,9 +79,6 @@ function renderCareerPause() {
     }));
   }
 }
-$('career-start').addEventListener('click', () => {
-  if (game?.apero?.phase === 'complete') openCareerPause(0);
-});
 $('career-form').addEventListener('submit', event => {
   event.preventDefault();
   if (!game?.careerPauses) return;
