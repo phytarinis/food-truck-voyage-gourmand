@@ -17,9 +17,9 @@ test('une seule activation par intervalle ; observer et revisiter un résultat n
  const g=fresh();boundary(g);const stamp=launch(g);answer(g);S.finish(g,stamp);for(let i=0;i<3;i++){S.observe(g);S.release(g,'apero:0');assert.equal(S.canNormal(g,'spicy-break'),false)}
  boundary(g,1);assert.ok(S.canNormal(g,'spicy-break'));const token=S.windowToken(g,'spicy-break');assert.equal(S.start(g,{owner:0,mode:'self',questionId:'spiders',context:'spicy-break',stamp:token}),false);assert.deepEqual(g.teams.map(t=>t.jokers),[1,2]);
 });
-test('aucun joker avant le premier défi, pendant une question/correction/pause, ni en reprenant un ancien intervalle',()=>{
+test('aucun joker avant le premier défi, pendant une question ou une correction des autres manches, ni en reprenant un ancien intervalle',()=>{
  const g=fresh();assert.equal(S.canNormal(g,'journey'),false);g.apero={phase:'correction',results:[[{},{}]]};S.observe(g);assert.equal(S.canNormal(g,'journey'),false);S.release(g,'apero:0');
- for(const screen of ['delivery','delivery-correction','sauce-search','sauce-correction','france-location','spicy-correction','career-pause','gps-placement','world-challenge']){assert.equal(S.canNormal(g,screen),false);assert.equal(S.start(g,{owner:0,mode:'self',questionId:'spiders',context:screen,stamp:'fake'}),false)}
+ for(const screen of ['delivery','sauce-search','sauce-correction','france-location','spicy-correction','career-pause','gps-placement','world-challenge']){assert.equal(S.canNormal(g,screen),false);assert.equal(S.start(g,{owner:0,mode:'self',questionId:'spiders',context:screen,stamp:'fake'}),false)}
  for(const[key,phase]of[['apero','question'],['sauce','search'],['france','answer'],['france','location'],['gps','placement'],['gps','compare'],['passport','search'],['world','placement']]){const h=structuredClone(g);h[key]={phase};assert.equal(S.canNormal(h,'journey'),false,`${key}/${phase}`)}
  const h=structuredClone(g);h.sauce={phase:'bonus',bonus:{revealed:false}};assert.equal(S.canNormal(h,'journey'),false);h.challenge={done:false};assert.equal(S.canNormal(h,'journey'),false);
 });

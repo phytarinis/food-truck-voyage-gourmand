@@ -6,7 +6,7 @@ function openApero() {
 function renderApero() {
   scores();
   const s = game.apero;
-  if (s.phase === 'intro') { show('apero-intro'); return; }
+  if (s.phase === 'intro') { AperoGame.begin(game); renderApero(); return; }
   if (s.phase === 'question') { renderDelivery(); show('delivery'); return; }
   if (s.phase === 'correction') { renderDeliveryCorrection(); show('delivery-correction'); return; }
   if (s.phase === 'bonus') {
@@ -19,33 +19,36 @@ function renderApero() {
   show('apero-end');
 }
 function updateDeliveryStatus() {
-  const count = game.apero.answers.reduce((n, a) => n + Number(a.department !== null) + Number(a.number !== null), 0);
-  $('delivery-validate').disabled = !AperoGame.ready(game);
-  $('delivery-status').textContent = count === 4 ? 'Les deux équipes ont répondu. Prêt à corriger !' : `${count} / 4 choix enregistrés. Complétez les deux réponses de chaque équipe.`;
+  const e=AperoGame.entry(game),done=AperoGame.entriesReady(game);
+  $('delivery-record').hidden=e.team===null;
+  $('delivery-record').disabled=e.draft.department===null||e.draft.number===null;
+  $('delivery-validate').hidden=!done;$('delivery-validate').disabled=!done;
+  $('delivery-status').textContent=done?'Les deux réponses sont enregistrées. Vous pouvez les modifier ou valider la correction.':'Les réponses et les points seront révélés après la validation commune.';
 }
 function renderDelivery() {
-  const s = game.apero, d = AperoGame.deliveries[s.index];
-  $('delivery-progress').textContent = `L’APÉRO LOCAL / LIVRAISON ${s.index + 1} SUR 3`;
-  $('delivery-title').textContent = d.city;
-  $('delivery-answers').replaceChildren(...game.teams.map((team, teamIndex) => {
-    const panel = document.createElement('section'); panel.className = `delivery-team team-${teamIndex}`;
-    const heading = document.createElement('h2'); heading.textContent = team.name; panel.append(heading);
-    for (const field of ['department', 'number']) {
-      const group = document.createElement('fieldset');
-      const legend = document.createElement('legend'); legend.textContent = field === 'department' ? 'Dans quel département se trouve cette ville ?' : 'Quel est son numéro ?'; group.append(legend);
-      const choices = document.createElement('div'); choices.className = `delivery-choices ${field}`;
-      (field === 'department' ? d.departments : d.numbers).forEach((value, optionIndex) => {
-        const label = document.createElement('label');
-        const radio = document.createElement('input'); radio.type = 'radio'; radio.name = `team-${teamIndex}-${field}`; radio.value = value; radio.required = true;
-        radio.checked = s.answers[teamIndex][field] === value;
-        radio.addEventListener('change', () => { AperoGame.choose(game, teamIndex, field, value); updateDeliveryStatus(); });
-        const letter = document.createElement('span'); letter.className = 'option-letter'; letter.textContent = String.fromCharCode(65 + optionIndex);
-        const text = document.createElement('span'); text.textContent = value;
-        label.append(radio, letter, text); choices.append(label);
-      });
-      group.append(choices); panel.append(group);
-    }
-    return panel;
+  const s=game.apero,d=AperoGame.deliveries[s.index],e=AperoGame.entry(game),stamp=AperoGame.entryToken(game);
+  $('delivery-progress').textContent=`L’APÉRO LOCAL / LIVRAISON ${s.index+1} SUR 3`;
+  $('delivery-title').textContent=`Dans quel département se situe ${d.city} et quel est le numéro de ce département ?`;
+  $('delivery-turn').textContent=e.team===null?'Les deux équipes ont répondu.':`À ${game.teams[e.team].name} de répondre`;
+  $('delivery-turn').className=`delivery-turn${e.team===null?'':` team-${e.team}`}`;
+  $('delivery-answers').replaceChildren();
+  if(e.team!==null){
+    const panel=document.createElement('section');panel.className=`delivery-team team-${e.team}`;
+    for(const field of ['department','number']){
+      const group=document.createElement('fieldset'),legend=document.createElement('legend');legend.textContent=field==='department'?'Le département':'Son numéro';group.append(legend);
+      const choices=document.createElement('div');choices.className=`delivery-choices ${field}`;
+      (field==='department'?d.departments:d.numbers).forEach((value,i)=>{
+        const label=document.createElement('label'),radio=document.createElement('input'),letter=document.createElement('span'),text=document.createElement('span');
+        radio.type='radio';radio.name=`team-${e.team}-${field}`;radio.value=value;radio.required=true;radio.checked=e.draft[field]===value;
+        radio.onchange=()=>{if(AperoGame.pick(game,field,value,stamp))updateDeliveryStatus()};
+        letter.className='option-letter';letter.textContent=String.fromCharCode(65+i);text.textContent=value;label.append(radio,letter,text);choices.append(label);
+      });group.append(choices);panel.append(group);
+    }$('delivery-answers').append(panel);
+  }
+  $('delivery-records').replaceChildren(...game.teams.map((team,i)=>{
+    const item=document.createElement('div'),status=document.createElement('span');item.className=`delivery-record team-${i}`;
+    status.textContent=`${team.name} : ${e.recorded[i]?'réponse enregistrée':'en attente'}`;item.append(status);
+    if(e.recorded[i]){const edit=document.createElement('button');edit.type='button';edit.className='text-button';edit.textContent='Modifier';edit.setAttribute('aria-label',`Modifier la réponse de ${team.name}`);edit.onclick=()=>{if(AperoGame.edit(game,i)){renderDelivery();$('delivery-turn').focus()}};item.append(edit)}return item;
   }));
   updateDeliveryStatus();
 }
@@ -110,10 +113,11 @@ function renderCulturePhotos(department) {
   }));
   $('department-illustrations').hidden = false;
 }
-$('apero-begin').addEventListener('click', () => { AperoGame.begin(game); renderApero(); });
+function recordDeliveryAnswer(){if(AperoGame.record(game,AperoGame.entryToken(game))){renderDelivery();$('delivery-turn').focus();saveProgress()}}
+$('delivery-record').addEventListener('click',recordDeliveryAnswer);
 $('delivery-form').addEventListener('submit', event => {
   event.preventDefault();
-  if (AperoGame.validate(game)) renderApero();
+  if(AperoGame.entriesReady(game)){if(AperoGame.validate(game))renderApero();}else recordDeliveryAnswer();
 });
 $('delivery-next').addEventListener('click', () => { if (AperoGame.next(game)) renderApero(); });
 $('bonus-reveal').addEventListener('click', () => {
