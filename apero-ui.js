@@ -10,6 +10,8 @@ function renderApero() {
   if (s.phase === 'question') { if(AperoGame.entriesReady(game)){AperoGame.validate(game);renderApero();return;} renderDelivery(); show('delivery'); return; }
   if (s.phase === 'correction') { renderDeliveryCorrection(); show('delivery-correction'); return; }
   if (s.phase === 'bonus') {
+    document.querySelectorAll('input[name=apero-discovery-choice]').forEach(input=>{input.checked=Number(input.value)===s.bonusChoice;input.disabled=s.bonusRevealed;input.closest('li').classList.toggle('discovery-correct',s.bonusRevealed&&input.value==='1');});
+    $('bonus-reveal').disabled=![0,1,2].includes(s.bonusChoice);
     $('bonus-answer').hidden = !s.bonusRevealed;
     $('bonus-reveal').hidden = s.bonusRevealed;
     $('apero-finish').hidden = !s.bonusRevealed;
@@ -120,10 +122,10 @@ $('delivery-form').addEventListener('submit', event => {
   recordDeliveryAnswer();
 });
 $('delivery-next').addEventListener('click', () => { if (AperoGame.next(game)) renderApero(); });
+document.querySelectorAll('input[name=apero-discovery-choice]').forEach(input=>input.addEventListener('change',()=>{if(AperoGame.chooseBonus(game,Number(input.value)))$('bonus-reveal').disabled=false;}));
 $('bonus-reveal').addEventListener('click', () => {
-  AperoGame.revealBonus(game);
-  $('bonus-answer').hidden = false; $('bonus-reveal').hidden = true; $('apero-finish').hidden = false;
-  $('bonus-answer').setAttribute('tabindex', '-1'); $('bonus-answer').focus();
+  if(!AperoGame.revealBonus(game))return;
+  renderApero();$('bonus-answer').setAttribute('tabindex','-1');$('bonus-answer').focus();
 });
 $('apero-finish').addEventListener('click', () => { if (AperoGame.finish(game)) renderApero(); });
 document.querySelectorAll('.apero-back').forEach(button => button.addEventListener('click', () => { scores(); show('journey'); }));

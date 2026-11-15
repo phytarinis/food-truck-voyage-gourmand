@@ -1,0 +1,7 @@
+const{test}=require('node:test'),assert=require('node:assert/strict'),A=require('../apero.js'),{createGame}=require('../game.js');
+for(const choice of[0,1,2])test(`découverte : choix ${choice}, modification, révélation unique et zéro point`,()=>{
+ const g=createGame(['Corail','Sauge']);A.start(g);g.apero.phase='bonus';g.teams[0].score=25;g.teams[1].score=10;const scores=JSON.stringify(g.teams);
+ assert.equal(A.revealBonus(g),false);assert.equal(A.finish(g),false);assert.ok(A.chooseBonus(g,choice));assert.equal(g.apero.bonusRevealed,false);assert.ok(A.chooseBonus(g,(choice+1)%3));
+ const restored=JSON.parse(JSON.stringify(g));assert.equal(restored.apero.bonusChoice,(choice+1)%3);assert.equal(restored.apero.bonusRevealed,false);assert.equal(A.revealBonus(restored),true);assert.equal(A.revealBonus(restored),false);assert.equal(A.chooseBonus(restored,1),false);assert.equal(JSON.stringify(restored.teams),scores);assert.ok(A.finish(restored));assert.equal(A.finish(restored),false);assert.equal(JSON.stringify(restored.teams),scores);
+});
+test('découverte : phases et choix invalides refusés',()=>{const g=createGame(['C','S']);A.start(g);assert.equal(A.chooseBonus(g,1),false);assert.equal(A.revealBonus(g),false);g.apero.phase='bonus';for(const c of[-1,3,null,undefined,'1',NaN])assert.equal(A.chooseBonus(g,c),false);assert.equal(A.revealBonus(g),false);assert.equal(g.apero.bonusChoice,null)});
