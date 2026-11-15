@@ -1,111 +1,69 @@
 'use strict';
-let pendingFranceValidation = null;
-let pendingFranceClueToken = null;
+// Les transitions automatiques restent propres à la manche 3.
+function settleFranceSearch() {
+  if (game?.france?.phase === 'intro') FranceGame.begin(game);
+  const stamp = FranceGame.nextClueToken(game);
+  if (stamp) FranceGame.revealNextClue(game, stamp);
+}
 function openFrance() {
   FranceGame.start(game); game.routeCurrent = 2; renderFrance();
 }
 function renderFrance() {
+  settleFranceSearch();
+  // Reprendre aussi une ancienne sauvegarde arrêtée avant « La petite histoire ».
+  if (game.france.phase === 'location' && game.france.location.revealed) FranceGame.discover(game);
   scores();
   const s = game.france;
-  if (s.phase === 'intro') { show('france-intro'); return; }
   if (s.phase === 'search') { renderFranceSearch(); show('france-search'); return; }
   if (s.phase === 'answer') {
     $('france-answer-title').textContent = FranceGame.puzzles[s.puzzleIndex].title;
-    renderFranceAwards('france-search-awards', false); show('france-answer'); return;
+    renderFrancePhoto(); show('france-answer'); return;
   }
-  if (s.phase === 'location') { renderFranceLocation(); show('france-location'); return; }
-  if (s.phase === 'correction') { renderFranceCorrection(); show('france-correction'); return; }
+  if (['location', 'correction'].includes(s.phase)) { renderFranceLocation(); show('france-location'); return; }
   if (s.phase === 'bonus') { renderFranceBonus(); show('france-bonus'); return; }
-  $('france-totals').textContent='La France et ses spécialités : mission accomplie !';show('france-end');
+  openCareerPause(2);
 }
-
-function renderFranceSearch() {
-  const s = game.france, puzzle = FranceGame.puzzles[s.puzzleIndex];
-  $('france-progress').textContent = `MANCHE 03 / ÉNIGME ${s.puzzleIndex + 1} SUR 3`;
-  $('france-live').textContent = '';
-  $('france-panels').replaceChildren(...s.players.map((player, team) => {
-    const panel = document.createElement('article'); panel.className = `sauce-panel team-${team}`;
-    const title = document.createElement('h2'); title.textContent = game.teams[team].name; title.tabIndex = -1;
-    const top = document.createElement('div'); top.className = 'sauce-panel-top';
-    const status = document.createElement('span'); status.className = `sauce-status ${player.status}`;
-    status.textContent = { searching: 'En recherche', waiting: 'En attente', found: 'Trouvé !', exhausted: 'Aucun point' }[player.status]; top.append(title, status);
-    const info = document.createElement('div'); info.className = 'sauce-clue-info';
-    const index = document.createElement('span'); index.textContent = `INDICE ${s.clueIndex + 1} / 3`;
-    const value = document.createElement('strong'); value.textContent = player.status === 'searching' ? `${FranceGame.points[s.clueIndex]} points possibles` : player.status === 'waiting' ? 'Réponse enregistrée' : `+${player.points} points`;
-    info.append(index, value);
-    const clue = document.createElement('p'); clue.className = 'sauce-current-clue'; clue.textContent = puzzle.clues[s.clueIndex];
-    panel.append(top, info, clue);
-    if (s.clueIndex > 0) {
-      const history = document.createElement('div'); history.className = 'sauce-history';
-      const label = document.createElement('h3'); label.textContent = 'Indices déjà révélés';
-      const list = document.createElement('ol');
-      puzzle.clues.slice(0, s.clueIndex).forEach(text => { const item = document.createElement('li'); item.textContent = text; list.append(item); });
-      history.append(label, list); panel.append(history);
-    }
-    const controls = document.createElement('div'); controls.className = 'sauce-controls';
-    const caption = document.createElement('span'); caption.textContent = 'COMMANDES DU FORMATEUR';
-    const row = document.createElement('div');
-    for (const correct of [false, true]) {
-      const button = document.createElement('button'); button.type = 'button';
-      button.className = correct ? 'primary' : 'secondary';
-      button.textContent = correct ? '✓ Bonne réponse' : '✕ Mauvaise réponse';
-      button.setAttribute('aria-label', `${correct ? 'Bonne' : 'Mauvaise'} réponse pour ${game.teams[team].name}`);
-      button.dataset.team = String(team); button.dataset.correct = String(correct);
-      button.disabled = player.status !== 'searching';
-      const stamp = FranceGame.token(game, team);
-      button.addEventListener('click', () => askFranceValidation(team, correct, stamp)); row.append(button);
-    }
-    controls.append(caption, row); panel.append(controls);
-    if (player.status !== 'searching') {
-      const waiting = document.createElement('p'); waiting.className = 'sauce-waiting'; waiting.textContent = player.status === 'waiting' ? 'Réponse enregistrée. En attente de l’indice suivant.' : 'Recherche terminée. En attente de la fin des deux recherches.'; panel.append(waiting);
-    }
-    return panel;
-  }));
-  pendingFranceClueToken = FranceGame.nextClueToken(game);
-  $('france-clue-gate').hidden = !pendingFranceClueToken;
-}
-
-function askFranceValidation(team, correct, stamp) {
-  if (!stamp || FranceGame.token(game, team) !== stamp || $('france-confirm').open) return;
-  const player = game.france.players[team];
-  pendingFranceValidation = { team, correct, stamp };
-  $('france-confirm-text').textContent = correct
-    ? `Attribuer ${FranceGame.points[player.clueIndex]} points à ${game.teams[team].name} et terminer sa recherche ? La correction attend la fin des deux recherches.`
-    : `Valider une mauvaise réponse pour ${game.teams[team].name} ? ${player.clueIndex === 2 ? 'Sa recherche se terminera avec 0 point.' : 'Sa réponse sera enregistrée sans dévoiler le prochain indice. Le formateur pourra le révéler quand chaque équipe aura répondu ou aura déjà trouvé.'}`;
-  $('france-confirm').showModal(); $('france-cancel').focus();
-}
-function franceRegionName(code) { return FranceRegions.find(region => region.code === code)?.name || ''; }
-function renderFranceAwards(id, includeLocation) {
-  const s = game.france;
-  $(id).replaceChildren(...s.results[s.puzzleIndex].map((result, team) => {
-    const card = document.createElement('article'); card.className = `delivery-award team-${team}`;
-    const title = document.createElement('h2'); title.textContent = `${game.teams[team].name} : +${result.points + (includeLocation ? result.locationPoints : 0)} points`;
-    const detail = document.createElement('p'); detail.textContent = result.status === 'found' ? `Spécialité : ${result.points} points, indice ${result.clueIndex + 1}.` : 'Spécialité : 0 point après trois indices.';
-    card.append(title, detail);
-    if (includeLocation) {
-      const region = document.createElement('p'); region.textContent = `Drapeau : ${franceRegionName(result.region)} · +${result.locationPoints} points.`; card.append(region);
-    }
-    return card;
-  }));
-}
-function renderFranceCorrection() {
-  const s = game.france, puzzle = FranceGame.puzzles[s.puzzleIndex];
-  $('france-correction-progress').textContent = `MANCHE 03 / DÉCOUVERTE ${s.puzzleIndex + 1} SUR 3`;
-  $('france-correction-title').textContent = puzzle.title;
-  renderFranceAwards('france-awards', true);
-  $('france-cultural-title').textContent = puzzle.heading;
-  $('france-fact').textContent = puzzle.fact;
-  $('france-correct-region').textContent = `Région : ${franceRegionName(puzzle.region)}`;
-  const photo = FrancePhotos[puzzle.id];
+function renderFrancePhoto() {
+  const puzzle = FranceGame.puzzles[game.france.puzzleIndex], photo = FrancePhotos[puzzle.id];
   const image = document.createElement('img'); image.src = photo.src; image.alt = photo.alt;
   const caption = document.createElement('figcaption'); appendFrancePhotoCredit(caption, photo);
   $('france-photo').replaceChildren(image, caption);
   $('france-photo').dataset.specialty = puzzle.id;
-  $('france-next').textContent = s.puzzleIndex === 2 ? 'LE BONUS COLLECTIF →' : 'ÉNIGME SUIVANTE →';
 }
+function renderFranceSearch() {
+  const s = game.france, puzzle = FranceGame.puzzles[s.puzzleIndex];
+  const team = s.players.findIndex(player => player.status === 'searching');
+  $('france-live').textContent = '';
+  const panel = document.createElement('article'); panel.className = `france-common-clue team-${team}`;
+  const info = document.createElement('div'); info.className = 'sauce-clue-info';
+  const index = document.createElement('span'); index.textContent = `Indice ${s.clueIndex + 1} / 3`;
+  const value = document.createElement('strong'); value.textContent = `${FranceGame.points[s.clueIndex]} points possibles`;
+  info.append(index, value);
+  const clue = document.createElement('p'); clue.className = 'sauce-current-clue'; clue.textContent = puzzle.clues[s.clueIndex];
+  const turn = document.createElement('h2'); turn.id = 'france-active-team'; turn.tabIndex = -1;
+  turn.textContent = `À ${game.teams[team].name} de répondre`;
+  const controls = document.createElement('div'); controls.className = 'sauce-controls';
+  for (const correct of [false, true]) {
+    const button = document.createElement('button'); button.type = 'button';
+    button.className = correct ? 'primary' : 'secondary';
+    button.textContent = correct ? '✓ Bonne réponse' : '✕ Mauvaise réponse';
+    button.setAttribute('aria-label', `${correct ? 'Bonne' : 'Mauvaise'} réponse pour ${game.teams[team].name}`);
+    button.dataset.team = String(team); button.dataset.correct = String(correct);
+    const stamp = FranceGame.token(game, team);
+    button.addEventListener('click', event => {
+      // Le second événement d’un double clic ne doit pas répondre pour l’autre équipe.
+      if (event.detail > 1 || game?.spicy?.active || !FranceGame.validate(game, team, correct, stamp)) return;
+      renderFrance();
+      if (game.france.phase === 'search') $('france-active-team').focus({preventScroll:true});
+    });
+    controls.append(button);
+  }
+  panel.append(info, clue, turn, controls);
+  $('france-panels').replaceChildren(panel);
+}
+function franceRegionName(code) { return FranceRegions.find(region => region.code === code)?.name || ''; }
 function renderFranceBonus() {
   const state = game.france.bonus, data = FranceGame.bonus;
-  $('france-bonus-title').textContent = data.title;
   $('france-bonus-question').textContent = data.question;
   $('france-bonus-options').replaceChildren(...data.options.map((text, index) => {
     const item = document.createElement('li');
@@ -141,37 +99,11 @@ $('france-bonus-form').addEventListener('submit', event => {
   event.preventDefault();
   if (FranceGame.revealBonus(game)) { renderFranceBonus(); $('france-bonus-answer').focus(); }
 });
-$('france-bonus-finish').addEventListener('click', () => { if (FranceGame.finish(game)) renderFrance(); });
-$('france-begin').addEventListener('click', () => { FranceGame.begin(game); renderFrance(); });
-$('france-cancel').addEventListener('click', () => $('france-confirm').close());
-$('france-confirm').addEventListener('close', () => { pendingFranceValidation = null; });
-$('france-confirm-answer').addEventListener('click', () => {
-  const action = pendingFranceValidation; pendingFranceValidation = null; $('france-confirm').close();
-  if (!action || !game || !FranceGame.validate(game, action.team, action.correct, action.stamp)) return;
-  const phase = game.france.phase; renderFrance();
-  if (phase === 'search') {
-    $('france-live').textContent = `${game.teams[action.team].name} : ${action.correct ? 'recherche terminée' : 'réponse enregistrée'}. L’indice affiché reste commun aux deux équipes.`;
-    $('france-panels').children[action.team].querySelector('h2').focus();
-  }
-});
-$('france-next-clue').addEventListener('click', () => {
-  const stamp = pendingFranceClueToken; pendingFranceClueToken = null;
-  if (game && FranceGame.revealNextClue(game, stamp)) {
-    renderFrance();
-    $('france-live').textContent = `L’indice ${game.france.clueIndex + 1} est maintenant visible pour les deux équipes.`;
-    const active = game.france.players.findIndex(player => player.status === 'searching');
-    if (active >= 0) $('france-panels').children[active].querySelector('h2').focus();
-  }
-});
+$('france-bonus-finish').addEventListener('click', () => { if (FranceGame.finish(game)) { scores(); saveProgress(); openCareerPause(2); } });
 $('france-next').addEventListener('click', () => { if (FranceGame.next(game)) renderFrance(); });
-$('france-career').addEventListener('click', () => { if (game?.france?.phase === 'complete') openCareerPause(2); });
 document.querySelectorAll('.france-back').forEach(button => button.addEventListener('click', () => { scores(); show('journey'); }));
 
 
-function franceSvg(tag, attributes = {}) {
-  const element = document.createElementNS('http://www.w3.org/2000/svg', tag);
-  Object.entries(attributes).forEach(([key, value]) => element.setAttribute(key, value)); return element;
-}
 function renderFranceLocation() {
   const s = game.france, l = s.location, puzzle = FranceGame.puzzles[s.puzzleIndex];
   const bothLocked = l.locked.every(Boolean), stamp = FranceGame.locationToken(game);
@@ -192,14 +124,22 @@ function renderFranceLocation() {
     else $('france-map-board').querySelector('[role="button"]').focus();
   };
   $('france-reveal-region').hidden = !bothLocked || l.revealed;
-  $('france-discover').hidden = !l.revealed;
+  $('france-culture').hidden = !l.revealed;
+  $('france-next').hidden = !l.revealed;
+  $('france-next').textContent = s.puzzleIndex === 2 ? 'Défi découverte →' : 'Spécialité suivante →';
+  $('france-map-controls-title').hidden = l.revealed;
+  $('france-location').querySelector('.france-map-instruction').hidden = l.revealed;
+  $('france-location-title').textContent = l.revealed ? 'La région dévoilée !' : 'Place-moi sur la carte !';
   $('france-region-answer').hidden = !l.revealed;
   $('france-region-answer').replaceChildren();
   if (l.revealed) {
     const title = document.createElement('h2'); title.textContent = `Bonne région : ${franceRegionName(puzzle.region)}`;
-    const awards = document.createElement('p'); awards.textContent = s.players.map((p, team) => `${game.teams[team].name} : +${p.locationPoints} points`).join(' · ');
-    $('france-region-answer').append(title, awards);
+    $('france-region-answer').append(title);
   }
+  $('france-cultural-title').textContent = l.revealed ? puzzle.heading : '';
+  $('france-fact').textContent = l.revealed ? puzzle.fact : '';
+  $('france-map-choice').hidden = l.revealed;
+  $('france-map-turn').hidden = l.revealed;
   function select(code) {
     if (!FranceGame.chooseRegion(game, code, stamp)) return;
     renderFranceLocation();
@@ -227,9 +167,8 @@ function renderFranceLocation() {
 }
 $('france-open-map').addEventListener('click', () => { if (FranceGame.startLocation(game)) renderFrance(); });
 $('france-reveal-region').addEventListener('click', () => {
-  if (FranceGame.revealLocation(game)) { scores(); renderFranceLocation(); $('france-region-answer').focus(); }
+  if (FranceGame.revealLocation(game)) { FranceGame.discover(game); renderFrance(); $('france-region-answer').focus({preventScroll:true}); }
 });
-$('france-discover').addEventListener('click', () => { if (FranceGame.discover(game)) renderFrance(); });
 
 // Les photos et leurs sources restent réservées aux corrections découvertes.
 function appendFrancePhotoCredit(container, photo) {
@@ -238,14 +177,16 @@ function appendFrancePhotoCredit(container, photo) {
     const link = document.createElement('a'); link.href = url; link.textContent = label; link.target = '_blank'; link.rel = 'noopener';
     container.append(link, ' · ');
   }
-  container.append('Image affichée entière, sans retouche ni recadrage par le jeu.');
+  container.append(photo === FrancePhotos.choucroute
+    ? 'Recadrage à l’affichage sur le plat pour masquer le panneau indiquant son origine ; fichier original conservé, sans retouche.'
+    : 'Image affichée entière, sans retouche ni recadrage par le jeu.');
 }
 function appendFrancePhotoCredits(container) {
   const s = game?.france;
   if (!s) return;
   FranceGame.puzzles.forEach((puzzle, index) => {
-    // La recherche seule ne suffit pas : attendre la correction géographique.
-    const corrected = index < s.puzzleIndex || (index === s.puzzleIndex && ['correction', 'bonus', 'complete'].includes(s.phase));
+    // Le plat et sa photo sont révélés avant sa localisation.
+    const corrected = index < s.puzzleIndex || (index === s.puzzleIndex && ['answer', 'location', 'correction', 'bonus', 'complete'].includes(s.phase));
     if (!corrected) return;
     const article = document.createElement('article');
     const title = document.createElement('h3'); title.textContent = `Manche 3 — ${puzzle.answer}`;

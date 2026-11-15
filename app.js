@@ -7,6 +7,7 @@ function show(id) {
   document.body.classList.toggle('setup-mode', id === 'setup');
   document.body.classList.toggle('journey-mode', id === 'journey');
   document.body.classList.toggle('delivery-mode', ['delivery','delivery-correction'].includes(id));
+  document.body.classList.toggle('france-mode', id.startsWith('france-'));
   updateHeaderContext(id);
   document.querySelectorAll('.screen').forEach(screen => { screen.hidden = screen.id !== id; });
   $('reset').hidden = id === 'welcome';
@@ -41,6 +42,8 @@ function updateHeaderContext(id) {
   const round = keys.indexOf(prefix);
   if (['delivery','delivery-correction'].includes(id) && game?.apero) label.textContent = `Manche 1 · L'apéro local / Livraison ${game.apero.index + 1} sur 3 · ${AperoGame.deliveries[game.apero.index].city} · En équipes`;
   else if (id === 'apero-bonus') label.textContent = "Manche 1 · L'apéro local / Défi découverte · Collectif · Sans points";
+  else if (id === 'france-bonus') label.textContent = 'Manche 3 · La France et ses spécialités / Défi découverte · Collectif · Sans points';
+  else if (['france-search','france-answer','france-location'].includes(id) && game?.france) label.textContent = `Manche 3 · La France et ses spécialités / ${id === 'france-location' ? 'Carte' : 'Énigme'} ${game.france.puzzleIndex + 1} sur 3 · En équipes`;
   else if (id === 'world-transition') label.textContent = 'Le grand final';
   else if (round >= 0) label.textContent = `Manche ${round + 1} · ${rounds[round]}`;
   else if (id === 'career-pause') label.textContent = `Pause métier ${currentCareerIndex + 1} · ${['Serveuse','Cuisinier','Réceptionniste','Entretien hôtelier','Équipier polyvalent en restauration rapide'][currentCareerIndex]} / Collectif · Sans points`;
