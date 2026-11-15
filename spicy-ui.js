@@ -12,6 +12,8 @@ function syncSpicyAccess(id){
  const button=$('spicy-open');button.hidden=true;
  if(!game)return;
  const s=SpicyGame.observe(game);
+ $('france-spicy').hidden=true;
+ if(id==='france-location'&&game.france?.phase==='correction'&&!s.active&&!s.finale){SpicyGame.release(game,`france:${game.france.puzzleIndex}`);$('france-spicy').hidden=!SpicyGame.canNormal(game,id);}
  $('delivery-spicy').hidden=true;
  if(id==='delivery-correction'&&game.apero?.phase==='correction'&&!s.active&&!s.finale){SpicyGame.release(game,`apero:${game.apero.index}`);$('delivery-spicy').hidden=!SpicyGame.canNormal(game,id);}
  if(!s.active&&['journey','apero-end','sauce-end','france-end','gps-end','passport-end','world-end','world-transition', 'apero-intro','sauce-intro','france-intro','gps-intro','passport-intro','world-intro'].includes(id)){
@@ -34,6 +36,7 @@ function spicyResume(){
 function renderSpicyBreak(){
  if(!spicyPending||spicyPending.game!==game)return;
  if(spicyPending.button.id==='delivery-next'){renderApero();return;}
+ if(spicyPending.button.id==='france-next'){renderFrance();return;}
  scores();const s=SpicyGame.state(game);
  $('spicy-break-status').textContent=s.window?.spent?'Un piment a déjà été joué dans cette pause. Le voyage peut reprendre.':`${SpicyGame.available(game).length} questions encore disponibles.`;
  $('spicy-break-play').disabled=!SpicyGame.canNormal(game,'spicy-break');
@@ -45,7 +48,7 @@ for(const[id,[key,indexKey]]of Object.entries(spicyNextButtons)){
   if(game?.spicy?.active){event.preventDefault();event.stopImmediatePropagation();return;}
   const round=game?.[key];if(round?.phase!=='correction')return;
   SpicyGame.release(game,`${key}:${round[indexKey]}`);
-  if(key==='apero'){spicyPending=null;return;}
+  if(key==='apero'||key==='france'){spicyPending=null;return;}
   if(key==='world'&&round.index===5)return;
   if(!SpicyGame.canNormal(game,'spicy-break'))return;
   event.preventDefault();event.stopImmediatePropagation();spicyPending={game,button:$(id),label:$(id).textContent.trim()};renderSpicyBreak();
@@ -138,14 +141,15 @@ function appendSpicyPhotoCredits(container){
 }
 $('spicy-open').addEventListener('click',()=>{if(SpicyGame.allComplete(game))openSpicyFinale();else openSpicySetup()});
 $('delivery-spicy').addEventListener('click',()=>{if(!SpicyGame.canNormal(game,'delivery-correction'))return;spicyPending={game,button:$('delivery-next'),label:$('delivery-next-label').textContent};openSpicySetup()});
+$('france-spicy').addEventListener('click',()=>{if(!SpicyGame.canNormal(game,'france-location'))return;spicyPending={game,button:$('france-next'),label:$('france-next').textContent};openSpicySetup()});
 $('spicy-break-play').addEventListener('click',()=>openSpicySetup());$('spicy-break-next').addEventListener('click',spicyResume);
 $('spicy-setup-form').addEventListener('submit',event=>{event.preventDefault();if(spicySetup?.game!==game)return;if(SpicyGame.start(game,spicySetup))renderSpicyQuestion();else $('spicy-setup-status').textContent='Ce lancement n’est plus disponible. Revenez à la pause pour vérifier les piments et les questions.';});
-$('spicy-cancel-setup').addEventListener('click',()=>{const context=spicySetup?.context;spicySetup=null;if(context==='delivery-correction')spicyPending=null;if(context==='spicy-break')renderSpicyBreak();else if(context==='spicy-finale')renderSpicyFinale();else spicyRestore(context)});
+$('spicy-cancel-setup').addEventListener('click',()=>{const context=spicySetup?.context;spicySetup=null;if(context==='delivery-correction'||context==='france-location')spicyPending=null;if(context==='spicy-break')renderSpicyBreak();else if(context==='spicy-finale')renderSpicyFinale();else spicyRestore(context)});
 $('spicy-answer-form').addEventListener('submit',event=>{event.preventDefault();if(SpicyGame.reveal(game,SpicyGame.activeToken(game)))renderSpicyCorrection()});
 $('spicy-return').addEventListener('click',()=>{
  const active=game?.spicy?.active,context=spicySetup?.context;if(!active)return;const kind=active.kind;
  if(!SpicyGame.finish(game,SpicyGame.activeToken(game)))return;
- spicySetup=null;$('spicy-photo').replaceChildren();if(kind==='finale')renderSpicyFinale();else if(context==='spicy-break'||context==='delivery-correction')spicyResume();else spicyRestore(context);
+ spicySetup=null;$('spicy-photo').replaceChildren();if(kind==='finale')renderSpicyFinale();else if(context==='spicy-break'||context==='delivery-correction'||context==='france-location')spicyResume();else spicyRestore(context);
 });
 $('spicy-final-play').addEventListener('click',()=>openSpicySetup('finale'));
 $('spicy-final-close').addEventListener('click',()=>{if(SpicyGame.closeFinale(game)){scores();if(typeof openGrandFinal==='function')openGrandFinal();else show('world-transition')}});

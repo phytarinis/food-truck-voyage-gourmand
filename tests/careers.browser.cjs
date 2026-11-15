@@ -25,6 +25,7 @@ const assert = require('node:assert/strict');
     assert.equal(await p.locator('#career-continue').isVisible(),true);assert.equal(await p.locator('#career-quote').isVisible(),true);assert.equal(await p.locator('#career-quote').innerText(),await p.evaluate(()=>CareerPauses.jobs[currentCareerIndex].quote));
     assert.deepEqual(await p.evaluate(()=>game.teams.map(t=>[t.score,t.jokers])),[[30,2],[15,2]]);
     await p.locator('#career-continue').click();
+    if(job===1){assert.equal(await p.locator('#france-search').isVisible(),true);await p.locator('#france-search .france-back').click();}
     assert.equal(await p.locator('.route-stop.pending').count(),6);
     await p.evaluate(index=>openCareerPause(index),job);
     assert.equal(await p.locator('#career-revelation').isVisible(),true);
