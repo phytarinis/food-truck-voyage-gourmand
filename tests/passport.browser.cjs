@@ -11,6 +11,11 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict');
   assert.equal(await p.locator('dialog[open]').count(),0);
  };
  const fit=async(label)=>{
+  // Progression unique dans l’en-tête, à chaque étape et après reprise.
+  const expected=await p.evaluate(()=>game.passport.phase==='bonus'?'MANCHE 05 / DÉFI · COLLECTIF · SANS POINTS':`MANCHE 05 / ÉNIGME ${game.passport.puzzleIndex+1} SUR 3`);
+  assert.equal(await p.locator('#screen-context').innerText(),expected,label);
+  assert.equal(await p.locator('.passport-screen .eyebrow').count(),0,label);
+  assert.equal(await p.locator('.passport-screen .action-van,.passport-screen .van-action').count(),0,label);
   await p.evaluate(()=>scrollTo(0,0));
   const size=await p.evaluate(()=>({width:innerWidth,height:innerHeight,scrollWidth:document.documentElement.scrollWidth,scrollHeight:document.documentElement.scrollHeight}));
   assert.ok(size.scrollWidth<=size.width&&size.scrollHeight<=size.height,`${label}: ${JSON.stringify(size)}`);
@@ -67,7 +72,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict');
    assert.deepEqual(await score(),[before[0]+15,before[1]+(index===1?20:25)]);
    assert.equal(await p.evaluate(()=>PassportGame.revealLocation(game)),false);
    await fit(`correction ${index} ${width}`);
-   assert.equal(await p.locator('#passport-next .action-van').count(),1);
+   assert.equal(await p.locator('#passport-next .action-van').count(),0);
    assert.equal(await p.locator('#passport-spicy').isVisible(),true);
    if(index===0){
     const saved=await score();await p.locator('#passport-spicy').click();
@@ -76,13 +81,14 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict');
     await p.evaluate(()=>{spicySetup=null;renderPassport()});assert.deepEqual(await score(),saved);
    }
    await reopen();assert.deepEqual(await score(),[before[0]+15,before[1]+(index===1?20:25)]);
+   await fit(`correction reprise ${index} ${width}`);
    await p.locator('#passport-next').click();assert.equal(await p.locator('#spicy-break').isVisible(),false);
   }
   assert.equal(await p.locator('#passport-bonus').isVisible(),true);await fit(`défi ${width}`);
   assert.match(await p.locator('#passport-bonus-title').innerText(),/DÉFI/);
   const before=await score();await p.locator('[name=passport-bonus-choice]').nth(0).check();await p.locator('#passport-bonus-reveal').click();
   assert.equal(await p.locator('#passport-bonus-photo img').count(),1);assert.deepEqual(await score(),before);
-  await fit(`défi corrigé ${width}`);await reopen();assert.equal(await p.locator('#passport-bonus-answer').isVisible(),true);
+  await fit(`défi corrigé ${width}`);await reopen();assert.equal(await p.locator('#passport-bonus-answer').isVisible(),true);await fit(`défi repris ${width}`);
   await p.locator('#passport-bonus-finish').click();assert.equal(await p.locator('#career-pause').isVisible(),true);
   assert.match(await p.locator('#screen-context').innerText(),/Équipier polyvalent en restauration rapide/);
   assert.equal(await p.evaluate(()=>game.passport.phase),'complete');

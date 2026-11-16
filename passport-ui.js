@@ -25,7 +25,6 @@ function renderPassportSearch() {
   const available = s.players.map((p, team) => p.status === 'searching' ? team : -1).filter(team => team >= 0);
   if (!available.includes(passportSelectedTeam)) passportSelectedTeam = available[0];
   const team = passportSelectedTeam;
-  $('passport-progress').textContent = `MANCHE 05 / ÉNIGME ${s.puzzleIndex + 1} SUR 3`;
   $('passport-live').textContent = '';
   // Ne pas signaler une réussite via le score avant la réponse de l'autre équipe.
   $('passport-search').querySelectorAll('.score-points').forEach((node, t) => {
@@ -123,7 +122,6 @@ function renderPassportLocation() {
   const s=game.passport,l=s.location,puzzle=PassportGame.puzzles[s.puzzleIndex],bothLocked=l.locked.every(Boolean),stamp=PassportGame.locationToken(game);
   const viewKey=`${s.id}:${s.puzzleIndex}:${bothLocked?'compare':l.activeTeam}`;
   if(passportView.key!==viewKey)passportView={key:viewKey,zoom:1,x:450,y:340};
-  $('passport-location-specialty').textContent=`MANCHE 05 / ÉNIGME ${s.puzzleIndex+1} SUR 3`;
   $('passport-location-title').textContent=puzzle.title;
   $('passport-cultural-title').textContent=puzzle.heading;
   $('passport-fact').textContent=puzzle.fact;
