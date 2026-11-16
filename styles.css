@@ -987,7 +987,6 @@ body.journey-mode main{min-height:0}
 #passport-location .passport-map-turn{font-size:16px;padding:8px 12px;margin:0}
 #passport-location .passport-map-heading h1{font-size:30px;letter-spacing:-1px}
 #passport-location #passport-next{font-size:14px;min-height:44px;padding:8px 12px}
-#passport-location #passport-next .action-van{width:44px;height:32px}
 @media(min-width:801px){
  body.passport-mode main{min-height:0}
  body.passport-mode footer{padding:8px}
@@ -1022,8 +1021,6 @@ body.journey-mode main{min-height:0}
 .passport-location-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px}
 .passport-location-actions>button{font-size:14px;min-height:40px;padding:8px 12px}
 .passport-location-actions .passport-map-help{flex-basis:100%;order:2}
-#passport-location .passport-location-actions .action-van{width:40px;height:28px}
-#passport-location #passport-lock-flag .action-van,#passport-location .passport-back .action-van{display:none}
 #passport-location .passport-location-actions .bonus-answer{margin:0}
 #passport-location #passport-map-choice{max-width:350px}
 #passport-location .passport-map-controls h2{margin:2px 0}
@@ -1043,8 +1040,14 @@ body.journey-mode main{min-height:0}
  #passport-search .passport-common-clue{padding:16px 22px}
  #passport-search .sauce-current-clue{margin:12px 0;font-size:28px}
  #passport-search .passport-common-clue h2{margin:10px 0}
- #passport-search>.passport-back .action-van{display:none}
  #passport-search>.passport-back{padding:8px 12px;font-size:14px;min-height:40px}
  #passport-search .passport-undo{padding:6px 10px;min-height:36px}
 }
 @media(min-width:801px){#passport-location .passport-map-controls #passport-photo img{height:160px}}
+
+/* Navigation sobre de la manche 5 ; les validations orales gardent leur style. */
+.passport-screen .result-actions button,
+.passport-screen>.passport-back,
+#passport-next,#passport-bonus-reveal{
+ min-height:40px;padding:9px 14px;font-size:14px;
+}
