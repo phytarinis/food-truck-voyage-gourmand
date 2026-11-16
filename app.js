@@ -41,6 +41,8 @@ function updateHeaderContext(id) {
   const prefix = id.startsWith('delivery') ? 'apero' : id.split('-')[0];
   const round = keys.indexOf(prefix);
   if (['delivery','delivery-correction'].includes(id) && game?.apero) label.textContent = `Manche 1 · L'apéro local / Livraison ${game.apero.index + 1} sur 3 · ${AperoGame.deliveries[game.apero.index].city} · En équipes`;
+  else if(['sauce-search','sauce-correction'].includes(id)&&game?.sauce)label.textContent=`Manche 2 · À quelle sauce ? / Énigme ${game.sauce.puzzleIndex+1} sur 3 · En équipes`;
+  else if(id==='sauce-bonus')label.textContent='Manche 2 · À quelle sauce ? / Défi découverte · Collectif · Sans points';
   else if (id === 'apero-bonus') label.textContent = "Manche 1 · L'apéro local / Défi découverte · Collectif · Sans points";
   else if (id === 'france-bonus') label.textContent = 'Manche 3 · La France et ses spécialités / Défi découverte · Collectif · Sans points';
   else if (['france-search','france-answer','france-location'].includes(id) && game?.france) label.textContent = `Manche 3 · La France et ses spécialités / ${id === 'france-location' ? 'Carte' : 'Énigme'} ${game.france.puzzleIndex + 1} sur 3 · En équipes`;

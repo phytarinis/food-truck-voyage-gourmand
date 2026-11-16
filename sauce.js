@@ -42,7 +42,7 @@
   let nextId = 1;
   const newPlayers = () => [0, 1].map(() => ({ clueIndex: 0, status: 'searching', points: 0, revision: 0 }));
   function start(game) {
-    if (!game.sauce) game.sauce = { id: nextId++, puzzleIndex: 0, clueIndex: 0, phase: 'intro', players: newPlayers(), results: [], bonus: { selected: null, revealed: false } };
+    if (!game.sauce) game.sauce = { id: nextId++, puzzleIndex: 0, clueIndex: 0, phase: 'search', players: newPlayers(), results: [], bonus: { selected: null, revealed: false } };
     return game.sauce;
   }
   function begin(game) { if (game.sauce?.phase === 'intro') game.sauce.phase = 'search'; }
@@ -65,6 +65,17 @@
       s.results[s.puzzleIndex] = s.players.map(player => ({ ...player }));
       s.phase = 'correction';
     }
+    return true;
+  }
+  function activeTeam(game) {
+    return game?.sauce?.phase==='search'?game.sauce.players.findIndex(player=>player.status==='searching'):-1;
+  }
+  function answerToken(game) { return token(game,activeTeam(game)); }
+  function respond(game,correct,stamp) {
+    const team=activeTeam(game);
+    if(!stamp||stamp!==answerToken(game)||!validate(game,team,correct,stamp))return false;
+    const next=nextClueToken(game);
+    if(next)revealNextClue(game,next);
     return true;
   }
   function canRevealNextClue(game) {
@@ -112,7 +123,7 @@
     s.phase = 'complete'; return true;
   }
   function totals(game) { return game.teams.map((_, team) => (game.sauce?.results || []).reduce((sum, result) => sum + result[team].points, 0)); }
-  const api = { points, puzzles, bonus, start, begin, token, validate, canRevealNextClue, nextClueToken, revealNextClue, next, chooseBonus, revealBonus, finish, totals };
+  const api = { activeTeam, answerToken, respond, points, puzzles, bonus, start, begin, token, validate, canRevealNextClue, nextClueToken, revealNextClue, next, chooseBonus, revealBonus, finish, totals };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.SauceGame = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

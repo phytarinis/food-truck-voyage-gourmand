@@ -812,6 +812,28 @@ body.delivery-mode #screen-context{font-size:clamp(16px,1.3vw,18px)}
 #delivery .delivery-team .delivery-field-number{border-top:3px solid #8b9f80}
 #delivery .delivery-team .delivery-field legend{font-size:18px;font-weight:bold;padding:0 6px;color:var(--ink)}
 @media(max-width:700px){#delivery .delivery-team{gap:14px}#delivery .delivery-team .delivery-field{padding:10px 12px 12px}}
+/* Manche 2 : indice commun, une validation à la fois et corrections sobres. */
+#sauce-search #sauce-clue{font-size:clamp(28px,3vw,42px);line-height:1.25;letter-spacing:-1px;font-weight:700;margin:16px 0 24px;max-width:1150px}
+#sauce-search #sauce-clue-info{font-size:17px;letter-spacing:.5px;margin:10px 0;color:#53615a}
+#sauce-search .sauce-team-status{display:flex;flex-wrap:wrap;gap:10px 24px;padding:0;margin:14px 0;list-style:none;font-size:16px}
+#sauce-search .sauce-team-status li{border-left:3px solid var(--red);padding:3px 10px}#sauce-search .sauce-team-status .team-1{border-color:#819778}
+#sauce-search .sauce-response{margin:18px 0;padding:18px 20px;border:1px solid var(--line);border-radius:12px;background:var(--cream);max-width:900px}
+#sauce-search #sauce-respondent{font-size:23px;line-height:1.3;margin:0 0 16px}
+#sauce-search .sauce-controls{margin:0;padding:0;border:0;display:flex;gap:16px;flex-wrap:wrap}
+.sauce-screen .apero-map-back{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:9px 14px;font-size:14px;border-radius:8px;margin-top:10px}
+#sauce-correction #sauce-correction-title{font-size:clamp(30px,3vw,42px);line-height:1.15;margin:12px 0 18px}
+#sauce-correction .sauce-discovery{gap:24px;margin-top:12px;align-items:start}
+#sauce-correction #sauce-photo img{height:250px;max-height:250px;object-fit:contain;width:100%}
+#sauce-correction #sauce-facts{margin-top:0}#sauce-correction #sauce-facts li{font-size:18px;line-height:1.45;margin:8px 0}
+#sauce-correction #sauce-map img{max-height:170px;object-fit:contain}
+#sauce-correction .result-actions{margin-top:16px;gap:14px}
+.sauce-screen .primary{border-radius:8px;min-height:48px;padding:12px 20px;gap:14px}
+#sauce-bonus #sauce-bonus-title{font-size:clamp(26px,2.6vw,36px);line-height:1.2;margin:12px 0 18px}
+#sauce-bonus .bonus-options{list-style:none;font-size:18px;margin:0 0 14px;gap:8px}#sauce-bonus .bonus-options li{padding:10px 14px}
+#sauce-bonus .bonus-options label{display:flex;align-items:center;gap:12px}#sauce-bonus .bonus-options label::before{content:counter(list-item,upper-alpha) '.';font-weight:bold}
+#sauce-bonus .bonus-answer{padding:12px 16px;margin:12px 0}#sauce-bonus .bonus-answer h2{font-size:20px}#sauce-bonus .bonus-answer p{font-size:17px;line-height:1.45}
+#sauce-bonus .companion svg{height:120px;width:66px}#sauce-bonus .companion .speech{font-size:17px;padding:12px}#sauce-bonus .bonus-map img{max-height:240px}
+@media(max-width:700px){#sauce-search .sauce-response{padding:14px}#sauce-search .sauce-controls button{flex:1;min-width:130px}#sauce-search #sauce-respondent{font-size:21px}#sauce-search .sauce-team-status{font-size:15px}#sauce-correction .result-actions{align-items:stretch}}
 
 /* Carnet : le plateau reste prioritaire, sans changer son tracé. */
 body.journey-mode main{min-height:0}

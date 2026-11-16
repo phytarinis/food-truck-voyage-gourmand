@@ -144,35 +144,26 @@
 </div><figure class="bonus-map"><a href="assets/maps/france-numeros.svg" target="_blank" rel="noopener" aria-label="Agrandir la carte des départements dans un nouvel onglet"><img src="assets/maps/france-numeros.svg" alt="Carte de France métropolitaine avec les limites et les numéros INSEE des 96 départements, et un zoom de l’Île-de-France."></a><figcaption><a href="assets/maps/france-numeros.svg" target="_blank" rel="noopener">Agrandir la carte numérotée</a> · IGN / Admin Express 2018, Licence Ouverte</figcaption></figure></div>
     </section>
 
-    <section id="sauce-intro" class="screen compact sauce-screen" hidden aria-labelledby="sauce-intro-title">
-      <div class="scoreboard"></div><p class="eyebrow">MANCHE 02 / NOUVELLE-AQUITAINE</p><h1 id="sauce-intro-title" tabindex="-1">À quelle <em>sauce ?</em></h1>
-      <p class="intro">Notre food truck poursuit sa route en Nouvelle-Aquitaine !</p>
-      <aside class="companion sauce-intro-scene"><svg aria-hidden="true"><use href="#companion-art"/></svg><p class="speech">On reste en Nouvelle-Aquitaine ! Mais cette fois, il va falloir reconnaître ce qu'on met dans les assiettes…</p></aside>
-      <p class="intro sauce-intro-principle">Trois spécialités à découvrir. Trois indices possibles. Plus vous trouvez tôt, plus vous gagnez de points !</p><p class="sauce-confidential">Les indices sont dévoilés ensemble. Chaque équipe transmet sa réponse par écrit au formateur, sans l’annoncer à voix haute.</p>
-      <div class="result-actions"><button id="sauce-begin" class="primary">PREMIÈRE ÉNIGME <span>→</span></button><button class="text-button sauce-back">Le carnet de route</button></div>
-    </section>
-
-    <section id="sauce-search" class="screen compact sauce-screen" hidden aria-labelledby="sauce-search-title">
-      <div class="scoreboard"></div><div class="sauce-heading"><div><p id="sauce-progress" class="eyebrow"></p><h1 id="sauce-search-title" tabindex="-1">À quelle <em>sauce ?</em></h1></div><aside class="sauce-mini-companion"><svg aria-hidden="true"><use href="#companion-art"/></svg><p class="sauce-reminder">Chut… les réponses voyagent sur le papier !<br><small>Transmettez-les discrètement au formateur.</small></p></aside></div>
-      <div id="sauce-panels" class="sauce-panels"></div><div id="sauce-clue-gate" class="sauce-clue-gate" hidden><p>Chaque équipe a répondu ou a déjà trouvé. Le prochain indice peut être dévoilé.</p><button type="button" id="sauce-next-clue" class="primary">Dévoiler l’indice suivant <span aria-hidden="true">→</span></button></div><p id="sauce-live" class="feedback" role="status"></p><button class="text-button sauce-back">Le carnet de route · progression conservée</button>
+    <section id="sauce-search" class="screen compact sauce-screen" hidden aria-labelledby="sauce-clue">
+      <div class="scoreboard"></div>
+      <p id="sauce-clue-info" class="eyebrow"></p><h1 id="sauce-clue" tabindex="-1"></h1>
+      <ul id="sauce-team-status" class="sauce-team-status" aria-label="État des recherches"></ul>
+      <div class="sauce-response"><h2 id="sauce-respondent" tabindex="-1"></h2><div id="sauce-response-controls" class="sauce-controls"></div></div>
+      <p id="sauce-live" class="visually-hidden" role="status"></p><button class="text-button sauce-back">Le carnet de route · progression conservée</button>
     </section>
 
     <section id="sauce-correction" class="screen compact sauce-screen" hidden aria-labelledby="sauce-correction-title">
-      <div class="scoreboard"></div><p id="sauce-correction-progress" class="eyebrow"></p><h1 id="sauce-correction-title" tabindex="-1"></h1><p id="sauce-solution" class="delivery-solution"></p><div id="sauce-awards" class="delivery-awards"></div>
+      <div class="scoreboard"></div><h1 id="sauce-correction-title" tabindex="-1"></h1>
       <div class="sauce-discovery"><figure id="sauce-photo" class="sauce-photo"></figure><div><ul id="sauce-facts"></ul><p id="sauce-correction-quote" class="speech" hidden></p><figure id="sauce-map" hidden><a href="assets/maps/nouvelle-aquitaine-arcachon.svg" target="_blank" rel="noopener"><img src="assets/maps/nouvelle-aquitaine-arcachon.svg" alt="Carte de Nouvelle-Aquitaine avec la Gironde mise en évidence et Arcachon repéré au bord du bassin."></a><figcaption>Arcachon, au bord du bassin · IGN / Admin Express 2018 · <a href="assets/maps/ATTRIBUTION.md" target="_blank" rel="noopener">Sources et licence</a></figcaption></figure></div></div>
-      <div class="result-actions"><button id="sauce-next" class="primary">POURSUIVRE LE VOYAGE <span>→</span></button><button class="text-button sauce-back">Le carnet de route</button></div>
+      <div class="result-actions"><button id="sauce-spicy" class="secondary" hidden>🌶️ Jouer un piment</button><button id="sauce-next" class="primary">POURSUIVRE LE VOYAGE <span>→</span></button><button class="text-button sauce-back">Le carnet de route</button></div>
     </section>
 
     <section id="sauce-bonus" class="screen compact sauce-screen" hidden aria-labelledby="sauce-bonus-title">
-      <div class="scoreboard"></div><p class="eyebrow">BONUS FINAL / COLLECTIF / SANS POINTS</p><h1 id="sauce-bonus-title" tabindex="-1"></h1><p id="sauce-bonus-question" class="sauce-bonus-question"></p>
-      <div class="bonus-layout"><div class="bonus-discussion"><form id="sauce-bonus-form"><fieldset><legend class="visually-hidden">Choisissez collectivement une proposition</legend><ol id="sauce-bonus-options" class="bonus-options" type="A"></ol></fieldset><p id="sauce-bonus-status" role="status">Le formateur sélectionne la proposition du groupe.</p><button class="primary" id="sauce-bonus-reveal" type="submit" disabled>RÉVÉLER LA RÉPONSE</button></form>
+      <div class="scoreboard"></div><h1 id="sauce-bonus-title" tabindex="-1"></h1>
+      <div class="bonus-layout"><div class="bonus-discussion"><form id="sauce-bonus-form"><fieldset><legend class="visually-hidden">Choisissez collectivement une proposition</legend><ol id="sauce-bonus-options" class="bonus-options" type="A"></ol></fieldset><p id="sauce-bonus-status" class="visually-hidden" role="status"></p><button class="primary" id="sauce-bonus-reveal" type="submit" disabled>RÉVÉLER LA RÉPONSE</button></form>
       <div id="sauce-bonus-answer" class="bonus-answer" hidden tabindex="-1"><h2 id="sauce-bonus-solution"></h2><p id="sauce-bonus-explanation"></p></div>
       <div class="result-actions"><button id="sauce-bonus-finish" class="primary" hidden>TERMINER LA MANCHE <span>→</span></button><button class="text-button sauce-back">Le carnet de route</button></div></div>
       <div id="sauce-bonus-discovery" hidden><figure class="bonus-map"><a href="assets/maps/bonus-nouvelle-aquitaine.svg" target="_blank" rel="noopener" aria-label="Agrandir la carte des anciennes régions dans un nouvel onglet"><img src="assets/maps/bonus-nouvelle-aquitaine.svg" alt="Carte des anciennes régions Aquitaine, Limousin et Poitou-Charentes qui composent la Nouvelle-Aquitaine."></a><figcaption>Limites historiques IGN / france-geojson · <a href="assets/maps/ATTRIBUTION.md" target="_blank" rel="noopener">Source et Licence Ouverte</a></figcaption></figure><aside class="companion"><svg aria-hidden="true"><use href="#companion-art"/></svg><p id="sauce-bonus-quote" class="speech"></p></aside></div></div>
-    </section>
-
-    <section id="sauce-end" class="screen compact sauce-screen" hidden aria-labelledby="sauce-end-title">
-      <div class="scoreboard"></div><p class="eyebrow">TROIS SPÉCIALITÉS DÉCOUVERTES</p><h1 id="sauce-end-title" tabindex="-1">À quelle sauce ? <em>Manche terminée.</em></h1><p id="sauce-totals" class="outcome"></p><p class="intro">Le voyage continue. Avant de repartir, une pause avec les métiers de la cuisine !</p><button id="sauce-career" class="primary">PAUSE MÉTIER : CUISINE <span>→</span></button>
     </section>
 
     <section id="france-search" class="screen compact france-screen" hidden aria-labelledby="france-search-title">
@@ -331,7 +322,7 @@
   </main>
   <footer><span>LABO ÉPICÉ × E2C COUTRAS</span><span>LE SAVOIR A DU GOÛT.</span><button id="photo-credits-open" class="footer-credits" type="button">Crédits photos</button><span>VERSION DÉCOUVERTE · 01</span></footer>
   <dialog id="photo-credits-dialog" aria-labelledby="photo-credits-title"><h2 id="photo-credits-title">Crédits photos</h2><p>Photographies des découvertes et bonus déjà révélés.</p><div id="photo-credits-content"></div><button class="secondary" id="photo-credits-close" type="button">Fermer</button></dialog>
-  <dialog id="sauce-confirm" aria-labelledby="sauce-confirm-title"><h2 id="sauce-confirm-title">Confirmer cette validation ?</h2><p id="sauce-confirm-text"></p><div><button type="button" class="secondary" id="sauce-cancel">Annuler</button><button type="button" class="primary" id="sauce-confirm-answer">Confirmer</button></div></dialog>
+
   <dialog id="reset-dialog" aria-labelledby="reset-title"><h2 id="reset-title">Nouvelle partie ?</h2><p>Attention ! Une nouvelle partie effacera les scores, les réponses et la progression du voyage. Voulez-vous vraiment recommencer ?</p><div><button class="secondary" id="cancel-reset">Annuler</button><button class="primary" id="confirm-reset">Oui, recommencer</button></div></dialog>
 </body>
 </html>
