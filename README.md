@@ -240,7 +240,9 @@ La fiche Commons de Bran renvoie 403 : la graphie « Nicu hoandra » est reprise
 
 ## Manche 6 — Tour du monde
 
-Branche issue de `main` après fusion de la manche 5 et de ses quatre photographies (PR n° 12). Les six escales sont désormais jouables. Parcours de la dernière manche : introduction → Japon/Asie → Australie/Océanie → Mexique/Amérique du Nord → Maroc/Afrique → Antarctique → surprise sur les déchets marins → bilan → transition simple. Chaque défi comporte les deux placements, leur validation, une révélation explicite et une correction illustrée.
+Refonte ergonomique sur `feat/manche-6-ergonomie`, issue de `main` au commit `8782477`, après fusion des refontes des manches précédentes et des finitions de la manche 5 (#31).
+
+Parcours : entrée directe dans le défi des sushis → Japon/Asie → Australie/Océanie → Mexique/Amérique du Nord → Maroc/Afrique → Antarctique → surprise sur les déchets marins → derniers piments et grand final. Chaque défi conserve les deux placements, leur validation, une révélation explicite et une correction illustrée. La progression « MANCHE 06 / DÉFI X SUR 6 » apparaît uniquement dans l’en-tête supérieur.
 
 ### Carte et réponses
 
@@ -248,7 +250,7 @@ Les cinq premières destinations utilisent **le même planisphère et le même c
 
 `flag-choices.js` extrait la gestion commune des choix, verrous et révélations des manches 3 et 5. Ces dernières continuent de l’utiliser via `clue-flags.js` avec leurs barèmes de 5 points inchangés. La manche 6 utilise la même logique de confidentialité : choix corail modifiable, validation, disparition complète de son drapeau, choix sauge, validation, deux drapeaux côte à côte si nécessaire. Aucun nom de continent n’est dessiné ni fourni dans les libellés accessibles pendant les réponses. La correction colore le continent et situe la destination (pays source mis en évidence pour les quatre premiers défis).
 
-Une bonne localisation donne **10 points par équipe et par défi**, une seule fois au clic de révélation. La manche rapporte au maximum **60 points par équipe**, ajoutés aux scores cumulés. Les jokers restent inchangés. Le retour au carnet conserve la phase, les réponses et leur masquage ; le rechargement conserve la partie ; la réinitialisation confirmée l’efface.
+Une bonne localisation donne **10 points par équipe et par défi**, une seule fois au clic de révélation. La manche rapporte au maximum **60 points par équipe**, ajoutés aux scores cumulés. Le bouton « Jouer un piment » se trouve dans la correction, sans écran de pause imposé entre les défis. Les règles des jokers restent inchangées et leur déclenchement est interdit pendant un placement. Le retour au carnet conserve la phase, les réponses et leur masquage ; le rechargement conserve la partie ; la réinitialisation confirmée l’efface.
 
 ### Défi surprise : placement libre
 
@@ -262,11 +264,13 @@ La tolérance est explicite dans `world.js` : longitudes **−170° à −120°*
 
 `world-photos.js` associe les six fichiers aux destinations, auteurs, licences, sources et modifications techniques. L’utilisateur a confirmé les références après vérification des fiches Commons ; l’environnement reçoit toujours 403. Les trois photos CC BY-SA 4.0 gardent leurs crédits et liens de licence. Le statut de domaine public NOAA et l’historique Flickr sous CC BY 2.0 sont tous deux conservés. Détails complets : `assets/photos/WORLD.md`.
 
-Les originaux ne sont jamais écrasés. Deux versions proportionnelles WebP sont générées par `tools/optimize-world-photos.py` pour alléger les images les plus lourdes : Antarctique ~100 Ko et pollution ~314 Ko. Le dérivé de l’Antarctique reste sous CC BY-SA 4.0. Aucun recadrage ni image générée ; les changements de taille/compression sont annoncés dans le jeu. Les photos et leurs crédits apparaissent uniquement après la révélation de leur destination. Le fichier exact des tacos est `assets/Tacos_mexicanos (1).jpg`.
+Les originaux ne sont jamais écrasés. Deux versions proportionnelles WebP sont générées par `tools/optimize-world-photos.py` pour alléger les images les plus lourdes : Antarctique ~100 Ko et pollution ~314 Ko. Le dérivé de l’Antarctique reste sous CC BY-SA 4.0. Aucun recadrage ni image générée ; les changements de taille/compression sont annoncés dans le jeu. Les photos et leurs crédits apparaissent uniquement après la révélation de leur destination. Les crédits complets et licences sont accessibles dans un volet « Crédits et licence » sous chaque photo et dans le dialogue général des crédits. Le fichier exact des tacos est `assets/Tacos_mexicanos (1).jpg`.
 
-### Bilan et transition finale
+### Correction compacte et grand final
 
-Après la sixième correction, le bilan indique les six gains, le total de manche et les scores cumulés. La manche est marquée terminée et le camion atteint l’escale 6 du carnet. « Terminer le grand voyage ! » mène à `world-transition`, un simple emplacement de transition avec scores conservés et retour au carnet. Cette transition initiale est maintenant prolongée par le grand final décrit ci-dessous, après clôture des derniers piments.
+La carte et la photo restent côte à côte, suivies d’une courte information culturelle et de commandes de navigation sobres, sans van ni rappel des points. Au sixième défi, la correction affiche immédiatement le Pacifique Nord, l’explication sur les microplastiques, la précision sur la plage photographiée à Hawaï et le caractère approximatif du contour pédagogique. Les actions essentielles et ces explications sont vérifiées sans défilement vertical à 1366 × 768 et 1280 × 720.
+
+Après la dernière correction, « Le grand final » marque uniquement la manche 6 terminée par son moteur et rejoint l’entrée existante des derniers piments lorsque les six manches sont réellement terminées. Aucun écran de bilan ou de fin de manche ne s’intercale. Si d’autres manches restent inachevées, le retour au carnet avec scores provisoires reste disponible. La détection ne modifie aucune autre phase ; les règles de clôture des derniers piments sont conservées.
 
 ### Fichiers et tests
 
@@ -274,8 +278,9 @@ Nouveaux : `world.js`, `world-ui.js`, `world-map.js`, `world-photos.js`, `flag-c
 
 `node --test tests/*.test.cjs` couvre les 49 combinaisons de réponses des deux équipes pour chacun des cinq premiers défis, les verrous et jetons périmés, les points océaniques/terrestres, les limites de la tolérance, les scores uniques, le maximum de 60, le cumul et la conservation des autres manches, les sept continents et les références/versions photo. Le générateur vérifie également la conservation topologique des terres.
 
-`WORLD_TEST_URL=http://127.0.0.1:8008 node tests/world.browser.cjs` vérifie de vrais clics sur les sept continents et dans tous les océans, les six défis dans l’ordre, le masquage complet, les drapeaux côte à côte, le clavier, l’absence de tout indice du Pacifique avant correction (y compris photo, requête image et crédits), les six photos, les scores, la reprise, le bilan, le carnet, la transition et le reset. Dimensions Chromium : 1920×1080, 1366×768, 1024×768, 390×844, 320×640, sans débordement horizontal. Les suites des manches 1 à 5, de la démo et des cinq pauses métiers vérifient les régressions. Ce sont des simulations de dimensions Chromebook/projection, sans appareil physique.
+`WORLD_TEST_URL=http://127.0.0.1:8008 node tests/world.browser.cjs` vérifie les clics réels, les six défis dans l’ordre, la confidentialité, le clavier, les photographies et leurs crédits, les scores uniques, la reprise, l’absence de van et de progression répétée, le carnet et le reset. Dimensions Chromium : 1920 × 1080, 1366 × 768, 1280 × 720, 1024 × 768, 390 × 844 et 320 × 640. Les deux résolutions de projection vérifient aussi l’absence de défilement vertical et de chevauchement des corrections.
 
+`node tests/world-spicy.browser.cjs` vérifie les deux modes de piment, la dépense unique, la sauvegarde pendant la question/correction et la reprise de la même destination. `node tests/world-finale.browser.cjs` termine les cinq premières manches et les cinq pauses avec leurs moteurs, puis les six défis ; il vérifie la reprise, l’accès direct aux derniers piments et au grand final, sans message erroné sur les manches restantes. `node tests/final.browser.cjs` couvre la suite du grand final. Les suites des autres manches, des jokers et de l’ergonomie générale couvrent les régressions.
 
 ## Jokers « Plat piégé ! »
 

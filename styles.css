@@ -1051,3 +1051,53 @@ body.journey-mode main{min-height:0}
 #passport-next,#passport-bonus-reveal{
  min-height:40px;padding:9px 14px;font-size:14px;
 }
+
+/* Manche 6 : progression dans l’en-tête et corrections sur un écran. */
+.world-screen .world-back,#world-next{min-height:40px;padding:9px 14px;font-size:14px}
+#world-challenge.is-correction .world-layout{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:12px 20px}
+#world-challenge.is-correction .world-discovery-copy{grid-column:1 / -1;grid-row:2;display:grid;grid-template-columns:1fr 1fr;gap:6px 24px}
+#world-challenge.is-correction #world-discovery-title{grid-column:1 / -1;font-size:22px;line-height:1.25;margin:0}
+#world-challenge.is-correction #world-fact{grid-column:1 / -1;font-size:18px;line-height:1.4;margin:0}
+#world-challenge.is-pollution #world-fact{grid-column:1}
+#world-challenge.is-pollution #world-photo-note{grid-column:2;grid-row:2;font-size:16px;line-height:1.4;padding:0 0 0 12px;margin:0}
+#world-challenge.is-correction .world-controls{grid-row:3;gap:12px;justify-content:flex-start;padding:8px 12px}
+#world-photo figcaption{font-size:12px;line-height:1.4}
+#world-photo summary{cursor:pointer;text-decoration:underline;min-height:24px}
+#world-photo details[open]{padding:8px;background:var(--cream);border:1px solid var(--line)}
+#world-zone-note{font-size:13px;line-height:1.4;padding:0 4px}
+@media(min-width:801px){
+ body.world-mode main{min-height:0}
+ body.world-mode footer{padding-top:8px;padding-bottom:8px}
+ #world-challenge{padding:10px 5%}
+ #world-challenge .scoreboard{margin:0 0 10px}
+ #world-challenge>h1{font-size:32px;margin:6px 0 10px}
+ #world-challenge .world-instruction{font-size:18px;margin:0 0 12px;line-height:1.4}
+ #world-challenge .world-controls{gap:10px;padding:12px}
+ #world-challenge .world-controls>#world-next,#world-challenge .world-controls>#world-spicy{min-height:40px;padding:9px 12px}
+ #world-challenge .world-turn{font-size:16px;padding:8px}
+ #world-character .speech{font-size:15px;margin:0;padding:8px}
+ #world-character svg{height:60px}
+ #world-challenge.is-correction #world-planisphere{height:250px;min-height:0;aspect-ratio:auto}
+ #world-challenge.is-correction #world-photo img{height:250px;max-height:250px;width:100%;object-fit:contain}
+ #world-challenge.is-correction .world-map-figure figcaption{padding:4px;font-size:11px}
+ #world-challenge.is-correction .world-controls{padding:8px 12px}
+}
+@media(max-width:800px){
+ #world-challenge.is-correction .world-layout{grid-template-columns:1fr}
+ #world-challenge.is-correction .world-map-figure,#world-challenge.is-correction #world-photo,#world-challenge.is-correction .world-discovery-copy,#world-challenge.is-correction .world-controls{grid-column:1;grid-row:auto}
+ #world-challenge.is-correction .world-discovery-copy{display:block}
+ #world-challenge.is-pollution #world-photo-note{margin-top:12px}
+ #world-challenge.is-correction #world-discovery-title{margin-bottom:8px}
+}
+#world-challenge.is-correction .world-discovery-grid>.world-discovery-copy{grid-column:1 / -1;grid-row:2}
+@media(min-width:801px){
+ #world-challenge:not(.is-correction) #world-planisphere{min-height:0;height:320px;aspect-ratio:auto}
+}
+@media(max-width:800px){#world-challenge.is-correction .world-discovery-grid>.world-discovery-copy{grid-row:auto}}
+@media(min-width:801px){
+ #world-challenge.is-correction #world-planisphere{height:220px}
+ #world-challenge.is-correction #world-photo img{height:220px;max-height:220px}
+ #world-challenge.is-correction .world-layout{row-gap:8px}
+ #world-challenge.is-correction .world-controls{border:0;background:transparent;padding:0}
+}
+@media(min-width:801px){#world-challenge>h1{letter-spacing:-.8px}}

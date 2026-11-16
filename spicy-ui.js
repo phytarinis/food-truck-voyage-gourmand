@@ -12,6 +12,8 @@ function syncSpicyAccess(id){
  const button=$('spicy-open');button.hidden=true;
  if(!game)return;
  const s=SpicyGame.observe(game);
+ $('world-spicy').hidden=true;
+ if(id==='world-challenge'&&game.world?.phase==='correction'&&!s.active&&!s.finale){SpicyGame.release(game,`world:${game.world.index}`);$('world-spicy').hidden=!SpicyGame.canNormal(game,id);}
  $('gps-spicy').hidden=true;
  if(id==='gps-placement'&&game.gps?.phase==='correction'&&!s.active&&!s.finale){SpicyGame.release(game,`gps:${game.gps.index}`);$('gps-spicy').hidden=!SpicyGame.canNormal(game,id);}
  $('sauce-spicy').hidden=true;
@@ -46,6 +48,7 @@ function renderSpicyBreak(){
  if(spicyPending.button.id==='sauce-next'){renderSauce();return;}
  if(spicyPending.button.id==='france-next'){renderFrance();return;}
  if(spicyPending.button.id==='passport-next'){spicyPending=null;renderPassport();return;}
+ if(spicyPending.button.id==='world-next'){spicyPending=null;renderWorld();return;}
  scores();const s=SpicyGame.state(game);
  $('spicy-break-status').textContent=s.window?.spent?'Un piment a déjà été joué dans cette pause. Le voyage peut reprendre.':`${SpicyGame.available(game).length} questions encore disponibles.`;
  $('spicy-break-play').disabled=!SpicyGame.canNormal(game,'spicy-break');
@@ -57,16 +60,11 @@ for(const[id,[key,indexKey]]of Object.entries(spicyNextButtons)){
   if(game?.spicy?.active){event.preventDefault();event.stopImmediatePropagation();return;}
   const round=game?.[key];if(round?.phase!=='correction')return;
   SpicyGame.release(game,`${key}:${round[indexKey]}`);
-  if(key==='apero'||key==='sauce'||key==='france'||key==='gps'||key==='passport'){spicyPending=null;return;}
-  if(key==='world'&&round.index===5)return;
+  if(key==='apero'||key==='sauce'||key==='france'||key==='gps'||key==='passport'||key==='world'){spicyPending=null;return;}
   if(!SpicyGame.canNormal(game,'spicy-break'))return;
   event.preventDefault();event.stopImmediatePropagation();spicyPending={game,button:$(id),label:$(id).textContent.trim()};renderSpicyBreak();
  },true);
 }
-$('world-finish-journey').addEventListener('click',event=>{
- if(!game||game.world?.phase!=='complete'||!SpicyGame.allComplete(game))return;
- event.preventDefault();event.stopImmediatePropagation();openSpicyFinale();
-},true);
 function spicyRestore(screen){
  scores();
  const renderers={delivery:renderApero,apero:renderApero,sauce:renderSauce,france:renderFrance,gps:renderGps,passport:renderPassport,world:renderWorld};
