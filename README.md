@@ -197,25 +197,25 @@ Le générateur est réservé au développement : installer `shapely==2.1.2` pui
 
 ## Manche 5 — Passeport gourmand
 
-Branche issue de `main` après fusion de la manche 4 (PR n° 11). Cinquième escale : introduction → Belgique → drapeaux en Europe → correction culturelle → Portugal → drapeaux → correction → Roumanie → drapeaux → correction → bonus Strasbourg → bilan → pause métier n° 5 Équipier polyvalent en restauration rapide → carnet. La manche 6 reste non jouable.
+Refonte ergonomique sur `feat/manche-5-ergonomie`, issue de `main` au commit `7751e5f`, après fusion des refontes des manches 2 (#26), 3 (#28) et 4 (#29).
 
-### Mécanique commune réutilisée
+Parcours : première énigme directement → découverte culturelle et carte → correction automatique → destination suivante → Défi Strasbourg → pause métier « Équipier polyvalent en restauration rapide ». Aucun écran d’introduction, de révélation intermédiaire, de bilan ou de pause piment imposée.
 
-`clue-flags.js` extrait le moteur validé de la manche 3, désormais utilisé par `france.js` et `passport.js`. Les interfaces de la manche 3 et ses données restent identiques. Un indice commun ; chaque équipe donne sa réponse discrètement ; le formateur valide séparément. Une erreur enregistre la réponse sans avancer. « Dévoiler l’indice suivant » n’est disponible que lorsque chaque équipe a répondu ou a déjà trouvé. Une équipe ayant trouvé conserve 20/15/10 points et attend ; l’autre poursuit seule. La réponse apparaît après la fin des deux recherches seulement.
+### Indices, annulation et scores
 
-Le même moteur gère les drapeaux : corail choisit et valide, son choix disparaît pendant le tour sauge, les deux drapeaux réapparaissent, puis le formateur révèle le pays. Une bonne localisation rapporte exactement 5 points, ajoutés une seule fois. Les jetons sont propres à la manche, la partie, la destination, l’indice et l’équipe : les confirmations répétées ou périmées et les jetons d’une autre manche sont refusés. `flag-map.js` reprend le dessin des drapeaux de la manche 3, leurs couleurs, leur masquage et leur décalage côte à côte.
+Une seule zone d’indice pour les deux équipes. L’animateur choisit l’équipe puis valide directement sa réponse orale, sans saisie ni confirmation. Le prochain indice apparaît après les réponses des équipes encore en recherche ; une équipe ayant trouvé ne répond plus. La solution attend la fin des deux recherches. Barèmes inchangés : 20/15/10 points pour le pays, +5 pour le drapeau correct, maximum 75 par équipe.
 
-Le maximum de la manche est 75 points par équipe. La transition conserve les scores cumulés sans tableau détaillé ; les points détaillés restent dans les corrections et les données de partie. Revenir au carnet reprend la phase et les réponses. Le rechargement conserve la partie ; la réinitialisation confirmée l’efface.
+« Annuler la dernière validation » restaure l’état des indices, les réponses et le score, même après rechargement. L’annulation reste disponible après découverte du pays jusqu’au premier placement de drapeau. Les anciens jetons de validation restent invalides après annulation. Le moteur partagé `clue-flags.js` reste intact ; l’annulation est propre à `passport.js`.
 
 ### Carte et contenu
 
-`europe-map.js` fournit les 47 surfaces de la carte et les trois capitales, issues de Natural Earth (domaine public). Les frontières de Belgique, du Portugal et de Roumanie sont réellement cliquables. Le pays recherché n’est pas nommé sur l’écran de localisation avant correction : les repères accessibles sont aussi anonymes, et un clic ne dévoile pas le nom du pays sélectionné.
+Les trois destinations restent Belgique (frites), Portugal (pastéis de nata) et Roumanie (château de Bran et personnage fictif de Dracula). Leurs photos, crédits et une courte information culturelle apparaissent à côté de la carte avant les placements. Les titres restent « Destination mystère n° 1/2/3 » pendant la recherche.
 
-Le formateur dispose du zoom (jusqu’à 410 %), de boutons de déplacement et de « Vue entière » pour les petites surfaces, notamment la Belgique. **Le cadrage revient à sa vue initiale au passage à sauge**, puis à la comparaison des deux réponses : le zoom de corail ne sert pas d’indice à l’autre équipe. Une fois la correction révélée, le pays est coloré, la capitale repérée et nommée, et les deux drapeaux restent affichés. Les cartes culturelles montrent chaque pays et sa capitale à plus grande taille. Les sources, la projection, le découpage du cadre et les licences sont détaillés dans `assets/maps/ATTRIBUTION.md`. Régénération hors ligne : `python3 tools/generate-europe-map.py`, avec `shapely==2.1.2` pour le développement uniquement.
+Corail place et valide son drapeau ; son placement et son cadrage sont masqués/remis à zéro pendant le tour sauge. La seconde validation révèle automatiquement les deux drapeaux, le pays correct et sa capitale, et attribue les points une seule fois. La correction reste sur le même écran, sans tableau de points supplémentaire. Zoom et déplacements restent disponibles, y compris pour la Belgique.
 
-La Roumanie est explicitement associée au **personnage fictif** de Dracula, sans le présenter comme une personne historique. Une ambiance facultative de trois notes originales est synthétisée localement avec Web Audio (moins d’une seconde, faible volume) ; elle ne joue qu’après clic et le jeu fonctionne entièrement sans audio. Aucun fichier sonore tiers n’est utilisé.
+Les 47 surfaces et les trois capitales viennent de Natural Earth (domaine public). Les noms accessibles des zones restent anonymes pendant les placements. Sources et projection : `assets/maps/ATTRIBUTION.md`. Régénération : `python3 tools/generate-europe-map.py`, avec `shapely==2.1.2` pour le développement uniquement.
 
-Le bonus Strasbourg attend une sélection puis une révélation ; A, le Parlement européen, est la bonne réponse. La correction rappelle que Strasbourg est son siège officiel et situe la ville sur une carte sourcée, sans photographie. Aucun point ni joker ne change pendant ce bonus.
+Le bouton « Jouer un piment » est disponible sur la correction, jamais pendant une réponse ou un placement inachevé. Les modes, stocks, scores et sauvegardes des jokers restent inchangés. Le Défi Strasbourg conserve sa sélection collective, sa correction et son absence de points. L’ambiance sonore facultative de la Roumanie reste déclenchée uniquement sur demande.
 
 ### Quatre photographies intégrées
 
@@ -226,17 +226,17 @@ Le bonus Strasbourg attend une sélection puis une révélation ; A, le Parlemen
 - `assets/Bran_castle.jpeg` — Nicu hoandra — CC BY-SA 4.0.
 - `assets/December_2007,_flags_in_front_of_Louise_Weiss_building_2.jpg` — Syced — CC0 1.0.
 
-Chaque photo est affichée entière dans sa correction, sans étirement, retouche ou recadrage ; la signature de Bran est conservée. Les crédits et liens sont accessibles sous les photos, avec un lien d’agrandissement, ainsi que dans « Crédits photos ». La photo du Parlement n’est ni insérée dans le DOM, ni demandée au réseau, ni divulguée par les crédits avant la révélation du bonus. Les crédits des pays apparaissent après leur correction uniquement.
+Chaque photo est affichée entière dans la découverte culturelle (ou la correction du Défi Strasbourg), sans étirement, retouche ou recadrage ; la signature de Bran est conservée. Les crédits et liens sont accessibles sous les photos, avec un lien d’agrandissement, ainsi que dans « Crédits photos ». La photo du Parlement n’est ni insérée dans le DOM, ni demandée au réseau, ni divulguée par les crédits avant la révélation du bonus. Les crédits des pays apparaissent dès leur découverte, avant les placements.
 
 La fiche Commons de Bran renvoie 403 : la graphie « Nicu hoandra » est reprise de la référence fournie, sans confirmation indépendante. Aucune licence n’est changée et aucun fichier original n’est modifié. Sources, limites de vérification et obligations en cas d’adaptation future : `assets/photos/PASSPORT.md`.
 
 ### Fichiers et vérifications
 
-Nouveaux : `passport.js`, `passport-ui.js`, `europe-map.js`, `clue-flags.js`, `flag-map.js`, les GeoJSON et SVG documentés ci-dessus, `tools/generate-europe-map.py`, les tests dédiés. Modifiés : `france.js` et `france-ui.js` pour appeler le moteur/rendu communs sans changer leur comportement ; `app.js`, `index.html`, `styles.css` pour intégrer uniquement la nouvelle escale ; assertions du carnet dans les tests antérieurs. Accueil, images, logos, manches et pauses précédentes sont conservés.
+`node --test tests/*.test.cjs` vérifie les combinaisons de réponses, les indices synchronisés, les scores uniques, les jetons et l’annulation persistée.
 
-`node --test tests/*.test.cjs` vérifie les 16 combinaisons d’issues pour chacun des trois pays, dans les deux ordres de validation, les indices synchronisés, la poursuite en solo, les jetons périmés et non interchangeables entre manches, les localisations, les +5 uniques, le maximum de 75, le bonus sans points et les données géographiques.
+`PASSPORT_TEST_URL=http://127.0.0.1:8008 node tests/passport.browser.cjs` vérifie le parcours des trois destinations, le choix de l’équipe, les réponses aux différents indices, l’annulation, la reprise après actualisation, les photos/crédits, les drapeaux masqués, la correction automatique, les scores, le défi et la pause métier. Les actions essentielles sont vérifiées sans défilement vertical à 1366 × 768 et 1280 × 720 dans Chromium.
 
-`PASSPORT_TEST_URL=http://127.0.0.1:8007 node tests/passport.browser.cjs` teste le parcours complet et de vrais clics sur les pays, le zoom de Belgique, l’anonymat avant correction, le masquage complet et la remise à zéro du cadrage, les drapeaux côte à côte, les capitales, les quatre photos et leurs crédits, l’absence d’image/requête/crédit du Parlement avant révélation, les scores, le clavier, l’audio facultatif, le bonus, le bilan, la pause restauration rapide et le reset. Les tests Chromium utilisent 1920×1080, 1366×768, 1024×768, 390×844 et 320×640, sans débordement horizontal. Les suites navigateur des manches 1 à 4, de la démonstration et des cinq pauses métiers vérifient les régressions. Chromebook et projection sont simulés par les dimensions ; aucun appareil physique n’est utilisé.
+`PASSPORT_TEST_URL=http://127.0.0.1:8008 node tests/passport-spicy.browser.cjs` vérifie les deux modes de piment, leur annulation avant lancement, la dépense unique, le rechargement pendant la question et sa correction, et le retour au même écran de carte. Les suites unitaires et navigateur des autres manches couvrent les régressions.
 
 ## Manche 6 — Tour du monde
 

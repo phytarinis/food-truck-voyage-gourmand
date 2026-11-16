@@ -1,110 +1,80 @@
 'use strict';
-let pendingPassportValidation = null;
-
+let passportSelectedTeam = null;
 function openPassport() {
   PassportGame.start(game); game.routeCurrent = 4; renderPassport();
 }
 function renderPassport() {
-  scores();
   const s = game.passport;
-  if (s.phase === 'intro') { show('passport-intro'); return; }
-  if (s.phase === 'search') { renderPassportSearch(); show('passport-search'); return; }
-  if (s.phase === 'answer') {
-    $('passport-answer-title').textContent = PassportGame.puzzles[s.puzzleIndex].title;
-    renderPassportAwards('passport-search-awards', false); show('passport-answer'); return;
+  if (s.phase === 'intro') PassportGame.begin(game);
+  const next = PassportGame.nextClueToken(game);
+  if (next) PassportGame.revealNextClue(game, next);
+  if (s.phase === 'answer') PassportGame.startLocation(game);
+  // Reprise des anciennes sauvegardes, y compris une correction déjà révélée.
+  if (s.phase === 'location' && s.location.locked.every(Boolean)) {
+    PassportGame.revealLocation(game);
+    PassportGame.discover(game);
   }
-  if (s.phase === 'location') { renderPassportLocation(); show('passport-location'); return; }
-  if (s.phase === 'correction') { renderPassportCorrection(); show('passport-correction'); return; }
+  scores();
+  if (s.phase === 'search') { renderPassportSearch(); show('passport-search'); return; }
+  if (['location', 'correction'].includes(s.phase)) { renderPassportLocation(); show('passport-location'); return; }
   if (s.phase === 'bonus') { renderPassportBonus(); show('passport-bonus'); return; }
-  $('passport-totals').textContent='Les passeports sont bien remplis !';show('passport-end');
+  openCareerPause(4);
 }
-
 function renderPassportSearch() {
   const s = game.passport, puzzle = PassportGame.puzzles[s.puzzleIndex];
+  const available = s.players.map((p, team) => p.status === 'searching' ? team : -1).filter(team => team >= 0);
+  if (!available.includes(passportSelectedTeam)) passportSelectedTeam = available[0];
+  const team = passportSelectedTeam;
   $('passport-progress').textContent = `MANCHE 05 / ÉNIGME ${s.puzzleIndex + 1} SUR 3`;
   $('passport-live').textContent = '';
+  // Ne pas signaler une réussite via le score avant la réponse de l'autre équipe.
+  $('passport-search').querySelectorAll('.score-points').forEach((node, t) => {
+    const player = s.players[t];
+    const pending = player.status === 'found' && player.clueIndex === s.clueIndex && s.players.some(p => p.status === 'searching');
+    node.textContent = `${game.teams[t].score - (pending ? player.points : 0)} pts`;
+  });
   $('passport-destination-title').textContent = puzzle.searchTitle;
   $('passport-mystery').hidden = !puzzle.quote;
   $('passport-mystery-quote').textContent = puzzle.quote || '';
   $('passport-sound-status').textContent = '';
-  $('passport-panels').replaceChildren(...s.players.map((player, team) => {
-    const panel = document.createElement('article'); panel.className = `sauce-panel team-${team}`;
-    const title = document.createElement('h2'); title.textContent = game.teams[team].name; title.tabIndex = -1;
-    const top = document.createElement('div'); top.className = 'sauce-panel-top';
-    const status = document.createElement('span'); status.className = `sauce-status ${player.status}`;
-    status.textContent = { searching: 'En recherche', waiting: 'En attente', found: 'Trouvé !', exhausted: 'Aucun point' }[player.status]; top.append(title, status);
-    const info = document.createElement('div'); info.className = 'sauce-clue-info';
-    const index = document.createElement('span'); index.textContent = `INDICE ${s.clueIndex + 1} / 3`;
-    const value = document.createElement('strong'); value.textContent = player.status === 'searching' ? `${PassportGame.points[s.clueIndex]} points possibles` : player.status === 'waiting' ? 'Réponse enregistrée' : `+${player.points} points`;
-    info.append(index, value);
-    const clue = document.createElement('p'); clue.className = 'sauce-current-clue'; clue.textContent = puzzle.clues[s.clueIndex];
-    panel.append(top, info, clue);
-    if (s.clueIndex > 0) {
-      const history = document.createElement('div'); history.className = 'sauce-history';
-      const label = document.createElement('h3'); label.textContent = 'Indices déjà révélés';
-      const list = document.createElement('ol');
-      puzzle.clues.slice(0, s.clueIndex).forEach(text => { const item = document.createElement('li'); item.textContent = text; list.append(item); });
-      history.append(label, list); panel.append(history);
-    }
-    const controls = document.createElement('div'); controls.className = 'sauce-controls';
-    const caption = document.createElement('span'); caption.textContent = 'COMMANDES DU FORMATEUR';
-    const row = document.createElement('div');
-    for (const correct of [false, true]) {
-      const button = document.createElement('button'); button.type = 'button';
-      button.className = correct ? 'primary' : 'secondary';
-      button.textContent = correct ? '✓ Bonne réponse' : '✕ Mauvaise réponse';
-      button.setAttribute('aria-label', `${correct ? 'Bonne' : 'Mauvaise'} réponse pour ${game.teams[team].name}`);
-      button.dataset.team = String(team); button.dataset.correct = String(correct);
-      button.disabled = player.status !== 'searching';
-      const stamp = PassportGame.token(game, team);
-      button.addEventListener('click', () => askPassportValidation(team, correct, stamp)); row.append(button);
-    }
-    controls.append(caption, row); panel.append(controls);
-    if (player.status !== 'searching') {
-      const waiting = document.createElement('p'); waiting.className = 'sauce-waiting'; waiting.textContent = player.status === 'waiting' ? 'Réponse enregistrée. En attente de l’indice suivant.' : 'Recherche terminée. En attente de la fin des deux recherches.'; panel.append(waiting);
-    }
-    return panel;
-  }));
-
+  const panel = document.createElement('article'); panel.className = 'passport-common-clue';
+  const info = document.createElement('div'); info.className = 'sauce-clue-info';
+  info.textContent = `INDICE ${s.clueIndex + 1} / 3 · ${PassportGame.points[s.clueIndex]} points possibles`;
+  const clue = document.createElement('p'); clue.className = 'sauce-current-clue'; clue.textContent = puzzle.clues[s.clueIndex];
+  const selector = document.createElement('div'); selector.className = 'passport-team-selector'; selector.setAttribute('aria-label', 'Équipe à valider');
+  for (const t of available) {
+    const button = document.createElement('button'); button.type = 'button'; button.className = `secondary team-${t}`;
+    button.textContent = game.teams[t].name; button.setAttribute('aria-pressed', String(t === team));
+    button.onclick = () => { passportSelectedTeam = t; renderPassportSearch(); };
+    selector.append(button);
+  }
+  const turn = document.createElement('h2'); turn.id = 'passport-active-team'; turn.tabIndex = -1;
+  turn.textContent = `Réponse de ${game.teams[team].name}`;
+  const controls = document.createElement('div'); controls.className = 'sauce-controls';
+  for (const correct of [false, true]) {
+    const button = document.createElement('button'); button.type = 'button'; button.className = correct ? 'primary' : 'secondary';
+    button.textContent = correct ? '✓ Bonne réponse' : '✕ Mauvaise réponse';
+    button.dataset.team = String(team); button.dataset.correct = String(correct);
+    button.setAttribute('aria-label', `${correct ? 'Bonne' : 'Mauvaise'} réponse pour ${game.teams[team].name}`);
+    const stamp = PassportGame.token(game, team);
+    button.onclick = event => {
+      if (event.detail > 1 || game?.spicy?.active || !PassportGame.validate(game, team, correct, stamp)) return;
+      passportSelectedTeam = null; renderPassport();
+      if (game.passport.phase === 'search') $('passport-active-team').focus({preventScroll:true});
+    };
+    controls.append(button);
+  }
+  panel.append(info, clue, selector, turn, controls);
+  $('passport-panels').replaceChildren(panel);
+  syncPassportUndo();
 }
-
-function askPassportValidation(team, correct, stamp) {
-  if (!stamp || PassportGame.token(game, team) !== stamp || $('passport-confirm').open) return;
-  const player = game.passport.players[team];
-  pendingPassportValidation = { team, correct, stamp };
-  $('passport-confirm-text').textContent = correct
-    ? `Attribuer ${PassportGame.points[player.clueIndex]} points à ${game.teams[team].name} et terminer sa recherche ? La correction attend la fin des deux recherches.`
-    : `Valider une mauvaise réponse pour ${game.teams[team].name} ? ${player.clueIndex === 2 ? 'Sa recherche se terminera avec 0 point.' : 'Sa réponse sera enregistrée sans dévoiler le prochain indice. Il apparaîtra automatiquement quand chaque équipe encore en recherche aura répondu.'}`;
-  $('passport-confirm').showModal(); $('passport-cancel').focus();
+function syncPassportUndo() {
+  for (const button of document.querySelectorAll('.passport-undo')) button.hidden = !game.passport.lastValidation;
 }
+for (const button of document.querySelectorAll('.passport-undo')) button.onclick = () => {
+  if (!game?.spicy?.active && PassportGame.undoValidation(game)) { passportSelectedTeam = null; renderPassport(); }
+};
 function passportRegionName(code) { return EuropeMap.countries.find(region => region.code === code)?.name || ''; }
-function renderPassportAwards(id, includeLocation) {
-  const s = game.passport;
-  $(id).replaceChildren(...s.results[s.puzzleIndex].map((result, team) => {
-    const card = document.createElement('article'); card.className = `delivery-award team-${team}`;
-    const title = document.createElement('h2'); title.textContent = `${game.teams[team].name} : +${result.points + (includeLocation ? result.locationPoints : 0)} points`;
-    const detail = document.createElement('p'); detail.textContent = result.status === 'found' ? `Pays : ${result.points} points, indice ${result.clueIndex + 1}.` : 'Pays : 0 point après trois indices.';
-    card.append(title, detail);
-    if (includeLocation) {
-      const region = document.createElement('p'); region.textContent = `Drapeau : ${passportRegionName(result.region)} · +${result.locationPoints} points.`; card.append(region);
-    }
-    return card;
-  }));
-}
-function renderPassportCorrection() {
-  const s = game.passport, puzzle = PassportGame.puzzles[s.puzzleIndex];
-  $('passport-correction-progress').textContent = `MANCHE 05 / DÉCOUVERTE ${s.puzzleIndex + 1} SUR 3`;
-  $('passport-correction-title').textContent = puzzle.title;
-  renderPassportAwards('passport-awards', true);
-  $('passport-cultural-title').textContent = puzzle.heading;
-  $('passport-fact').textContent = puzzle.fact;
-  $('passport-correct-region').textContent = `Pays : ${passportRegionName(puzzle.region)}`;
-  renderPassportPhoto($('passport-photo'), PassportPhotos[puzzle.id]);
-  $('passport-country-map').src = `assets/maps/passport-${puzzle.region.toLowerCase()}.svg`;
-  $('passport-country-map').alt = `${puzzle.answer} et sa capitale, ${puzzle.capital}`;
-  $('passport-photo').dataset.specialty = puzzle.id;
-  $('passport-next').textContent = s.puzzleIndex === 2 ? 'LE BONUS COLLECTIF →' : 'ÉNIGME SUIVANTE →';
-}
 function renderPassportBonus() {
   const state = game.passport.bonus, data = PassportGame.bonus;
   $('passport-bonus-title').textContent = data.title;
@@ -142,22 +112,8 @@ $('passport-bonus-form').addEventListener('submit', event => {
   if (PassportGame.revealBonus(game)) { renderPassportBonus(); $('passport-bonus-answer').focus(); }
 });
 $('passport-bonus-finish').addEventListener('click', () => { if (PassportGame.finish(game)) renderPassport(); });
-$('passport-begin').addEventListener('click', () => { PassportGame.begin(game); renderPassport(); });
-$('passport-cancel').addEventListener('click', () => $('passport-confirm').close());
-$('passport-confirm').addEventListener('close', () => { pendingPassportValidation = null; });
-$('passport-confirm-answer').addEventListener('click', () => {
-  const action = pendingPassportValidation; pendingPassportValidation = null; $('passport-confirm').close();
-  if (!action || !game || !PassportGame.validate(game, action.team, action.correct, action.stamp)) return;
-  const next = PassportGame.nextClueToken(game);
-  const advanced = next && PassportGame.revealNextClue(game, next);
-  const phase = game.passport.phase; renderPassport();
-  if (phase === 'search') {
-    $('passport-live').textContent = advanced ? `L’indice ${game.passport.clueIndex + 1} est maintenant visible pour les deux équipes.` : `${game.teams[action.team].name} : ${action.correct ? 'recherche terminée' : 'réponse enregistrée'}. L’indice affiché reste commun aux deux équipes.`;
-    $('passport-panels').children[action.team].querySelector('h2').focus();
-  }
-});
 $('passport-next').addEventListener('click', () => { if (PassportGame.next(game)) renderPassport(); });
-$('passport-career').addEventListener('click', () => { if (game?.passport?.phase === 'complete') openCareerPause(4); });
+
 document.querySelectorAll('.passport-back').forEach(button => button.addEventListener('click', () => { scores(); show('journey'); }));
 
 
@@ -167,20 +123,27 @@ function renderPassportLocation() {
   const s=game.passport,l=s.location,puzzle=PassportGame.puzzles[s.puzzleIndex],bothLocked=l.locked.every(Boolean),stamp=PassportGame.locationToken(game);
   const viewKey=`${s.id}:${s.puzzleIndex}:${bothLocked?'compare':l.activeTeam}`;
   if(passportView.key!==viewKey)passportView={key:viewKey,zoom:1,x:450,y:340};
-  $('passport-location-specialty').textContent=`LOCALISATION ${s.puzzleIndex+1} / 3 · EUROPE`;
+  $('passport-location-specialty').textContent=`MANCHE 05 / ÉNIGME ${s.puzzleIndex+1} SUR 3`;
+  $('passport-location-title').textContent=puzzle.title;
+  $('passport-cultural-title').textContent=puzzle.heading;
+  $('passport-fact').textContent=puzzle.fact;
+  renderPassportPhoto($('passport-photo'),PassportPhotos[puzzle.id]);
+  syncPassportUndo();
+  $('passport-next').hidden=s.phase!=='correction';
+  $('passport-next').textContent=s.puzzleIndex===2?'LE DÉFI →':'DESTINATION SUIVANTE →';
   $('passport-map-turn').textContent=bothLocked?'Les deux drapeaux sont plantés !':`${game.teams[l.activeTeam].name} · drapeau ${l.activeTeam===0?'corail':'sauge'}`;
   $('passport-map-turn').className=`passport-map-turn${bothLocked?'':` team-${l.activeTeam}`}`;
   $('passport-map-choice').replaceChildren();
   if(bothLocked){l.choices.forEach((code,team)=>{const p=document.createElement('p');p.textContent=`${game.teams[team].name} : ${l.revealed?passportRegionName(code):'drapeau posé'}`;$('passport-map-choice').append(p)})}
   else $('passport-map-choice').textContent=l.choices[l.activeTeam]?'Votre drapeau est posé. Vous pouvez encore le déplacer.':'Cliquez directement sur un pays pour poser votre drapeau.';
   $('passport-lock-flag').hidden=bothLocked;$('passport-lock-flag').disabled=!stamp||!l.choices[l.activeTeam];$('passport-lock-flag').textContent=`Valider le drapeau ${l.activeTeam===0?'corail':'sauge'}`;
-  $('passport-lock-flag').onclick=()=>{if(!PassportGame.lockFlag(game,stamp))return;renderPassportLocation();if(game.passport.location.locked.every(Boolean))$('passport-reveal-region').focus();else $('passport-map-turn').focus()};
+  $('passport-lock-flag').onclick=event=>{if(event.detail>1||!PassportGame.lockFlag(game,stamp))return;renderPassport();if(game.passport.phase==='correction')$('passport-region-answer').focus({preventScroll:true});else $('passport-map-turn').focus({preventScroll:true})};
   $('passport-map-turn').tabIndex=-1;
-  $('passport-reveal-region').hidden=!bothLocked||l.revealed;$('passport-discover').hidden=!l.revealed;
+
   $('passport-region-answer').hidden=!l.revealed;$('passport-region-answer').replaceChildren();
   if(l.revealed){
     const title=document.createElement('h2');title.textContent=`${puzzle.answer} · capitale : ${puzzle.capital}`;
-    const points=document.createElement('p');points.textContent=s.players.map((p,team)=>`${game.teams[team].name} : +${p.locationPoints} points`).join(' · ');$('passport-region-answer').append(title,points);
+    $('passport-region-answer').append(title);
   }
   function select(code){if(!PassportGame.chooseRegion(game,code,stamp))return;renderPassportLocation();$('passport-map-board').querySelector(`[data-region="${code}"]`).focus({preventScroll:true})}
   const width=900/passportView.zoom,height=680/passportView.zoom;
@@ -197,7 +160,7 @@ function renderPassportLocation() {
   for(const direction of ['left','right','up','down'])$('passport-pan-'+direction).disabled=passportView.zoom===1;
 }
 function passportFrame(zoom,dx=0,dy=0){
-  const s=game?.passport;if(s?.phase!=='location')return;
+  const s=game?.passport;if(!['location','correction'].includes(s?.phase))return;
   passportView.zoom=Math.max(1,Math.min(4.096,zoom));const w=900/passportView.zoom,h=680/passportView.zoom;
   passportView.x=Math.max(w/2,Math.min(900-w/2,passportView.x+dx*w/4));passportView.y=Math.max(h/2,Math.min(680-h/2,passportView.y+dy*h/4));renderPassportLocation();
 }
@@ -205,10 +168,6 @@ $('passport-zoom-in').addEventListener('click',()=>passportFrame(passportView.zo
 $('passport-zoom-out').addEventListener('click',()=>passportFrame(passportView.zoom/1.6));
 $('passport-zoom-reset').addEventListener('click',()=>{passportView.x=450;passportView.y=340;passportFrame(1)});
 for(const[direction,dx,dy]of[['left',-1,0],['right',1,0],['up',0,-1],['down',0,1]])$('passport-pan-'+direction).addEventListener('click',()=>passportFrame(passportView.zoom,dx,dy));
-$('passport-open-map').addEventListener('click',()=>{if(PassportGame.startLocation(game))renderPassport()});
-$('passport-reveal-region').addEventListener('click',()=>{if(PassportGame.revealLocation(game)){scores();renderPassportLocation();$('passport-region-answer').focus()}});
-$('passport-discover').addEventListener('click',()=>{if(PassportGame.discover(game))renderPassport()});
-
 // Trois notes originales, synthétisées localement ; seulement sur demande.
 let passportAudio = null;
 $('passport-sound').addEventListener('click',async()=>{
@@ -245,8 +204,8 @@ function renderPassportPhoto(figure, photo) {
 }
 function appendPassportPhotoCredits(container) {
   const s=game?.passport;if(!s)return;
-  const entries=PassportGame.puzzles.filter((_,index)=>index<s.puzzleIndex||(index===s.puzzleIndex&&['correction','bonus','complete'].includes(s.phase))).map(p=>[p.answer,PassportPhotos[p.id]]);
+  const entries=PassportGame.puzzles.filter((_,index)=>index<s.puzzleIndex||(index===s.puzzleIndex&&['answer','location','correction','bonus','complete'].includes(s.phase))).map(p=>[p.answer,PassportPhotos[p.id]]);
   // Ne pas divulguer la solution du bonus via ses crédits avant révélation.
-  if(s.bonus.revealed)entries.push(['Bonus Strasbourg',PassportPhotos.strasbourg]);
+  if(s.bonus.revealed)entries.push(['Défi Strasbourg',PassportPhotos.strasbourg]);
   for(const[label,photo]of entries){const article=document.createElement('article'),title=document.createElement('h3'),credit=document.createElement('p');title.textContent=`Manche 5 — ${label}`;appendPassportPhotoCredit(credit,photo);article.append(title,credit);container.append(article);}
 }

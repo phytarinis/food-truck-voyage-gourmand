@@ -1,41 +1,100 @@
-const continueTravel=require('./helpers/continue-travel.cjs');
-const{chromium}=require('playwright'),assert=require('node:assert/strict');
+const {chromium}=require('playwright'),assert=require('node:assert/strict');
 (async()=>{
- const browser=await chromium.launch({executablePath:'/usr/bin/chromium',args:['--no-sandbox']});const p=await browser.newPage({viewport:{width:1366,height:768},reducedMotion:'reduce'}),errors=[];p.on('pageerror',e=>errors.push(e.message));const url=process.env.PASSPORT_TEST_URL||'http://127.0.0.1:8008';const parliamentRequests=[];p.on('request',r=>{if(r.resourceType()==='image'&&decodeURIComponent(r.url()).includes('December_2007,'))parliamentRequests.push(r.url())});
- const scores=()=>p.evaluate(()=>game.teams.map(t=>[t.score,t.jokers]));
- const respond=async(team,correct)=>{await p.locator(`#passport-panels button[data-team="${team}"][data-correct="${correct}"]`).click();await p.locator('#passport-confirm-answer').click()};
- const common=async()=>{const clues=await p.locator('#passport-panels .sauce-current-clue').allTextContents();assert.equal(clues.length,2);assert.equal(clues[0],clues[1])};
- const choose=async(code)=>{
-  await p.locator('#passport-map-board').scrollIntoViewIfNeeded();const point=await p.evaluate(code=>{const c=EuropeMap.countries.find(c=>c.code===code),path=document.querySelector(`#passport-map-board [data-region="${code}"]`),q=new DOMPoint(...c.center).matrixTransform(path.getScreenCTM());return{x:q.x,y:q.y}},code);
-  await p.mouse.click(point.x,point.y);assert.equal(await p.evaluate(()=>game.passport.location.choices[game.passport.location.activeTeam]),code,`clic réel ${code}`);
+ const browser=await chromium.launch({executablePath:'/usr/bin/chromium',args:['--no-sandbox']});
+ const p=await browser.newPage({viewport:{width:1280,height:720},reducedMotion:'reduce'}),errors=[];
+ p.on('pageerror',e=>errors.push(e.message));
+ await p.goto(process.env.PASSPORT_TEST_URL||'http://127.0.0.1:8008');
+ const score=()=>p.evaluate(()=>game.teams.map(t=>t.score));
+ const respond=async(team,correct)=>{
+  const select=p.locator('.passport-team-selector button').filter({hasText:team?'Sauge':'Corail'});
+  await select.click();await p.locator(`#passport-panels [data-team="${team}"][data-correct="${correct}"]`).click();
+  assert.equal(await p.locator('dialog[open]').count(),0);
  };
- const back=()=>p.locator('section:not([hidden]) .passport-back').click(),reopen=()=>p.locator('.route-stop:nth-child(5) button').click();
- const overflow=async(label)=>assert.equal(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,label);
- const noNames=async()=>{assert.doesNotMatch(await p.locator('#passport-location').innerText(),/Belgique|Portugal|Roumanie|Bruxelles|Lisbonne|Bucarest/);const labels=await p.locator('#passport-map-board [data-region]').evaluateAll(es=>es.map(e=>e.getAttribute('aria-label')).join(' '));assert.doesNotMatch(labels,/Belgique|Portugal|Roumanie/)};
- const corrected=async(code)=>{await p.locator('#passport-reveal-region').click();assert.equal(await p.locator('#passport-map-board .is-correct').getAttribute('data-region'),code);assert.equal(await p.locator('#passport-map-board .france-flag').count(),2);assert.equal(await p.locator('.passport-capital').count(),1);assert.equal(await p.evaluate(()=>PassportGame.revealLocation(game)),false);await p.locator('#passport-discover').click();assert.equal(await p.locator('#passport-photo img').count(),1);await p.locator('#passport-photo img').evaluate(i=>i.decode());assert.equal(await p.locator('#passport-photo img').evaluate(i=>getComputedStyle(i).objectFit),'contain');
-  const key={BEL:'belgium',PRT:'portugal',ROU:'romania'}[code],photo=await p.evaluate(key=>PassportPhotos[key],key);
-  assert.equal(await p.locator('#passport-photo img').getAttribute('src'),photo.src);assert.ok((await p.locator('#passport-photo figcaption').innerText()).includes(photo.credit));assert.equal(await p.locator('#passport-photo figcaption a').nth(1).getAttribute('href'),photo.licenseUrl);assert.match(await p.locator('#passport-photo figcaption').innerText(),/sans retouche ni recadrage/);
-  await p.locator('#photo-credits-open').click();const credits=await p.locator('#photo-credits-content').innerText();assert.ok(credits.includes(photo.credit));assert.doesNotMatch(credits,/Syced/);if(code==='BEL')assert.doesNotMatch(credits,/Ocdp|Nicu/);if(code==='PRT')assert.doesNotMatch(credits,/Nicu/);await p.locator('#photo-credits-close').click();await p.locator('#passport-country-map').evaluate(i=>i.decode());assert.equal(await p.locator('#passport-country-map').evaluate(i=>getComputedStyle(i).objectFit),'contain')};
- await p.addInitScript(()=>localStorage.removeItem('voyage-gourmand:partie:v1'));await p.goto(url);await p.locator('#onward').click();await p.locator('#team-one').fill('Corail');await p.locator('#team-two').fill('Sauge');await p.locator('#team-form button').click();await p.locator('#rules-next').click();assert.equal(await p.locator('.route-round-open').count(),6);assert.equal(await p.locator('.route-stop:nth-child(6) button').count(),1);await reopen();await p.screenshot({path:'/tmp/passport-introduction.png',fullPage:true});await p.locator('#passport-begin').click();await common();
- assert.equal(await p.locator('#passport-mystery').isVisible(),false);await respond(0,false);assert.equal(await p.locator('#passport-next-clue').isVisible(),false);assert.equal(await p.evaluate(()=>game.passport.clueIndex),0);assert.equal(await p.locator('#passport-answer').isVisible(),false);await respond(1,true);assert.deepEqual(await scores(),[[0,2],[20,2]]);assert.equal(await p.evaluate(()=>game.passport.clueIndex),1);await common();assert.equal(await p.locator('#passport-panels button[data-team="1"]:disabled').count(),2);await back();await reopen();await respond(0,true);assert.equal(await p.locator('#passport-answer').isVisible(),true);assert.match(await p.locator('#passport-answer-title').innerText(),/Belgique/);await p.locator('#passport-open-map').click();await noNames();assert.equal(await p.locator('#passport-map-board .france-region').count(),47);assert.equal(await p.locator('#passport-reveal-region').isVisible(),false);
- // Country hit tests use the genuine administrative surfaces, including an enlarged Belgium.
- for(const code of ['FRA','ESP','PRT','ROU','DEU','ITA','GBR','POL','GRC','BEL'])await choose(code);
- await p.locator('#passport-zoom-in').click();await p.locator('#passport-zoom-in').click();assert.match(await p.locator('#passport-zoom-status').innerText(),/256/);await choose('BEL');assert.equal(await p.locator('#passport-map-board .france-flag.team-0').count(),1);await p.screenshot({path:'/tmp/passport-belgique-zoom.png',fullPage:true});await p.locator('#passport-lock-flag').click();
- assert.match(await p.locator('#passport-zoom-status').innerText(),/100/);assert.equal(await p.locator('#passport-map-board .france-flag').count(),0);assert.equal(await p.locator('#passport-map-board .is-selected').count(),0);await noNames();await back();await reopen();assert.equal(await p.locator('#passport-map-board .france-flag.team-0').count(),0);
- await p.locator('#passport-zoom-in').click();await p.locator('#passport-zoom-in').click();await p.locator('#passport-map-board [data-region="BEL"]').focus();await p.keyboard.press('Space');assert.equal(await p.evaluate(()=>game.passport.location.choices[1]),'BEL');await p.locator('#passport-lock-flag').click();assert.match(await p.locator('#passport-zoom-status').innerText(),/100/);await noNames();assert.equal(await p.locator('#passport-map-board .france-flag').count(),2);const boxes=await p.locator('#passport-map-board .france-flag').evaluateAll(es=>es.map(e=>{const b=e.getBoundingClientRect();return{l:b.left,r:b.right}}));assert.ok(boxes[0].r<boxes[1].l);assert.deepEqual(await scores(),[[15,2],[20,2]]);await corrected('BEL');assert.deepEqual(await scores(),[[20,2],[25,2]]);assert.match(await p.locator('#passport-fact').innerText(),/Bruxelles/);await p.screenshot({path:'/tmp/passport-belgique-correction.png',fullPage:true});await continueTravel(p,'#passport-next');
- await respond(0,true);assert.equal(await p.locator('#passport-answer').isVisible(),false);await respond(1,true);await p.locator('#passport-open-map').click();await choose('PRT');await p.locator('#passport-lock-flag').click();await choose('ESP');await p.locator('#passport-lock-flag').click();await corrected('PRT');assert.deepEqual(await scores(),[[45,2],[45,2]]);await continueTravel(p,'#passport-next');
- assert.equal(await p.locator('#passport-mystery').isVisible(),true);assert.doesNotMatch(await p.locator('#passport-mystery-quote').innerText(),/Transylvanie|château/);assert.equal(await p.evaluate(()=>passportAudio),null);
- await p.locator('#passport-sound').click();assert.match(await p.locator('#passport-sound-status').innerText(),/notes originales|indisponible/);assert.deepEqual(await scores(),[[45,2],[45,2]]);
- for(let clue=0;clue<3;clue++){await respond(0,false);assert.equal(await p.locator('#passport-next-clue').isVisible(),false);await respond(1,false);if(clue<2)assert.equal(await p.evaluate(()=>game.passport.clueIndex),clue+1)}
- await p.locator('#passport-open-map').click();await choose('ROU');await p.locator('#passport-lock-flag').click();await choose('ROU');await p.locator('#passport-lock-flag').click();await corrected('ROU');assert.deepEqual(await scores(),[[50,2],[50,2]]);assert.match(await p.locator('#passport-fact').innerText(),/personnage fictif/);await continueTravel(p,'#passport-next');assert.equal(await p.locator('#passport-bonus').isVisible(),true);assert.equal(await p.locator('#passport-bonus-reveal').isDisabled(),true);await p.locator('#passport-bonus .bonus-map img').evaluate(i=>i.decode());assert.equal(await p.locator('#passport-bonus-photo img').count(),0);assert.equal(parliamentRequests.length,0);await p.locator('#photo-credits-open').click();assert.doesNotMatch(await p.locator('#photo-credits-content').innerText(),/Syced|December_2007/);await p.locator('#photo-credits-close').click();
- await p.locator('input[name=passport-bonus-choice]').nth(1).check();assert.equal(await p.locator('#passport-bonus-answer').isVisible(),false);await p.locator('#passport-bonus-reveal').click();assert.match(await p.locator('#passport-bonus-solution').innerText(),/^A\./);assert.match(await p.locator('#passport-bonus-explanation').innerText(),/siège officiel/);await p.locator('#passport-bonus-photo img').evaluate(i=>i.decode());assert.equal(await p.locator('#passport-bonus-photo').isVisible(),true);assert.ok(parliamentRequests.length>0);assert.equal(await p.locator('#passport-bonus-photo img').evaluate(i=>getComputedStyle(i).objectFit),'contain');assert.match(await p.locator('#passport-bonus-photo figcaption').innerText(),/Syced/);await p.locator('#photo-credits-open').click();assert.match(await p.locator('#photo-credits-content').innerText(),/Syced/);await p.locator('#photo-credits-close').click();assert.deepEqual(await scores(),[[50,2],[50,2]]);await p.screenshot({path:'/tmp/passport-bonus-strasbourg.png',fullPage:true});await back();await reopen();assert.equal(await p.locator('#passport-bonus-answer').isVisible(),true);await p.locator('#passport-bonus-finish').click();assert.equal(await p.locator('#passport-end .scoreboard .score-points').count(),2);assert.equal(await p.locator('#passport-totals li').count(),0);await p.locator('#passport-career').click();assert.match(await p.locator('#screen-context').innerText(),/RESTAURATION RAPIDE/i);await p.locator('input[name=career-choice]').nth(0).check();await p.locator('#career-reveal').click();await p.locator('#career-continue').click();assert.equal(await p.locator('.route-stop:nth-child(5).complete').count(),1);assert.match(await p.locator('#route-truck span').innerText(),/5/);assert.equal(await p.locator('.route-stop:nth-child(6) button').count(),1);assert.deepEqual(await scores(),[[50,2],[50,2]]);
- for(const[width,height]of[[1920,1080],[1366,768],[1024,768],[390,844],[320,640]]){
-  await p.setViewportSize({width,height});await p.goto(url);await p.evaluate(()=>{game=FoodTruckGame.createGame(['Équipe corail','Équipe sauge']);openPassport()});await overflow(`intro${width}`);await p.locator('#passport-begin').click();
-  for(const code of ['BEL','PRT','ROU']){
-   await common();await overflow(`indices${width}`);await respond(0,true);await respond(1,false);await respond(1,true);await p.locator('#passport-open-map').click();await noNames();
-   if(code==='BEL'){await p.locator('#passport-zoom-in').click();await p.locator('#passport-zoom-in').click()}await choose(code);await p.locator('#passport-lock-flag').click();assert.equal(await p.locator('#passport-map-board .france-flag.team-0').count(),0);await choose(code);await p.locator('#passport-lock-flag').click();await corrected(code);await overflow(`correction${width}`);await continueTravel(p,'#passport-next');
+ const fit=async(label)=>{
+  await p.evaluate(()=>scrollTo(0,0));
+  const size=await p.evaluate(()=>({width:innerWidth,height:innerHeight,scrollWidth:document.documentElement.scrollWidth,scrollHeight:document.documentElement.scrollHeight}));
+  assert.ok(size.scrollWidth<=size.width&&size.scrollHeight<=size.height,`${label}: ${JSON.stringify(size)}`);
+ };
+ const reopen=async()=>{await p.reload();await p.evaluate(()=>openPassport());};
+ const choose=async code=>{await p.locator(`#passport-map-board [data-region="${code}"]`).focus();await p.keyboard.press('Space');};
+ for(const [width,height]of[[1280,720],[1366,768]]){
+  await p.setViewportSize({width,height});
+  await p.evaluate(()=>{game=FoodTruckGame.createGame(['Corail','Sauge']);openPassport()});
+  assert.equal(await p.locator('#passport-search').isVisible(),true);
+  for(const [index,code]of['BEL','PRT','ROU'].entries()){
+   assert.equal(await p.locator('#passport-panels .sauce-current-clue').count(),1);
+   assert.equal(await p.locator('#passport-destination-title').innerText(),`Destination mystère n° ${index+1}`);
+   assert.doesNotMatch(await p.locator('#passport-search').innerText(),/pastéis|Transylvanie|Dracula|Roumanie/);
+   await fit(`search ${index} ${width}`);
+   const before=await score();
+   // Le premier résultat ne révèle ni solution ni attribution détaillée.
+   await respond(1,true);
+   assert.equal(await p.locator('#passport-search .score-points').nth(1).innerText(),`${before[1]} pts`);
+   assert.equal(await p.evaluate(()=>game.passport.clueIndex),0);
+   assert.equal(await p.locator('#passport-search').isVisible(),true);
+   assert.doesNotMatch(await p.locator('#passport-panels').innerText(),/Trouvé|20 points obtenus|Belgique|Portugal|Roumanie/);
+   await p.locator('#passport-search .passport-undo').click();assert.deepEqual(await score(),before);
+   await respond(0,false);await respond(1,true);
+   assert.equal(await p.evaluate(()=>game.passport.clueIndex),1);
+   await reopen();assert.equal(await p.evaluate(()=>game.passport.clueIndex),1);
+   await p.locator('#passport-search .passport-undo').click();assert.equal(await p.evaluate(()=>game.passport.clueIndex),0);
+   await respond(1,true);await respond(0,false);
+   assert.equal(await p.evaluate(()=>game.passport.clueIndex),2);
+   await respond(0,true);
+   assert.equal(await p.locator('#passport-location').isVisible(),true);
+   assert.equal(await p.locator('#passport-photo img').count(),1);
+   assert.match(await p.locator('#passport-photo figcaption').innerText(),/sans retouche ni recadrage/);
+   await fit(`location ${index} ${width}`);
+   // Annuler la dernière réponse après découverte reste possible avant tout placement.
+   await p.locator('#passport-location .passport-undo').click();
+   assert.equal(await p.locator('#passport-search').isVisible(),true);await respond(0,true);
+   if(index===0){
+    await p.locator('#passport-zoom-in').click();await p.locator('#passport-zoom-in').click();
+    assert.match(await p.locator('#passport-zoom-status').innerText(),/256/);
+    const point=await p.evaluate(code=>{const c=EuropeMap.countries.find(c=>c.code===code),path=document.querySelector(`#passport-map-board [data-region="${code}"]`),q=new DOMPoint(...c.center).matrixTransform(path.getScreenCTM());return{x:q.x,y:q.y}},code);
+    await p.mouse.click(point.x,point.y);
+    assert.equal(await p.evaluate(()=>game.passport.location.choices[0]),code);
+   }
+   await choose(code);assert.equal(await p.locator('#passport-location .passport-undo').isVisible(),false);
+   await p.locator('#passport-lock-flag').click();
+   assert.match(await p.locator('#passport-zoom-status').innerText(),/100/);
+   assert.equal(await p.locator('#passport-map-board .france-flag').count(),0);
+   await reopen();assert.equal(await p.locator('#passport-map-board .france-flag').count(),0);
+   await choose(index===1?'ESP':code);await p.locator('#passport-lock-flag').click();
+   assert.equal(await p.evaluate(()=>game.passport.phase),'correction');
+   assert.equal(await p.locator('#passport-map-board .france-flag').count(),2);
+   assert.equal(await p.locator('#passport-map-board .is-correct').getAttribute('data-region'),code);
+   assert.deepEqual(await score(),[before[0]+15,before[1]+(index===1?20:25)]);
+   assert.equal(await p.evaluate(()=>PassportGame.revealLocation(game)),false);
+   await fit(`correction ${index} ${width}`);
+   assert.equal(await p.locator('#passport-next .action-van').count(),1);
+   assert.equal(await p.locator('#passport-spicy').isVisible(),true);
+   if(index===0){
+    const saved=await score();await p.locator('#passport-spicy').click();
+    assert.equal(await p.locator('#spicy-setup').isVisible(),true);
+    // Reprise du contexte de correction sans jouer : ni score ni piment modifié.
+    await p.evaluate(()=>{spicySetup=null;renderPassport()});assert.deepEqual(await score(),saved);
+   }
+   await reopen();assert.deepEqual(await score(),[before[0]+15,before[1]+(index===1?20:25)]);
+   await p.locator('#passport-next').click();assert.equal(await p.locator('#spicy-break').isVisible(),false);
   }
-  await overflow(`bonus${width}`);const before=await scores();await p.locator('input[name=passport-bonus-choice]').nth(0).check();await p.locator('#passport-bonus-reveal').click();assert.deepEqual(await scores(),before);await p.locator('#passport-bonus-photo img').evaluate(i=>i.decode());await overflow(`bonus révélé${width}`);await p.locator('#passport-bonus-finish').click();await overflow(`bilan${width}`);console.log('Passeport : indices, carte, drapeaux et parcours',width,height);
+  assert.equal(await p.locator('#passport-bonus').isVisible(),true);await fit(`défi ${width}`);
+  assert.match(await p.locator('#passport-bonus-title').innerText(),/DÉFI/);
+  const before=await score();await p.locator('[name=passport-bonus-choice]').nth(0).check();await p.locator('#passport-bonus-reveal').click();
+  assert.equal(await p.locator('#passport-bonus-photo img').count(),1);assert.deepEqual(await score(),before);
+  await fit(`défi corrigé ${width}`);await reopen();assert.equal(await p.locator('#passport-bonus-answer').isVisible(),true);
+  await p.locator('#passport-bonus-finish').click();assert.equal(await p.locator('#career-pause').isVisible(),true);
+  assert.match(await p.locator('#screen-context').innerText(),/Équipier polyvalent en restauration rapide/);
+  assert.equal(await p.evaluate(()=>game.passport.phase),'complete');
+  console.log(`Parcours complet, annulation, sauvegarde, carte et affichage ${width}×${height} : OK`);
  }
- await p.locator('#reset').click();await p.locator('#confirm-reset').click();assert.equal(await p.evaluate(()=>game),null);assert.equal(await p.locator('#welcome').isVisible(),true);assert.deepEqual(errors,[]);await browser.close();console.log('75 maximum, +5 uniques, anonymat, zoom privé, culture, audio optionnel, bonus, pause5 et reset : OK');
+ // Épuisement des indices : aucune révélation avant la dernière réponse des deux équipes.
+ await p.evaluate(()=>{game=FoodTruckGame.createGame(['Corail','Sauge']);openPassport()});
+ for(let clue=0;clue<3;clue++){
+  await respond(0,false);assert.equal(await p.evaluate(()=>game.passport.phase),'search');
+  await respond(1,false);
+ }
+ assert.deepEqual(await score(),[0,0]);assert.equal(await p.evaluate(()=>game.passport.phase),'location');
+ assert.equal(await p.evaluate(()=>SpicyGame.canNormal(game,'passport-location')),false);
+ assert.deepEqual(errors,[]);await browser.close();
 })().catch(e=>{console.error(e);process.exit(1)});

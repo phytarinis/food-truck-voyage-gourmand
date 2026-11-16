@@ -16,6 +16,8 @@ function syncSpicyAccess(id){
  if(id==='gps-placement'&&game.gps?.phase==='correction'&&!s.active&&!s.finale){SpicyGame.release(game,`gps:${game.gps.index}`);$('gps-spicy').hidden=!SpicyGame.canNormal(game,id);}
  $('sauce-spicy').hidden=true;
  if(id==='sauce-correction'&&game.sauce?.phase==='correction'&&!s.active&&!s.finale){SpicyGame.release(game,`sauce:${game.sauce.puzzleIndex}`);$('sauce-spicy').hidden=!SpicyGame.canNormal(game,id);}
+ $('passport-spicy').hidden=true;
+ if(id==='passport-location'&&game.passport?.phase==='correction'&&!s.active&&!s.finale){SpicyGame.release(game,`passport:${game.passport.puzzleIndex}`);$('passport-spicy').hidden=!SpicyGame.canNormal(game,id);}
  $('france-spicy').hidden=true;
  if(id==='france-location'&&game.france?.phase==='correction'&&!s.active&&!s.finale){SpicyGame.release(game,`france:${game.france.puzzleIndex}`);$('france-spicy').hidden=!SpicyGame.canNormal(game,id);}
  $('delivery-spicy').hidden=true;
@@ -43,6 +45,7 @@ function renderSpicyBreak(){
  if(spicyPending.button.id==='gps-next'){renderGps();return;}
  if(spicyPending.button.id==='sauce-next'){renderSauce();return;}
  if(spicyPending.button.id==='france-next'){renderFrance();return;}
+ if(spicyPending.button.id==='passport-next'){spicyPending=null;renderPassport();return;}
  scores();const s=SpicyGame.state(game);
  $('spicy-break-status').textContent=s.window?.spent?'Un piment a déjà été joué dans cette pause. Le voyage peut reprendre.':`${SpicyGame.available(game).length} questions encore disponibles.`;
  $('spicy-break-play').disabled=!SpicyGame.canNormal(game,'spicy-break');
@@ -54,7 +57,7 @@ for(const[id,[key,indexKey]]of Object.entries(spicyNextButtons)){
   if(game?.spicy?.active){event.preventDefault();event.stopImmediatePropagation();return;}
   const round=game?.[key];if(round?.phase!=='correction')return;
   SpicyGame.release(game,`${key}:${round[indexKey]}`);
-  if(key==='apero'||key==='sauce'||key==='france'||key==='gps'){spicyPending=null;return;}
+  if(key==='apero'||key==='sauce'||key==='france'||key==='gps'||key==='passport'){spicyPending=null;return;}
   if(key==='world'&&round.index===5)return;
   if(!SpicyGame.canNormal(game,'spicy-break'))return;
   event.preventDefault();event.stopImmediatePropagation();spicyPending={game,button:$(id),label:$(id).textContent.trim()};renderSpicyBreak();
@@ -162,3 +165,5 @@ $('spicy-return').addEventListener('click',()=>{
 $('spicy-final-play').addEventListener('click',()=>openSpicySetup('finale'));
 $('spicy-final-close').addEventListener('click',()=>{if(SpicyGame.closeFinale(game)){scores();if(typeof openGrandFinal==='function')openGrandFinal();else show('world-transition')}});
 $('spicy-final-back').addEventListener('click',()=>{scores();show('journey')});
+
+$('passport-spicy').addEventListener('click',()=>openSpicySetup());

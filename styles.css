@@ -960,3 +960,91 @@ body.journey-mode main{min-height:0}
  #career-pause:has(#career-job-label:not([hidden])) .career-revelation{margin-top:6px;padding-top:6px}
 }
 #career-pause:has(#career-job-label:not([hidden])) .career-card input{inset:0;width:100%;height:100%;margin:0;z-index:1;cursor:pointer}
+
+/* Manche 5 : une question commune, puis découverte et carte sur un seul écran. */
+.passport-common-clue{padding:22px 26px;border:1px solid var(--line);border-radius:8px;background:var(--cream)}
+#passport-panels{display:block}
+.passport-common-clue .sauce-current-clue{font-size:clamp(24px,2.4vw,32px);min-height:0;margin:18px 0;line-height:1.4}
+.passport-common-clue h2{font-size:21px;margin:14px 0}
+.passport-common-clue .sauce-controls{display:flex;gap:14px;margin:0}
+.passport-team-selector{display:flex;gap:12px}
+.passport-team-selector button{min-height:44px;padding:8px 18px}
+.passport-team-selector button[aria-pressed="true"]{outline:3px solid var(--ink);outline-offset:2px}
+.passport-team-selector .team-0{background:#f2d4c8}.passport-team-selector .team-1{background:#dce4cf}
+.passport-undo{font-size:14px;padding:8px 12px;min-height:40px}
+#passport-location .passport-map-layout{grid-template-columns:minmax(0,1fr) minmax(300px,36%);gap:18px}
+#passport-location .passport-map-controls{gap:8px;padding:12px}
+#passport-location .passport-map-controls h2{font-size:19px}
+#passport-photo{margin:0}
+#passport-photo img{display:block;width:100%;height:150px;object-fit:contain;background:var(--cream)}
+#passport-photo figcaption{font-size:10px;line-height:1.3;margin:4px 0}
+#passport-fact{font-size:15px;line-height:1.4;margin:0}
+#passport-map-choice{min-height:0;margin:0;font-size:15px}
+#passport-map-choice p{margin:0}
+#passport-location .bonus-answer{padding:6px}
+#passport-location .bonus-answer h2{font-size:17px;margin:0}
+#passport-location .passport-map-help{font-size:11px}
+#passport-location .passport-map-turn{font-size:16px;padding:8px 12px;margin:0}
+#passport-location .passport-map-heading h1{font-size:30px;letter-spacing:-1px}
+#passport-location #passport-next{font-size:14px;min-height:44px;padding:8px 12px}
+#passport-location #passport-next .action-van{width:44px;height:32px}
+@media(min-width:801px){
+ body.passport-mode main{min-height:0}
+ body.passport-mode footer{padding:8px}
+ .passport-screen{padding:12px 5%}
+ .passport-screen .scoreboard{margin:0 0 10px}
+ .passport-screen>h1{font-size:34px;margin:8px 0 14px}
+ .passport-screen>.eyebrow{margin:8px 0}
+ #passport-search .intro{margin:8px 0;font-size:16px}
+ #passport-search .passport-mystery{margin:8px 0;gap:12px}
+ #passport-search .passport-mystery .speech{font-size:15px;margin:0}
+ #passport-search .feedback{margin:4px 0;min-height:0}
+ #passport-europe-svg{height:min(390px,52vh)}
+ .passport-map-toolbar{padding:5px;gap:4px}
+ .passport-map-toolbar button{min-height:36px;min-width:36px;padding:4px 8px}
+ .passport-map-instruction{margin:4px 0 8px;font-size:15px}
+ #passport-location .passport-map-controls>button{min-height:38px;padding:7px}
+ #passport-bonus .bonus-layout{gap:20px}
+ #passport-bonus .bonus-options{font-size:17px;gap:8px}
+ #passport-bonus .bonus-options li{padding:8px 12px}
+ #passport-bonus-question{font-size:19px;margin:8px 0 14px}
+ #passport-bonus .bonus-map img{max-height:165px}
+ #passport-bonus-photo>img{height:145px}
+ #passport-bonus .bonus-answer{padding:12px;margin:10px 0}
+ #passport-bonus .bonus-answer h2{font-size:20px}
+ #passport-bonus .bonus-answer p{font-size:16px;line-height:1.4;margin:6px 0}
+ #passport-bonus .result-actions{margin-top:12px}
+}
+@media(max-width:800px){
+ #passport-location .passport-map-layout{grid-template-columns:1fr}
+ .passport-common-clue{padding:16px}.passport-common-clue .sauce-controls{flex-wrap:wrap}
+}
+.passport-location-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.passport-location-actions>button{font-size:14px;min-height:40px;padding:8px 12px}
+.passport-location-actions .passport-map-help{flex-basis:100%;order:2}
+#passport-location .passport-location-actions .action-van{width:40px;height:28px}
+#passport-location #passport-lock-flag .action-van,#passport-location .passport-back .action-van{display:none}
+#passport-location .passport-location-actions .bonus-answer{margin:0}
+#passport-location #passport-map-choice{max-width:350px}
+#passport-location .passport-map-controls h2{margin:2px 0}
+#passport-location .passport-map-controls #passport-photo img{height:180px}
+@media(min-width:801px){
+ #passport-location{padding:10px 5%}
+ #passport-location .passport-map-heading h1{margin:4px 0 6px;font-size:28px}
+ #passport-location .passport-map-heading .eyebrow{margin:0}
+ #passport-location .passport-map-instruction{margin:0 0 6px}
+ #passport-europe-svg{height:300px}
+ .passport-map-figure figcaption{padding:4px 2px}
+ .passport-location-actions .passport-map-help{display:none}
+ #passport-location .passport-location-actions #passport-map-choice{font-size:13px;max-width:260px}
+ #passport-location .passport-location-actions .bonus-answer h2{font-size:15px}
+}
+@media(min-width:801px){
+ #passport-search .passport-common-clue{padding:16px 22px}
+ #passport-search .sauce-current-clue{margin:12px 0;font-size:28px}
+ #passport-search .passport-common-clue h2{margin:10px 0}
+ #passport-search>.passport-back .action-van{display:none}
+ #passport-search>.passport-back{padding:8px 12px;font-size:14px;min-height:40px}
+ #passport-search .passport-undo{padding:6px 10px;min-height:36px}
+}
+@media(min-width:801px){#passport-location .passport-map-controls #passport-photo img{height:160px}}
