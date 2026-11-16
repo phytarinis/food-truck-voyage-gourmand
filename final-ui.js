@@ -7,7 +7,7 @@ function syncFinalAccess(id){
  if(finalGameRef!==game){clearTimeout(finalRevealTimer);finalRevealTimer=null;finalGameRef=game;$('final-scores').replaceChildren();$('final-winner').textContent='';$('final-tie').hidden=true;}
  finalReturn.hidden=!finalIsClosed()||id==='final-results';
  if(finalIsClosed()){
-  $('play').disabled=true;$('spicy-open').hidden=true;
+  $('spicy-open').hidden=true;
   if(id==='journey'){
    renderRoute({current:5,completed:[0,1,2,3,4,5]});
    let panel=$('final-career-links');if(!panel){panel=document.createElement('nav');panel.id='final-career-links';panel.className='final-career-links';panel.setAttribute('aria-label','Revoir les cinq pauses métiers');$('journey').append(panel);}
@@ -74,4 +74,4 @@ function openFinalReview(index){
 function openFinalCareer(index){if(!finalIsClosed())return;const job=CareerPauses.jobs[index];$('final-review-title').textContent=`${job.name} — ${job.title}`;const content=$('final-review-content');content.replaceChildren(finalText('p','Pause métier · consultation sans points','eyebrow'),finalText('p',`L’idée reçue : « ${job.statements[job.falseIndex]} »`),finalText('p',job.explanation),finalText('p',job.quote,'speech'));job.facts.forEach(f=>content.append(finalText('p',f.text)));show('final-review-screen');}
 $('final-to-memories').onclick=()=>{if(finalIsClosed())show('final-memories')};$('final-to-results').onclick=openFinalResults;
 finalReturn.onclick=openFinalResults;$('final-review').onclick=()=>{clearTimeout(finalRevealTimer);scores();show('journey')};$('final-review-back').onclick=()=>show('journey');$('final-new-game').onclick=()=>$('reset-dialog').showModal();
-$('confirm-reset').addEventListener('click',()=>{clearTimeout(finalRevealTimer);finalRevealTimer=null;spicyPending=null;spicySetup=null;currentCareerIndex=0;gpsSelectedLabel=0;gpsDrag=null;pendingFranceValidation=null;pendingFranceClueToken=null;pendingPassportValidation=null;passportView={key:'',zoom:1,x:450,y:340};if(passportAudio){passportAudio.close().catch(()=>{});passportAudio=null;}document.querySelectorAll('dialog[open]').forEach(d=>d.close());renderRoute();});
+$('confirm-reset').addEventListener('click',()=>{clearTimeout(finalRevealTimer);finalRevealTimer=null;spicyPending=null;spicySetup=null;currentCareerIndex=0;gpsSelectedLabel=0;gpsDrag=null;pendingPassportValidation=null;passportView={key:'',zoom:1,x:450,y:340};if(passportAudio){passportAudio.close().catch(()=>{});passportAudio=null;}document.querySelectorAll('dialog[open]').forEach(d=>d.close());renderRoute();});

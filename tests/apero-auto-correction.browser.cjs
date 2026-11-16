@@ -8,6 +8,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict');
  const scores=()=>page.evaluate(()=>game.teams.map(t=>t.score));
  for(let i=0;i<3;i++){
   const [d0,n0,d1,n1,expected]=cases[i],before=await scores();
+  assert.equal(await page.locator(".delivery-instruction").count(),0);
   for(const [team,dep,num]of[[0,d0,n0],[1,d1,n1]]){
    await page.locator(`input[name="team-${team}-department"][value="${dep}"]`).check();await page.locator(`input[name="team-${team}-number"][value="${num}"]`).check();
    if(team===1){assert.equal(await page.locator('#delivery input[name^="team-0-"]').count(),0);assert.deepEqual(await scores(),before);assert.equal(await page.locator('#delivery-correction').isVisible(),false)}
@@ -19,6 +20,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict');
   const result=await page.evaluate(()=>JSON.stringify(game.apero.results));await page.evaluate(()=>{document.querySelector('#delivery-record').click();document.querySelector('#delivery-form').dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}));});assert.deepEqual(await scores(),expected);assert.equal(await page.evaluate(()=>JSON.stringify(game.apero.results)),result);
   await page.reload();await page.locator('.route-round-open').first().click();assert.equal(await page.locator('#delivery-correction').isVisible(),true);assert.deepEqual(await scores(),expected);assert.equal(await page.evaluate(()=>JSON.stringify(game.apero.results)),result);assert.equal(await page.evaluate(()=>AperoGame.validate(game)),false);
   console.log(`Livraison ${i+1} : correction immédiate, scores ${expected}, sauvegarde et double clic OK`);
+  if(i===2)assert.equal(await page.locator('#delivery-next-label').innerText(),'Défi découverte');
   await page.locator('#delivery-next').click();assert.equal(await page.locator('#spicy-break').isVisible(),false);
  }
  assert.equal(await page.locator('#apero-bonus').isVisible(),true);assert.deepEqual(errors,[]);await browser.close();

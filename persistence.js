@@ -13,6 +13,8 @@ function restoreProgress(){
  try{saved=JSON.parse(localStorage.getItem(progressKey));}catch{return;}
  if(!saved||saved.version!==1||!saved.game||!Array.isArray(saved.game.teams)||saved.game.teams.length!==2||!saved.game.teams.every(t=>typeof t.name==='string'&&Number.isFinite(t.score)&&t.score>=0&&Number.isInteger(t.jokers)&&t.jokers>=0&&t.jokers<=2))return;
  game=saved.game;
+ // La démonstration retirée ne doit pas bloquer une ancienne sauvegarde.
+ game.challenge=null;
  // Les chronos restent cohérents quand performance.now() repart après rechargement.
  if(game.gps?.timers)for(const timer of game.gps.timers)if(timer)timer.startedAt=performance.now()-(saved.clock-timer.startedAt)-Math.max(0,Date.now()-saved.savedAt);
  scores();show('journey');

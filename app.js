@@ -1,11 +1,13 @@
 'use strict';
-const { clues, rounds, createGame, startChallenge, answer } = FoodTruckGame;
+const { rounds, createGame } = FoodTruckGame;
 const $ = id => document.getElementById(id);
 let game;
 function show(id) {
   document.body.classList.toggle('welcome-mode', id === 'welcome');
   document.body.classList.toggle('setup-mode', id === 'setup');
+  document.body.classList.toggle('journey-mode', id === 'journey');
   document.body.classList.toggle('delivery-mode', ['delivery','delivery-correction'].includes(id));
+  document.body.classList.toggle('france-mode', id.startsWith('france-'));
   updateHeaderContext(id);
   document.querySelectorAll('.screen').forEach(screen => { screen.hidden = screen.id !== id; });
   $('reset').hidden = id === 'welcome';
@@ -42,13 +44,15 @@ function updateHeaderContext(id) {
   else if(['sauce-search','sauce-correction'].includes(id)&&game?.sauce)label.textContent=`Manche 2 · À quelle sauce ? / Énigme ${game.sauce.puzzleIndex+1} sur 3 · En équipes`;
   else if(id==='sauce-bonus')label.textContent='Manche 2 · À quelle sauce ? / Défi découverte · Collectif · Sans points';
   else if (id === 'apero-bonus') label.textContent = "Manche 1 · L'apéro local / Défi découverte · Collectif · Sans points";
+  else if (id === 'france-bonus') label.textContent = 'Manche 3 · La France et ses spécialités / Défi découverte · Collectif · Sans points';
+  else if (['france-search','france-answer','france-location'].includes(id) && game?.france) label.textContent = `Manche 3 · La France et ses spécialités / ${id === 'france-location' ? 'Carte' : 'Énigme'} ${game.france.puzzleIndex + 1} sur 3 · En équipes`;
   else if (id === 'world-transition') label.textContent = 'Le grand final';
   else if (round >= 0) label.textContent = `Manche ${round + 1} · ${rounds[round]}`;
   else if (id === 'career-pause') label.textContent = `Pause métier ${currentCareerIndex + 1} · ${['Serveuse','Cuisinier','Réceptionniste','Entretien hôtelier','Équipier polyvalent en restauration rapide'][currentCareerIndex]} / Collectif · Sans points`;
   else if (id.startsWith('spicy-')) {
     const source = game?.spicy?.finale ? -1 : keys.indexOf(game?.spicy?.window?.key?.split(':')[0]);
     label.textContent = source >= 0 ? `Manche ${source + 1} · ${rounds[source]} · Plat piégé !` : 'Plat piégé !';
-  } else label.textContent = id.startsWith('final-') ? 'Le grand final' : ({rules:'Avant le départ',journey:'Carnet de route',challenge:'Démonstration',result:'Démonstration'})[id] || 'Le grand voyage gourmand';
+  } else label.textContent = id.startsWith('final-') ? 'Le grand final' : ({rules:'Avant le départ',journey:'Carnet de route'})[id] || 'Le grand voyage gourmand';
 }
 function scores() {
   if(typeof spicyObserveProgress==='function')spicyObserveProgress();
@@ -83,30 +87,6 @@ function scores() {
     }));
   });
 }
-function renderChallenge(message = '') {
-  const c = game.challenge;
-  if (c.done) { renderResult(); return; }
-  scores();
-  $('clue').textContent = clues[c.clueIndex].text;
-  $('clue-number').textContent = `INDICE 0${c.clueIndex + 1} / 03`;
-  $('clue-progress').textContent = clues.map((_, i) => i <= c.clueIndex ? '●' : '○').join(' ');
-  $('points').textContent = `${clues[c.clueIndex].points} POINTS`;
-  $('active-team').textContent = game.teams[c.active].name;
-  $('attempt-status').textContent = 'Une tentative par équipe pour cet indice.';
-  $('feedback').textContent = message;
-}
-function launch() {
-  if(game?.spicy?.active||game?.spicy?.finale)return;
-  startChallenge(game);
-  renderChallenge();
-  show('challenge');
-}
-function renderResult() {
-  scores();
-  const c = game.challenge;
-  $('outcome').textContent = c.winner === null ? 'Personne n’a trouvé cette fois : 0 point pour les deux équipes. Le voyage continue !' : `${game.teams[c.winner].name} remporte ${c.awarded} points. Bien joué !`;
-  show('result');
-}
 $('onward').addEventListener('click', () => { show('setup'); $('team-one').focus(); });
 $('team-form').addEventListener('submit', event => {
   event.preventDefault();
@@ -121,7 +101,7 @@ $('team-form').addEventListener('submit', event => {
 });
 $('rules-next').addEventListener('click', () => show('journey'));
 [$('team-one'), $('team-two')].forEach(input => input.addEventListener('input', () => input.setCustomValidity('')));
-// Les six manches font progresser l’itinéraire ; la démo reste indépendante.
+// Seules les manches terminées font progresser le camion.
 function renderRoute({ current = null, completed = [] } = {}) {
   $('rounds').replaceChildren();
   rounds.forEach((title, index) => {
@@ -155,16 +135,6 @@ function renderRoute({ current = null, completed = [] } = {}) {
   truck.querySelector('span').textContent = current === null ? 'AU DÉPART' : `ESCALE ${current + 1}`;
 }
 renderRoute();
-$('play').addEventListener('click', launch);
-$('replay').addEventListener('click', launch);
-$('back-to-journey').addEventListener('click', () => { scores(); show('journey'); });
-$('correct').addEventListener('click', () => { answer(game, true); renderChallenge(); });
-$('wrong').addEventListener('click', () => {
-  const previous = game.challenge.clueIndex;
-  const team = game.teams[game.challenge.active].name;
-  answer(game, false);
-  renderChallenge(previous === game.challenge.clueIndex ? `${team} n’a pas trouvé. À l’autre équipe de tenter sa chance !` : 'Les deux équipes ont tenté leur chance. Voici l’indice suivant !');
-});
 $('reset').addEventListener('click', () => $('reset-dialog').showModal());
 $('cancel-reset').addEventListener('click', () => $('reset-dialog').close());
 $('confirm-reset').addEventListener('click', () => {

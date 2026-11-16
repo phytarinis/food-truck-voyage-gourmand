@@ -15,7 +15,7 @@ const{chromium}=require('playwright'),assert=require('node:assert/strict');
   while(await p.locator('#sauce-search').isVisible()){const state=await p.evaluate(()=>({team:SauceGame.activeTeam(game),clue:game.sauce.clueIndex}));await response(targets[state.team]===state.clue)}
   assert.equal(await p.locator('#sauce-correction').isVisible(),true);assert.deepEqual(await scores(),targets.map(n=>n===3?0:[20,15,10][n]));
  }
- for(const[width,height]of[[1920,1080],[1366,768],[1024,768],[390,844],[320,640]]){
+ for(const[width,height]of[[1920,1080],[1366,768],[1280,720],[1024,768],[390,844],[320,640]]){
   await p.setViewportSize({width,height});for(let index=0;index<3;index++){
    await p.evaluate(index=>{game=FoodTruckGame.createGame(['Corail','Sauge']);SauceGame.start(game);game.sauce.puzzleIndex=index;renderSauce()},index);assert.equal(await p.locator('#screen-context').innerText(),`Manche 2 · À quelle sauce ? / Énigme ${index+1} sur 3 · En équipes`);assert.equal(await p.locator('#sauce-photo img').count(),0);
    assert.equal(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);if(width>=1024)assert.ok(await p.locator('#sauce-response-controls').evaluate(n=>n.getBoundingClientRect().bottom<=innerHeight));if(width===1366&&index===0)await p.screenshot({path:'/tmp/sauce-refonte/apres.png',fullPage:true});
@@ -23,5 +23,5 @@ const{chromium}=require('playwright'),assert=require('node:assert/strict');
   }
   await p.evaluate(()=>{game.sauce.phase='bonus';game.sauce.bonus={selected:0,revealed:true};renderSauce()});assert.equal(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);if(width>=1024)assert.ok(await p.locator('#sauce-bonus-finish').evaluate(n=>n.getBoundingClientRect().bottom<=innerHeight),`découverte ${width}`);
  }
- assert.deepEqual(errors,[]);await b.close();console.log('Manche 2 : indice commun, validations successives, points, reprise, photos, piment, découverte, cuisine et cinq formats OK');
+ assert.deepEqual(errors,[]);await b.close();console.log('Manche 2 : indice commun, validations successives, points, reprise, photos, piment, découverte, cuisine et six formats OK');
 })().catch(e=>{console.error(e);process.exit(1)});

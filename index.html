@@ -67,7 +67,7 @@
     <section id="welcome" class="screen welcome" aria-labelledby="welcome-title">
       <h1 id="welcome-title" class="visually-hidden">Le grand voyage gourmand</h1>
       <div class="welcome-scene">
-        <img class="welcome-illustration" src="assets/Le%20grand%20voyage%20gourmand.png" width="1672" height="941" fetchpriority="high" alt="À Coutras, un personnage accompagne un food truck rouge vintage dans un décor de petite ville et de campagne, illustré dans un style bande dessinée coloré.">
+        <img class="welcome-illustration" src="assets/Le%20grand%20voyage%20gourmand%20en%20van.png" width="1672" height="941" fetchpriority="high" alt="Une cuisinière devant le food truck rouge, le logo Labo Épicé et le titre Le grand voyage gourmand, dans un paysage de campagne.">
         <button id="onward" class="welcome-start" type="button"><span class="visually-hidden">En route ! Préparer les deux équipes</span></button>
       </div>
     </section>
@@ -96,9 +96,7 @@
 
     <section id="journey" class="screen compact" hidden aria-labelledby="journey-title">
       <div id="journey-scores" class="scoreboard"></div>
-      <p class="eyebrow">LE CARNET DE ROUTE</p>
-      <h1 id="journey-title" tabindex="-1">Six manches. <em>Un grand voyage.</em></h1>
-      <p class="intro">Choisissez une escale pour poursuivre le voyage. Le camion avance à chaque manche terminée.</p>
+      <h1 id="journey-title" class="visually-hidden" tabindex="-1">Carnet de route</h1>
       <div class="route-map" aria-label="Itinéraire des six manches jouables">
         <svg class="board-art" viewBox="0 0 1200 440" preserveAspectRatio="none" aria-hidden="true">
           <path d="M0 0H400Q322 90 220 124T0 222Z" fill="#d9dfc8"/>
@@ -121,14 +119,11 @@
         <div class="route-truck" id="route-truck"><svg role="img" aria-label="Notre food truck rouge, prêt au départ"><use href="#truck-art"/></svg><span>AU DÉPART</span></div>
       </div>
       <div class="route-legend" aria-label="États prévus des manches"><span class="pending">○ À venir</span><span class="active">◉ En cours</span><span class="complete">✓ Terminée</span></div>
-      <div class="demo-launch"><div><span class="eyebrow">UNE ESCALE POUR ESSAYER</span><p>Un pays, une spécialité… à vous de jouer !</p></div><button class="primary" id="play">LANCER LA DÉMO <span>→</span></button></div>
-      <p class="tiny">Votre progression est conservée sur cet appareil. La démo est une escale indépendante.</p>
     </section>
 
     <section id="delivery" class="screen compact apero-screen" hidden aria-labelledby="delivery-title">
       <div class="scoreboard"></div>
       <h1 id="delivery-title" tabindex="-1"></h1>
-      <p class="delivery-instruction">Chaque équipe répond à son tour. Le formateur enregistre les deux propositions avant la correction.</p>
       <p id="delivery-turn" class="delivery-turn" role="status" tabindex="-1"></p><form id="delivery-form"><div id="delivery-answers" class="delivery-answers"></div><button class="primary" id="delivery-record" type="button" disabled>Enregistrer la réponse <span>→</span></button><div id="delivery-records" class="delivery-records"></div><div class="delivery-actions"><p id="delivery-status" role="status"></p></div></form>
       <button class="text-button apero-back">Le carnet de route · réponses conservées</button>
     </section>
@@ -171,48 +166,29 @@
       <div id="sauce-bonus-discovery" hidden><figure class="bonus-map"><a href="assets/maps/bonus-nouvelle-aquitaine.svg" target="_blank" rel="noopener" aria-label="Agrandir la carte des anciennes régions dans un nouvel onglet"><img src="assets/maps/bonus-nouvelle-aquitaine.svg" alt="Carte des anciennes régions Aquitaine, Limousin et Poitou-Charentes qui composent la Nouvelle-Aquitaine."></a><figcaption>Limites historiques IGN / france-geojson · <a href="assets/maps/ATTRIBUTION.md" target="_blank" rel="noopener">Source et Licence Ouverte</a></figcaption></figure><aside class="companion"><svg aria-hidden="true"><use href="#companion-art"/></svg><p id="sauce-bonus-quote" class="speech"></p></aside></div></div>
     </section>
 
-    <section id="france-intro" class="screen compact france-screen" hidden aria-labelledby="france-intro-title">
-      <div class="scoreboard"></div><p class="eyebrow">MANCHE 3</p><h1 id="france-intro-title" tabindex="-1">MANCHE 3 — LA FRANCE ET SES SPÉCIALITÉS</h1>
-      <aside class="companion sauce-intro-scene"><svg aria-hidden="true"><use href="#companion-art"/></svg><p class="speech">Le GPS est prêt, le camion aussi ! Mais avant de livrer, il va falloir deviner ce qu'on transporte… et où ça se mange !</p></aside>
-      <p class="intro">Devinez trois spécialités grâce aux indices, puis retrouvez leur région sur la carte de France.</p>
-      <p class="france-scoring">Spécialité : <strong>20 / 15 / 10 points</strong> selon l’indice · Bonne localisation : <strong>+5 points</strong></p>
-      <p class="sauce-confidential">Un indice commun, des réponses discrètes sur papier. Le formateur valide séparément chaque équipe.</p>
-      <div class="result-actions"><button id="france-begin" class="primary">PREMIÈRE ÉNIGME <span>→</span></button><button class="text-button france-back">Le carnet de route</button></div>
-    </section>
     <section id="france-search" class="screen compact france-screen" hidden aria-labelledby="france-search-title">
-      <div class="scoreboard"></div><p id="france-progress" class="eyebrow"></p><h1 id="france-search-title" tabindex="-1">Qu'est-ce qu'on <em>transporte ?</em></h1>
-      <p class="sauce-confidential">Écrivez votre réponse et transmettez-la discrètement au formateur.</p>
-      <div id="france-panels" class="sauce-panels"></div><div id="france-clue-gate" class="sauce-clue-gate" hidden><p>Chaque équipe a répondu ou a déjà trouvé.</p><button type="button" id="france-next-clue" class="primary">Dévoiler l’indice suivant <span aria-hidden="true">→</span></button></div>
+      <div class="scoreboard"></div><h1 id="france-search-title" tabindex="-1">Qu'est-ce qu'on <em>transporte ?</em></h1>
+      <div id="france-panels" class="sauce-panels"></div>
       <p id="france-live" class="feedback" role="status"></p><button class="text-button france-back">Le carnet de route · progression conservée</button>
     </section>
     <section id="france-answer" class="screen compact france-screen" hidden aria-labelledby="france-answer-title">
-      <div class="scoreboard"></div><p class="eyebrow">LES DEUX RECHERCHES SONT TERMINÉES</p><h1 id="france-answer-title" tabindex="-1"></h1>
-      <div id="france-search-awards" class="delivery-awards"></div><p class="intro">La spécialité est découverte. Reste à trouver sa région !</p>
-      <div class="result-actions"><button id="france-open-map" class="primary">PLANTER NOS DRAPEAUX <span>→</span></button><button class="text-button france-back">Le carnet de route</button></div>
+      <div class="scoreboard"></div><h1 id="france-answer-title" tabindex="-1"></h1>
+      <figure id="france-photo" class="sauce-photo"></figure>
+      <div class="result-actions"><button id="france-open-map" class="primary">Placer les drapeaux <span>→</span></button><button class="text-button france-back">Le carnet de route</button></div>
     </section>
     <section id="france-location" class="screen compact france-screen" hidden aria-labelledby="france-location-title">
       <div class="scoreboard"></div><div class="france-map-heading"><div><p id="france-location-specialty" class="eyebrow"></p><h1 id="france-location-title" tabindex="-1">Place-moi sur la carte !</h1></div><p id="france-map-turn" class="france-map-turn" role="status"></p></div>
       <p class="france-map-instruction">Chaque équipe doit retrouver la région d'origine de cette spécialité. Plantez vos drapeaux !</p>
       <div class="france-map-layout"><figure class="france-map-figure"><div id="france-map-board" class="france-map-board"></div><figcaption>Nord en haut · Outre-mer en encarts, échelles différentes · IGN / france-geojson · <a href="assets/maps/ATTRIBUTION.md" target="_blank" rel="noopener">Sources et Licence Ouverte</a></figcaption></figure>
-      <aside class="france-map-controls"><h2>Plante ton drapeau !</h2><p id="france-map-choice" role="status"></p><button id="france-lock-flag" class="primary" disabled>Valider le drapeau corail</button><button id="france-reveal-region" class="primary" hidden>Révéler la bonne région</button><div id="france-region-answer" class="bonus-answer" tabindex="-1" hidden></div><button id="france-discover" class="primary" hidden>LA PETITE HISTOIRE <span>→</span></button><p class="france-map-help">Cliquez sur une région pour déplacer le drapeau. Au clavier : Tab, puis Entrée ou Espace.</p><details><summary>Choisir dans la liste des régions</summary><div id="france-region-list"></div></details><button class="text-button france-back">Le carnet de route</button></aside></div>
-    </section>
-    <section id="france-correction" class="screen compact france-screen" hidden aria-labelledby="france-correction-title">
-      <div class="scoreboard"></div><p id="france-correction-progress" class="eyebrow"></p><h1 id="france-correction-title" tabindex="-1"></h1><div id="france-awards" class="delivery-awards"></div>
-      <div class="sauce-discovery"><figure id="france-photo" class="sauce-photo"></figure><div><h2 id="france-cultural-title"></h2><p id="france-fact" class="intro"></p><p id="france-correct-region" class="france-scoring"></p></div></div>
-      <div class="result-actions"><button id="france-next" class="primary">ÉNIGME SUIVANTE <span>→</span></button><button class="text-button france-back">Le carnet de route</button></div>
+      <aside class="france-map-controls"><h2 id="france-map-controls-title">Plante ton drapeau !</h2><p id="france-map-choice" role="status"></p><button id="france-lock-flag" class="primary" disabled>Valider le drapeau corail</button><button id="france-reveal-region" class="primary" hidden>Révéler la bonne région</button><div id="france-region-answer" class="bonus-answer" tabindex="-1" hidden></div><div id="france-culture" hidden><h3 id="france-cultural-title"></h3><p id="france-fact"></p></div><button id="france-spicy" class="secondary" hidden>🌶️ Jouer un piment</button><button id="france-next" class="primary" hidden>Spécialité suivante <span aria-hidden="true">→</span></button><p class="france-map-help">Cliquez sur une région pour déplacer le drapeau. Au clavier : Tab, puis Entrée ou Espace.</p><details><summary>Choisir dans la liste des régions</summary><div id="france-region-list"></div></details><button class="text-button france-back">Le carnet de route</button></aside></div>
     </section>
     <section id="france-bonus" class="screen compact france-screen" hidden aria-labelledby="france-bonus-title">
-      <div class="scoreboard"></div><p class="eyebrow">BONUS FINAL / COLLECTIF / SANS POINTS</p><h1 id="france-bonus-title" tabindex="-1"></h1><p id="france-bonus-question" class="sauce-bonus-question"></p>
-      <div class="bonus-layout"><div class="bonus-discussion"><form id="france-bonus-form"><fieldset><legend class="visually-hidden">Choisissez collectivement une proposition</legend><ol id="france-bonus-options" class="bonus-options" type="A"></ol></fieldset><p id="france-bonus-status" role="status"></p><button class="primary" id="france-bonus-reveal" type="submit" disabled>RÉVÉLER LA RÉPONSE</button></form>
+      <div class="scoreboard"></div><h1 id="france-bonus-title" class="visually-hidden" tabindex="-1">Défi découverte</h1><p id="france-bonus-question" class="sauce-bonus-question"></p>
+      <div class="bonus-layout"><div class="bonus-discussion"><form id="france-bonus-form"><fieldset><legend class="visually-hidden">Choisissez collectivement une proposition</legend><ol id="france-bonus-options" class="bonus-options" type="A"></ol></fieldset><p id="france-bonus-status" role="status"></p><button class="primary" id="france-bonus-reveal" type="submit" disabled>Révéler la réponse</button></form>
       <div id="france-bonus-answer" class="bonus-answer" hidden tabindex="-1"><h2 id="france-bonus-solution"></h2><p id="france-bonus-explanation"></p><p id="france-bonus-reference"></p></div>
-      <div class="result-actions"><button id="france-bonus-finish" class="primary" hidden>TERMINER LA MANCHE <span>→</span></button><button class="text-button france-back">Le carnet de route</button></div></div>
+      <div class="result-actions"><button id="france-bonus-finish" class="primary" hidden>Terminer la manche <span>→</span></button><button class="text-button france-back">Le carnet de route</button></div></div>
       <div><figure class="bonus-map"><img src="assets/maps/france-metropolitaine-regions.svg" alt="France métropolitaine avec la Corse et les frontières de ses 13 régions."><figcaption>IGN / france-geojson · <a href="assets/maps/ATTRIBUTION.md" target="_blank" rel="noopener">Sources et licence</a></figcaption></figure><aside id="france-bonus-discovery" class="companion" hidden><svg aria-hidden="true"><use href="#companion-art"/></svg><p id="france-bonus-quote" class="speech"></p></aside></div></div>
     </section>
-    <section id="france-end" class="screen compact france-screen" hidden aria-labelledby="france-end-title">
-      <div class="scoreboard"></div><p class="eyebrow">TROIS SPÉCIALITÉS, DE LA MÉTROPOLE À L’OUTRE-MER</p><h1 id="france-end-title" tabindex="-1">La France et ses spécialités. <em>Manche terminée !</em></h1><div id="france-totals" class="delivery-awards"></div>
-      <p class="intro">Le voyage continue… après une rencontre avec les métiers de l’accueil.</p><div class="result-actions"><button id="france-career" class="primary">PAUSE MÉTIER : RÉCEPTIONNISTE <span>→</span></button><button class="text-button france-back">Le carnet de route</button></div>
-    </section>
-    <dialog id="france-confirm" aria-labelledby="france-confirm-title"><h2 id="france-confirm-title">Confirmer la validation</h2><p id="france-confirm-text"></p><div class="dialog-actions"><button class="secondary" id="france-cancel">ANNULER</button><button class="primary" id="france-confirm-answer">CONFIRMER</button></div></dialog>
 
     <section id="gps-intro" class="screen compact gps-screen" hidden aria-labelledby="gps-intro-title">
       <div class="scoreboard"></div><p class="eyebrow">MANCHE 4</p><h1 id="gps-intro-title" tabindex="-1">MANCHE 4 — LE GPS A PERDU LA BOULE !</h1>
@@ -342,25 +318,6 @@
       </div>
       <div id="career-revelation" class="career-revelation" hidden tabindex="-1" aria-labelledby="career-feedback"><h2 id="career-feedback"></h2><p id="career-explanation"></p><ul id="career-facts" class="career-facts"></ul></div>
       <div class="career-bottom"><p class="tiny">Une découverte pour tout le monde · Aucun point attribué · Aucun joker utilisé</p><button id="career-continue" class="primary" hidden>LE CARNET DE ROUTE <span>→</span></button></div>
-    </section>
-
-    <section id="challenge" class="screen compact challenge" hidden aria-labelledby="challenge-title">
-      <div id="challenge-scores" class="scoreboard"></div>
-      <div class="challenge-heading"><svg class="challenge-truck" role="img" aria-label="Le food truck rouge de notre voyage"><use href="#truck-art"/></svg><div><p class="eyebrow">ESCALE DÉMO / SPÉCIALITÉ MYSTÈRE</p><h1 id="challenge-title" tabindex="-1">Ça vous dit <em>quelque chose ?</em></h1></div><span class="ticket" id="points"></span></div>
-      <div class="clue-card"><div class="clue-top"><span id="clue-number"></span><span id="clue-progress" aria-hidden="true"></span></div><p id="clue" aria-live="polite"></p><span class="clue-note">CONCERTEZ-VOUS ET RÉPONDEZ À VOIX HAUTE.</span></div>
-      <div class="turn-panel"><div><p class="eyebrow">AU TOUR DE</p><h2 id="active-team"></h2><p id="attempt-status"></p></div><div class="validation"><span>LE FORMATEUR VALIDE LA RÉPONSE</span><div><button id="wrong" class="secondary">✕ Mauvaise réponse</button><button id="correct" class="primary">✓ Bonne réponse</button></div></div></div>
-      <p id="feedback" class="feedback" role="status"></p>
-    </section>
-
-    <section id="result" class="screen compact" hidden aria-labelledby="result-title">
-      <div id="result-scores" class="scoreboard"></div>
-      <p class="eyebrow">LE MYSTÈRE EST DANS LE CORNET</p>
-      <h1 id="result-title" tabindex="-1">C’étaient <em>les frites !</em></h1>
-      <p id="outcome" class="outcome" role="status"></p>
-      <div class="correction"><img class="specialty-art" src="assets/frites.svg" alt="Un cornet de frites dorées avec une portion de sauce"><div><p class="eyebrow">BELGIQUE / BRUXELLES</p><h2>Une escale qui croustille</h2><p>Voisine de la France, la <strong>Belgique</strong> est célèbre pour ses frites servies en cornet avec de la sauce.</p><p><strong>Bruxelles</strong>, sa capitale, accueille plusieurs grandes institutions de l’Union européenne.</p></div></div>
-      <aside class="companion result-companion"><svg aria-hidden="true"><use href="#companion-art"/></svg><p class="speech">Pour la prochaine escale, je prends une carte… et un cornet !</p></aside>
-      <div class="result-actions"><button class="primary" id="back-to-journey">LE CARNET DE ROUTE <span>→</span></button><button class="text-button" id="replay">Rejouer la démonstration ↻</button></div>
-      <p class="tiny">Rejouer conserve les scores et alterne l’équipe qui commence.</p>
     </section>
   </main>
   <footer><span>LABO ÉPICÉ × E2C COUTRAS</span><span>LE SAVOIR A DU GOÛT.</span><button id="photo-credits-open" class="footer-credits" type="button">Crédits photos</button><span>VERSION DÉCOUVERTE · 01</span></footer>

@@ -85,5 +85,5 @@ $('career-form').addEventListener('submit', event => {
   }
 });
 $('career-continue').addEventListener('click', () => {
-  if (game?.careerPauses?.[currentCareerIndex]?.revealed) { if(currentCareerIndex===0){openSauce();}else{scores();show('journey');} }
+  if (game?.careerPauses?.[currentCareerIndex]?.revealed) { if (currentCareerIndex === 0 && !finalIsClosed()) openSauce(); else if (currentCareerIndex === 1 && !finalIsClosed()) openFrance(); else { scores(); show('journey'); } }
 });
