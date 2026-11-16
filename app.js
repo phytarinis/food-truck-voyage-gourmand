@@ -8,6 +8,7 @@ function show(id) {
   document.body.classList.toggle('journey-mode', id === 'journey');
   document.body.classList.toggle('delivery-mode', ['delivery','delivery-correction'].includes(id));
   document.body.classList.toggle('france-mode', id.startsWith('france-'));
+  document.body.classList.toggle('gps-mode', id.startsWith('gps-'));
   updateHeaderContext(id);
   document.querySelectorAll('.screen').forEach(screen => { screen.hidden = screen.id !== id; });
   $('reset').hidden = id === 'welcome';
@@ -46,6 +47,8 @@ function updateHeaderContext(id) {
   else if (id === 'apero-bonus') label.textContent = "Manche 1 · L'apéro local / Défi découverte · Collectif · Sans points";
   else if (id === 'france-bonus') label.textContent = 'Manche 3 · La France et ses spécialités / Défi découverte · Collectif · Sans points';
   else if (['france-search','france-answer','france-location'].includes(id) && game?.france) label.textContent = `Manche 3 · La France et ses spécialités / ${id === 'france-location' ? 'Carte' : 'Énigme'} ${game.france.puzzleIndex + 1} sur 3 · En équipes`;
+  else if (id === 'gps-placement' && game?.gps) label.textContent = `MANCHE 04 / DÉFI ${game.gps.index + 1} SUR 3`;
+  else if (id === 'gps-bonus') label.textContent = 'Manche 4 · Le GPS a perdu la boule ! / Défi découverte · Collectif · Sans points';
   else if (id === 'world-transition') label.textContent = 'Le grand final';
   else if (round >= 0) label.textContent = `Manche ${round + 1} · ${rounds[round]}`;
   else if (id === 'career-pause') label.textContent = `Pause métier ${currentCareerIndex + 1} · ${['Serveuse','Cuisinier','Réceptionniste','Entretien hôtelier','Équipier polyvalent en restauration rapide'][currentCareerIndex]} / Collectif · Sans points`;
