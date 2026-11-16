@@ -4,15 +4,17 @@ let gpsDrag = null;
 function openGps(){GpsGame.start(game);game.routeCurrent=3;renderGps();}
 function gpsElement(tag,attributes={}){const e=document.createElementNS('http://www.w3.org/2000/svg',tag);Object.entries(attributes).forEach(([key,value])=>e.setAttribute(key,value));return e;}
 function renderGps(){
- scores();const s=game.gps;
- if(s.phase==='intro'){show('gps-intro');return;}
+ const s=game.gps;
+ if(s.phase==='intro')GpsGame.begin(game);
+ // Anciennes sauvegardes et seconde validation : correction immédiate et unique.
+ if(s.phase==='compare')GpsGame.reveal(game);
+ scores();
  if(['placement','compare','correction'].includes(s.phase)){renderGpsPlacement();show('gps-placement');return;}
  if(s.phase==='bonus'){renderGpsBonus();show('gps-bonus');return;}
- $('gps-totals').textContent='Le GPS a retrouvé sa route !';show('gps-end');
+ openCareerPause(3);
 }
 function renderGpsPlacement(){
  const s=game.gps,data=GpsGame.challenges[s.index],active=s.phase==='placement',corrected=s.phase==='correction',stamp=GpsGame.token(game);
- $('gps-progress').textContent=`MANCHE 04 / DÉFI ${s.index+1} SUR 3`;
  $('gps-placement-title').textContent=data.title;$('gps-instruction').textContent=data.instruction;
  $('gps-turn').textContent=active?`${game.teams[s.team].name} · placement ${s.team===0?'corail':'sauge'}`:corrected?'La correction du GPS':'Les deux propositions sont visibles';
  $('gps-turn').className=`gps-turn${active?` team-${s.team}`:''}`;
@@ -20,16 +22,17 @@ function renderGpsPlacement(){
  $('gps-timer-panel').hidden=!active||!data.duration;
  $('gps-timer-start').onclick=()=>{if(GpsGame.startTimer(game,stamp,performance.now()))updateGpsTimer()};updateGpsTimer();
  $('gps-lock').hidden=!active;$('gps-lock').disabled=!GpsGame.ready(game);$('gps-lock').textContent=`Valider le placement ${s.team===0?'corail':'sauge'}`;
- $('gps-lock').onclick=()=>{if(GpsGame.lock(game,stamp,performance.now())){gpsSelectedLabel=0;renderGpsPlacement();if(game.gps.phase==='compare')$('gps-reveal').focus();else $('gps-turn').focus();}};
+ $('gps-lock').onclick=()=>{if(GpsGame.lock(game,stamp,performance.now())){gpsSelectedLabel=0;renderGps();if(game.gps.phase==='correction')$('gps-correction').focus({preventScroll:true});else $('gps-turn').focus({preventScroll:true});}};
  $('gps-turn').tabIndex=-1;
- $('gps-reveal').hidden=s.phase!=='compare';$('gps-reveal').textContent=data.reveal;
- $('gps-correction').hidden=!corrected;$('gps-next').hidden=!corrected;$('gps-next').textContent=s.index===2?'LE BONUS COLLECTIF →':'DÉFI SUIVANT →';
- $('gps-awards').replaceChildren();$('gps-facts').replaceChildren();$('gps-tolerance').textContent='';
+ $('gps-correction').hidden=!corrected;$('gps-next').hidden=!corrected;$('gps-next').textContent=s.index===2?'Défi découverte →':'Défi suivant →';
+ $('gps-facts').replaceChildren();$('gps-tolerance').textContent='';
  if(corrected){
-  s.results[s.index].awards.forEach((points,team)=>{const p=document.createElement('p');p.className=`gps-award team-${team}`;p.textContent=`${game.teams[team].name} : +${points} points`;$('gps-awards').append(p)});
-  data.facts.forEach(fact=>{const li=document.createElement('li');li.textContent=fact;$('gps-facts').append(li)});
+  const facts=s.index===1?['Garonne : Toulouse, Bordeaux, puis l’estuaire de la Gironde.','Seine : Paris, Rouen, puis la Manche.','Rhin : frontière franco-allemande, puis mer du Nord.']:data.facts;
+  facts.forEach(fact=>{const li=document.createElement('li');li.textContent=fact;$('gps-facts').append(li)});
   $('gps-tolerance').textContent=s.index===1?'Repères ponctuels : Toulouse, Bordeaux, Paris, Rouen et Strasbourg.':'Validation pédagogique : zone du massif, avec une marge de 25 km. Pour les Alpes, la zone reste limitée au territoire français.';
  }
+ $('gps-turn').hidden=!active;
+ $('gps-choice-status').hidden=!active;
  $('gps-choice-status').textContent=active?(GpsGame.ready(game)?'Placement prêt. Vous pouvez encore le modifier.':s.index===1?'Placez les trois étiquettes avant de valider.':'Saisissez l’objet et déplacez-le sur la carte.'):'Les choix sont verrouillés. Ils restent visibles pendant la correction.';
  $('gps-help').hidden=!active;$('gps-manipulation').hidden=!active;
  $('gps-help').textContent=s.index===1?'Glissez chaque étiquette sur un fleuve ou son repère A, B ou C. Si une zone est occupée, les étiquettes sont échangées. Autre possibilité : sélectionnez une étiquette puis cliquez sur un repère. Clavier : Tab, Entrée ou Espace.':'Glissez l’objet, sans rotation. Autre possibilité : cliquez sur la carte pour le placer. Clavier : Tab sur l’objet, puis flèches (Maj pour aller plus vite).';
@@ -88,11 +91,10 @@ function renderGpsMap(){
  }
 }
 function gpsPointPiece(x,y,team,index,active){
- const label=index===0?'Chaîne de montagnes':'Food truck rouge';
+ const label='Chaîne de montagnes';
  const g=gpsElement('g',{transform:`translate(${x},${y})`,'data-x':x,'data-y':y,'data-kind':'point',class:`gps-piece gps-point team-${team}`,role:'button',tabindex:active?0:-1,'aria-disabled':String(!active),'aria-label':`${label}, proposition ${team===0?'corail':'sauge'}${active?' : flèches pour déplacer':''}`});
  g.append(gpsElement('rect',{x:-60,y:-48,width:120,height:96,rx:8,class:'gps-piece-hit'}));
- if(index===0){g.append(gpsElement('path',{d:'M-51 24 -25-25 -7 5 12-32 52 24Z',class:'gps-mountains'}));g.append(gpsElement('path',{d:'m-35-6 10-19 12 21-11-5ZM0-13 12-32 25-11 13-16Z',class:'gps-snow'}));}
- else{g.append(gpsElement('rect',{x:-55,y:-43,width:110,height:86,rx:8,class:'gps-truck-outline'}));const truck=gpsElement('svg',{x:-50,y:-39,width:100,height:78,viewBox:'0 0 940 740',overflow:'hidden',style:'pointer-events:none','aria-hidden':'true'});truck.append(gpsElement('use',{href:'#truck-art'}));g.append(truck);}
+ g.append(gpsElement('path',{d:'M-51 24 -25-25 -7 5 12-32 52 24Z',class:'gps-mountains'}));g.append(gpsElement('path',{d:'m-35-6 10-19 12 21-11-5ZM0-13 12-32 25-11 13-16Z',class:'gps-snow'}));
  const badge=gpsElement('text',{x:44,y:-28,class:'gps-team-number'});badge.textContent=String(team+1);g.append(badge);
  g.addEventListener('keydown',event=>{
   if(!active||!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key))return;
@@ -137,7 +139,6 @@ $('gps-map').addEventListener('pointerup',event=>{
 $('gps-map').addEventListener('pointercancel',()=>{gpsDrag=null;if(game?.gps?.phase==='placement')renderGpsPlacement();});
 function renderGpsBonus() {
   const state = game.gps.bonus, data = GpsGame.bonus;
-  $('gps-bonus-title').textContent = data.title;
   $('gps-bonus-question').textContent = data.question;
   $('gps-bonus-options').replaceChildren(...data.options.map((text, index) => {
     const item = document.createElement('li');
@@ -165,10 +166,7 @@ function renderGpsBonus() {
   $('gps-bonus-quote').textContent = state.revealed ? data.quote : '';
 }
 
-$('gps-begin').addEventListener('click',()=>{if(GpsGame.begin(game))renderGps()});
-$('gps-reveal').addEventListener('click',()=>{if(GpsGame.reveal(game)){scores();renderGpsPlacement();$('gps-correction').focus()}});
 $('gps-next').addEventListener('click',()=>{if(GpsGame.next(game)){gpsSelectedLabel=0;renderGps()}});
 $('gps-bonus-form').addEventListener('submit',event=>{event.preventDefault();if(GpsGame.revealBonus(game)){renderGpsBonus();$('gps-bonus-answer').focus()}});
 $('gps-bonus-finish').addEventListener('click',()=>{if(GpsGame.finish(game))renderGps()});
-$('gps-career').addEventListener('click',()=>{if(game?.gps?.phase==='complete')openCareerPause(3)});
 document.querySelectorAll('.gps-back').forEach(button=>button.addEventListener('click',()=>{gpsDrag=null;scores();show('journey')}));

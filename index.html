@@ -190,33 +190,21 @@
       <div><figure class="bonus-map"><img src="assets/maps/france-metropolitaine-regions.svg" alt="France métropolitaine avec la Corse et les frontières de ses 13 régions."><figcaption>IGN / france-geojson · <a href="assets/maps/ATTRIBUTION.md" target="_blank" rel="noopener">Sources et licence</a></figcaption></figure><aside id="france-bonus-discovery" class="companion" hidden><svg aria-hidden="true"><use href="#companion-art"/></svg><p id="france-bonus-quote" class="speech"></p></aside></div></div>
     </section>
 
-    <section id="gps-intro" class="screen compact gps-screen" hidden aria-labelledby="gps-intro-title">
-      <div class="scoreboard"></div><p class="eyebrow">MANCHE 4</p><h1 id="gps-intro-title" tabindex="-1">MANCHE 4 — LE GPS A PERDU LA BOULE !</h1>
-      <aside class="companion sauce-intro-scene"><svg aria-hidden="true"><use href="#companion-art"/></svg><p class="speech">Bon… Le GPS vient de m'envoyer dans les Pyrénées pour traverser la Seine. Je crois qu'il a besoin d'une mise à jour !</p></aside>
-      <p class="intro">Le GPS est complètement perdu ! Aidez notre food truck à retrouver les montagnes, les fleuves et sa prochaine destination.</p>
-
-      <p class="gps-principle">Corail place, puis sauge place sans voir son choix. On compare ensuite les deux propositions avant de révéler la correction. <strong>45 points maximum par équipe.</strong></p>
-      <div class="result-actions"><button id="gps-begin" class="primary">RETROUVER LES PYRÉNÉES <span>→</span></button><button class="text-button gps-back">Le carnet de route</button></div>
-    </section>
     <section id="gps-placement" class="screen compact gps-screen" hidden aria-labelledby="gps-placement-title">
-      <div class="scoreboard"></div><p id="gps-progress" class="eyebrow"></p><h1 id="gps-placement-title" tabindex="-1"></h1><p id="gps-instruction" class="gps-instruction"></p>
+      <div class="scoreboard"></div><h1 id="gps-placement-title" tabindex="-1"></h1><p id="gps-instruction" class="gps-instruction"></p>
       <div class="gps-layout"><figure class="gps-map-figure"><svg id="gps-map" viewBox="0 0 660 560" role="group" aria-label="Carte interactive de France métropolitaine avec la Corse"></svg><figcaption>Nord en haut · IGN / france-geojson et Natural Earth · <a href="assets/maps/ATTRIBUTION.md" target="_blank" rel="noopener">Sources et licences</a></figcaption></figure>
-      <aside class="gps-controls"><p id="gps-turn" class="gps-turn" role="status"></p><p id="gps-choice-status" role="status"></p><button id="gps-lock" class="primary" disabled>Valider le placement corail</button><button id="gps-reveal" class="primary" hidden>Révéler la correction</button><button id="gps-next" class="primary" hidden>DÉFI SUIVANT <span>→</span></button><div id="gps-timer-panel" class="gps-timer-panel" hidden><span>CONCERTATION</span><output id="gps-timer" aria-label="Temps de concertation restant">00:45</output><button id="gps-timer-start" class="secondary">Lancer le chronomètre</button><p id="gps-timer-status" role="status"></p></div><aside id="gps-character" class="companion"><svg aria-hidden="true"><use href="#companion-art"/></svg><p id="gps-quote" class="speech"></p></aside>
+      <aside class="gps-controls"><p id="gps-turn" class="gps-turn" role="status"></p><p id="gps-choice-status" class="visually-hidden" role="status"></p><div id="gps-correction" class="gps-correction" tabindex="-1" hidden><h2>Le GPS retrouve ses repères !</h2><ul id="gps-facts"></ul><p id="gps-tolerance" class="gps-small"></p></div><button id="gps-lock" class="primary" disabled>Valider le placement corail</button><button id="gps-spicy" class="secondary" hidden>🌶️ Jouer un piment</button><button id="gps-next" class="primary" hidden>DÉFI SUIVANT <span>→</span></button><div id="gps-timer-panel" class="gps-timer-panel" hidden><span>CONCERTATION</span><output id="gps-timer" aria-label="Temps de concertation restant">00:45</output><button id="gps-timer-start" class="secondary">Lancer le chronomètre</button><p id="gps-timer-status" role="status"></p></div>
 
 
-      <div id="gps-correction" class="gps-correction" tabindex="-1" hidden><h2>Le GPS retrouve ses repères !</h2><div id="gps-awards"></div><ul id="gps-facts"></ul><p id="gps-tolerance" class="gps-small"></p></div>
-      <details id="gps-manipulation"><summary>Aide pour déplacer les objets</summary><p id="gps-help" class="gps-small"></p></details><button class="text-button gps-back">Le carnet de route · progression conservée</button></aside></div>
+
+      <details id="gps-manipulation"><summary>Aide pour déplacer les objets</summary><p id="gps-help" class="gps-small"></p><aside id="gps-character" class="companion"><svg aria-hidden="true"><use href="#companion-art"/></svg><p id="gps-quote" class="speech"></p></aside></details><button class="text-button gps-back">Le carnet de route · progression conservée</button></aside></div>
     </section>
     <section id="gps-bonus" class="screen compact gps-screen" hidden aria-labelledby="gps-bonus-title">
-      <div class="scoreboard"></div><p class="eyebrow">BONUS FINAL / COLLECTIF / SANS POINTS</p><h1 id="gps-bonus-title" tabindex="-1"></h1><p id="gps-bonus-question" class="sauce-bonus-question"></p>
-      <div class="bonus-layout"><div class="bonus-discussion"><form id="gps-bonus-form"><fieldset><legend class="visually-hidden">Choisissez collectivement une proposition</legend><ol id="gps-bonus-options" class="bonus-options" type="A"></ol></fieldset><p id="gps-bonus-status" role="status"></p><button class="primary" id="gps-bonus-reveal" type="submit" disabled>RÉVÉLER LA RÉPONSE</button></form>
+      <div class="scoreboard"></div><h1 id="gps-bonus-title" class="visually-hidden" tabindex="-1">Défi découverte</h1><p id="gps-bonus-question" class="sauce-bonus-question"></p>
+      <div class="bonus-layout"><div class="bonus-discussion"><form id="gps-bonus-form"><fieldset><legend class="visually-hidden">Choisissez collectivement une proposition</legend><ol id="gps-bonus-options" class="bonus-options" type="A"></ol></fieldset><p id="gps-bonus-status" role="status"></p><button class="primary" id="gps-bonus-reveal" type="submit" disabled>Révéler la réponse</button></form>
       <div id="gps-bonus-answer" class="bonus-answer" hidden tabindex="-1"><h2 id="gps-bonus-solution"></h2><p id="gps-bonus-explanation"></p></div>
-      <div class="result-actions"><button id="gps-bonus-finish" class="primary" hidden>TERMINER LA MANCHE <span>→</span></button><button class="text-button gps-back">Le carnet de route</button></div></div>
+      <div class="result-actions"><button id="gps-bonus-finish" class="primary" hidden>Terminer la manche <span>→</span></button><button class="text-button gps-back">Le carnet de route</button></div></div>
       <div><figure class="bonus-map"><img src="assets/maps/france-metropolitaine-regions.svg" alt="France métropolitaine avec la Corse et les frontières de ses 13 régions."><figcaption>IGN / gps-geojson · <a href="assets/maps/ATTRIBUTION.md" target="_blank" rel="noopener">Sources et licence</a></figcaption></figure><aside id="gps-bonus-discovery" class="companion" hidden><svg aria-hidden="true"><use href="#companion-art"/></svg><p id="gps-bonus-quote" class="speech"></p></aside></div></div>
-    </section>
-    <section id="gps-end" class="screen compact gps-screen" hidden aria-labelledby="gps-end-title">
-      <div class="scoreboard"></div><p class="eyebrow">TROIS REPÈRES RETROUVÉS</p><h1 id="gps-end-title" tabindex="-1">Le GPS a perdu la boule ! <em>Manche terminée.</em></h1><div id="gps-totals" class="delivery-awards"></div>
-      <div class="result-actions"><button id="gps-career" class="primary">PAUSE MÉTIER : ENTRETIEN HÔTELIER <span>→</span></button><button class="text-button gps-back">Le carnet de route</button></div>
     </section>
     <section id="passport-intro" class="screen compact passport-screen" hidden aria-labelledby="passport-intro-title">
       <div class="scoreboard"></div><p class="eyebrow">MANCHE 5</p><h1 id="passport-intro-title" tabindex="-1">MANCHE 5 — PASSEPORT GOURMAND</h1>
@@ -310,7 +298,7 @@
       <div class="scoreboard"></div>
       <div class="career-layout">
         <div class="career-content">
-          <h1 id="career-title" tabindex="-1">Deux vérités, une idée reçue !</h1>
+          <p id="career-job-label" class="eyebrow" hidden>PAUSE MÉTIER 4 — ENTRETIEN HÔTELIER</p><h1 id="career-title" tabindex="-1">Deux vérités, une idée reçue !</h1>
           <div class="career-invitation"><p>Quelle affirmation est fausse ?</p></div>
           <form id="career-form"><fieldset id="career-choices"><legend class="visually-hidden">Choix collectif : quelle affirmation est fausse ?</legend><div id="career-cards" class="career-cards"></div></fieldset><div class="career-choice-actions"><p id="career-choice-status" class="visually-hidden" role="status"></p><button id="career-reveal" class="primary" type="submit" disabled>RÉVÉLER L’IDÉE REÇUE <span>→</span></button></div></form>
         </div>
