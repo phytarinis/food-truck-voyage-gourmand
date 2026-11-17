@@ -1101,3 +1101,25 @@ body.journey-mode main{min-height:0}
  #world-challenge.is-correction .world-controls{border:0;background:transparent;padding:0}
 }
 @media(min-width:801px){#world-challenge>h1{letter-spacing:-.8px}}
+
+/* Six escales narratives, un seul gabarit ; aucun score ni logo sur ces pages. */
+body.round-transition-mode .topbar{display:none}
+body.round-transition-mode main{min-height:0}
+body.round-transition-mode footer{padding:8px 5%}
+#round-transition{display:grid;grid-template-columns:minmax(240px,.8fr) minmax(0,1.2fr);align-items:center;gap:40px;padding:24px 8%;max-width:1366px;margin:auto}
+#round-transition[hidden]{display:none}
+.round-transition-art{margin:0;min-width:0;display:flex;justify-content:center}
+#round-transition-heroine{display:block;width:100%;height:min(520px,calc(100vh - 140px));object-fit:contain}
+#round-transition-number{color:var(--red);font-size:17px;letter-spacing:3px;margin:0 0 14px}
+#round-transition-title{font-size:clamp(32px,4vw,54px);line-height:1.08;letter-spacing:-1px;margin:0 0 28px;max-width:700px}
+#round-transition-dialogue{font-size:clamp(21px,2.1vw,28px);line-height:1.45;padding:22px 26px;max-width:660px;margin:0 0 28px}
+#round-start{font-size:17px;min-height:44px;padding:12px 24px}
+@media(max-width:700px){
+ #round-transition{grid-template-columns:1fr;gap:16px;padding:20px 6%}
+ .round-transition-art{grid-row:2}
+ #round-transition-heroine{height:280px}
+ #round-transition-title{font-size:34px;margin-bottom:18px}
+ #round-transition-dialogue{font-size:20px;padding:16px;margin-bottom:18px}
+}
+#round-transition{animation:none}
+body.round-transition-mode footer>span:first-child{display:none}

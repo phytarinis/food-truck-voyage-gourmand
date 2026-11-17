@@ -1,5 +1,6 @@
 'use strict';
 function openApero() {
+ if(presentRound(0))return;
   AperoGame.start(game);
   renderApero();
 }

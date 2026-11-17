@@ -1,7 +1,9 @@
 'use strict';
 let gpsSelectedLabel = 0;
 let gpsDrag = null;
-function openGps(){GpsGame.start(game);game.routeCurrent=3;renderGps();}
+function openGps(){
+ if(presentRound(3))return;
+ GpsGame.start(game);game.routeCurrent=3;renderGps();}
 function gpsElement(tag,attributes={}){const e=document.createElementNS('http://www.w3.org/2000/svg',tag);Object.entries(attributes).forEach(([key,value])=>e.setAttribute(key,value));return e;}
 function renderGps(){
  const s=game.gps;

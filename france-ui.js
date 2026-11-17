@@ -6,6 +6,7 @@ function settleFranceSearch() {
   if (stamp) FranceGame.revealNextClue(game, stamp);
 }
 function openFrance() {
+ if(presentRound(2))return;
   FranceGame.start(game); game.routeCurrent = 2; renderFrance();
 }
 function renderFrance() {

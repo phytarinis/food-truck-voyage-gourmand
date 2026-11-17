@@ -358,3 +358,19 @@ Les actions de la manche 1 utilisent des boutons sobres, sans van. Le carnet uti
 Les seuls raccords partagés sont l’autorisation de `delivery-correction` dans `spicy.js`, les branches correspondantes de `spicy-ui.js` et l’exclusion des boutons de la manche 1 dans `ergonomics.js`. Les autres manches conservent leurs introductions, boutons et interludes.
 
 Validation : 760 tests unitaires réussis, dont les 16 combinaisons de points des deux équipes pour chacune des trois livraisons, ainsi que modification, jetons périmés, sauvegarde/migration et joker unique depuis correction. Onze suites navigateur réussies : manche 1, cinq autres manches, métiers, jokers, finale, ergonomie et bandeaux. `APERO_TEST_URL=http://127.0.0.1:8008 node tests/apero.browser.cjs` vérifie la saisie successive privée, le retour au carnet, les éditions, les rafraîchissements avant/après joker, les points uniques et la reprise à Jonzac ou au bonus. Les trois questions sont testées sans défilement nécessaire pour répondre à 1920×1080, 1366×768 et 1024×768 ; l’absence de débordement horizontal est aussi vérifiée à 390×844 et 320×640. Dimensions simulées dans Chromium, sans vidéoprojecteur physique.
+
+## Six présentations de manches
+
+La branche `feat/transitions-manches`, issue de `main` au commit `294430d` après fusion de la refonte de la manche 6 (#32), ajoute un seul composant narratif avant le premier défi de chaque manche. Le carnet et les cinq pauses métiers gardent leurs chemins de navigation.
+
+`round-transitions.js` porte les six titres, dialogues et références d’images ainsi que l’état de présentation. `round-transitions-ui.js` affiche le numéro de manche, le titre, l’héroïne, sa bulle et le seul bouton « EN ROUTE ! ». Ce bouton lance uniquement la manche choisie. Aucun score, logo, van de navigation ou animation imposée ne figure dans le composant.
+
+Les six illustrations sont des variantes générées à partir de l’héroïne originale, conservée intacte. Elles se trouvent dans `assets/transitions/`, dans six fichiers indépendants : carte locale, cuisine, commandes, GPS à l’envers, carte d’identité et globe/valise. Voir `assets/transitions/README.md` pour la référence et les accessoires. Les images restent entières et un seul fichier est chargé par transition.
+
+`game.roundTransitions` enregistre les présentations validées et l’éventuelle présentation en cours. Il ne modifie aucun moteur, score ou état de manche terminée. Un rechargement avant validation retrouve la présentation ; après validation, les nouvelles sauvegardes reprennent l’écran de manche réellement atteint. Les anciennes sauvegardes déjà engagées reprennent leur manche sans présentation ajoutée. Les sauvegardes de joker et les derniers piments gardent leur priorité de reprise. La consultation d’un voyage clôturé reste indépendante des présentations.
+
+Vérifications :
+
+- `node --test tests/*.test.cjs` : règles, états existants, présentations, migration et validation unique.
+- `GAME_TEST_URL=http://127.0.0.1:8008 node tests/round-transitions.browser.cjs` : six titres/dialogues exacts, six images, démarrage de la bonne manche, rechargement avant/après validation, absence de répétition, camion, pauses, sauvegardes antérieures, grand final et consultation. Dimensions 1280 × 720 et 1366 × 768, sans défilement vertical.
+- Les suites navigateur historiques des mécaniques peuvent se lancer avec `NODE_OPTIONS=--require=./tests/helpers/legacy-rounds.cjs`. Ce préchargement omet uniquement la nouvelle présentation, pour conserver leurs points d’entrée historiques ; il ne remplace ni les moteurs ni la sauvegarde. La suite des présentations ci-dessus s’exécute sans ce préchargement et couvre leur intégration réelle.
