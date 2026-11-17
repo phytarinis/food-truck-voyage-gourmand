@@ -2,19 +2,28 @@
 function openWorld(){WorldGame.start(game);game.routeCurrent=5;renderWorld();}
 function worldContinentName(code){return WorldMap.continents.find(c=>c.code===code)?.name||'';}
 function renderWorld(){
- scores();const s=game.world;
- if(s.phase==='intro'){show('world-intro');return;}
+ const s=game.world;
+ if(s.phase==='intro')WorldGame.begin(game);
+ scores();
  if(s.phase==='complete'){
-  $('world-totals').textContent='Le tour du monde est terminé !';show('world-end');return;
+  enterWorldFinal();return;
  }
  renderWorldChallenge();show('world-challenge');
+}
+function enterWorldFinal(){
+ if(game?.world?.phase!=='complete')return;
+ // Lire les phases réellement sauvegardées ; aucune autre manche n’est terminée ici.
+ if(SpicyGame.allComplete(game)&&!SpicyGame.hasQuestion(game))openSpicyFinale();
+ else show('world-transition');
 }
 function renderWorldChallenge(){
  const s=game.world,l=s.location,data=WorldGame.challenges[s.index],bothLocked=l.locked.every(Boolean),corrected=s.phase==='correction',stamp=WorldGame.token(game);
  $('world-challenge').classList.toggle('is-correction',corrected);
+ $('world-challenge').classList.toggle('is-pollution',s.index===5);
  const layout=$('world-challenge').querySelector('.world-layout');
  if(corrected)layout.insertBefore($('world-discovery'),layout.querySelector('.world-controls'));else $('world-challenge').append($('world-discovery'));
- $('world-progress').textContent=`MANCHE 06 / DÉFI ${s.index+1} SUR 6`;
+
+ $('world-instruction').hidden=corrected;
  $('world-challenge-title').textContent=data.title;$('world-instruction').textContent=data.instruction;
  $('world-turn').textContent=bothLocked?(corrected?'Destination révélée':'Les deux drapeaux sont plantés !'):`${game.teams[l.activeTeam].name} · drapeau ${l.activeTeam===0?'corail':'sauge'}`;
  $('world-turn').className=`world-turn${bothLocked?'':` team-${l.activeTeam}`}`;
@@ -22,17 +31,15 @@ function renderWorldChallenge(){
  $('world-lock').hidden=bothLocked;$('world-lock').disabled=!stamp||l.choices[l.activeTeam]===null;$('world-lock').textContent=`Valider le drapeau ${l.activeTeam===0?'corail':'sauge'}`;
  $('world-lock').onclick=()=>{if(WorldGame.lock(game,stamp)){renderWorldChallenge();if(game.world.location.locked.every(Boolean))$('world-reveal').focus();else $('world-turn').focus()}};
  $('world-reveal').hidden=!bothLocked||corrected;$('world-reveal').textContent=s.index===5?'Révéler le septième continent':'Révéler la destination';
- $('world-next').hidden=!corrected;$('world-next').textContent=s.index===5?'BILAN DE LA MANCHE →':'DESTINATION SUIVANTE →';
+ $('world-next').hidden=!corrected;$('world-next').textContent=s.index===5?'LE GRAND FINAL →':'DESTINATION SUIVANTE →';
  $('world-character').hidden=corrected;$('world-quote').textContent=corrected?'':data.quote;
- $('world-verdict').hidden=!corrected;$('world-verdict').replaceChildren();
+
  $('world-discovery').hidden=!corrected;$('world-photo').replaceChildren();$('world-fact').textContent='';$('world-discovery-title').textContent='';
- $('world-photo-note').hidden=true;$('world-photo-note').textContent='';$('world-zone-note').hidden=true;$('world-zone-note').textContent='';$('world-final-quote').hidden=true;$('world-final-quote').textContent='';
+ $('world-photo-note').hidden=true;$('world-photo-note').textContent='';$('world-zone-note').hidden=true;$('world-zone-note').textContent='';
  if(corrected){
-  const title=document.createElement('h2');title.textContent=s.index===5?'Pacifique Nord':worldContinentName(data.continent);
-  const awards=document.createElement('p');awards.textContent=s.results[s.index].awards.map((points,team)=>`${game.teams[team].name} : +${points} points`).join(' · ');$('world-verdict').append(title,awards);
-  $('world-discovery-title').textContent=s.index===5?'Une accumulation de déchets, pas un continent.':`${data.destination} · ${worldContinentName(data.continent)}`;
+  $('world-discovery-title').textContent=s.index===5?'Pacifique Nord · Une zone d’accumulation de déchets':`${data.destination} · ${worldContinentName(data.continent)}`;
   $('world-fact').textContent=data.fact;renderWorldPhoto(data);
-  if(data.photoNote){$('world-photo-note').hidden=false;$('world-photo-note').textContent=data.photoNote;$('world-final-quote').hidden=false;$('world-final-quote').textContent=data.finalQuote;$('world-zone-note').hidden=false;$('world-zone-note').textContent='La zone dessinée est un repère pédagogique indicatif. Elle ne représente pas une frontière scientifique du phénomène.';}
+  if(data.photoNote){$('world-photo-note').hidden=false;$('world-photo-note').textContent=data.photoNote;$('world-zone-note').hidden=false;$('world-zone-note').textContent='Contour approximatif : repère pédagogique, sans frontière scientifique.';}
  }
  $('world-map-help').hidden=bothLocked;
  $('world-map-help').textContent=s.index===5?'Placement libre dans tous les océans. Cliquez pour déplacer le drapeau. Clavier : Tab sur la carte, puis flèches (Maj pour aller plus vite).':'Les zones suivent une convention à sept continents. Au clavier : Tab, puis Entrée ou Espace sur une zone.';
@@ -82,8 +89,9 @@ function appendWorldPhotoCredit(container,photo){
 }
 function renderWorldPhoto(data){
  const photo=WorldPhotos[data.id],image=document.createElement('img');image.src=photo.src;image.alt=photo.alt;image.decoding='async';
- const caption=document.createElement('figcaption');appendWorldPhotoCredit(caption,photo);
- const full=document.createElement('a');full.href=photo.original;full.textContent='Voir le fichier original';full.target='_blank';full.rel='noopener';caption.append(' · ',full);$('world-photo').replaceChildren(image,caption);
+ const caption=document.createElement('figcaption'),details=document.createElement('details'),summary=document.createElement('summary');
+ summary.textContent='Crédits et licence';details.append(summary);appendWorldPhotoCredit(details,photo);caption.append(details);
+ const full=document.createElement('a');full.href=photo.original;full.textContent='Voir le fichier original';full.target='_blank';full.rel='noopener';details.append(' · ',full);$('world-photo').replaceChildren(image,caption);
 }
 function appendWorldPhotoCredits(container){
  if(!game?.world)return;
@@ -92,8 +100,8 @@ function appendWorldPhotoCredits(container){
   const article=document.createElement('article'),title=document.createElement('h3'),credit=document.createElement('div');title.textContent=`Manche 6 — ${data.destination}`;appendWorldPhotoCredit(credit,WorldPhotos[data.id]);article.append(title,credit);container.append(article);
  });
 }
-$('world-begin').addEventListener('click',()=>{if(WorldGame.begin(game))renderWorld()});
-$('world-reveal').addEventListener('click',()=>{if(WorldGame.reveal(game)){scores();renderWorldChallenge();$('world-verdict').focus()}});
+
+$('world-reveal').addEventListener('click',()=>{if(WorldGame.reveal(game)){renderWorld();$('world-discovery-title').focus({preventScroll:true})}});
 $('world-next').addEventListener('click',()=>{const s=game.world;if(s.index===5){if(WorldGame.finish(game))renderWorld()}else if(WorldGame.next(game))renderWorld()});
-$('world-finish-journey').addEventListener('click',()=>{if(game?.world?.phase==='complete'){scores();show('world-transition')}});
+$('world-spicy').addEventListener('click',()=>openSpicySetup());
 document.querySelectorAll('.world-back').forEach(button=>button.addEventListener('click',()=>{scores();show('journey')}));

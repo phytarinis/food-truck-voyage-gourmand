@@ -8,6 +8,7 @@ function show(id) {
   document.body.classList.toggle('journey-mode', id === 'journey');
   document.body.classList.toggle('delivery-mode', ['delivery','delivery-correction'].includes(id));
   document.body.classList.toggle('france-mode', id.startsWith('france-'));
+  document.body.classList.toggle('world-mode', id.startsWith('world-'));
   document.body.classList.toggle('passport-mode', id.startsWith('passport-'));
   document.body.classList.toggle('gps-mode', id.startsWith('gps-'));
   updateHeaderContext(id);
@@ -51,6 +52,7 @@ function updateHeaderContext(id) {
   else if (id === 'gps-placement' && game?.gps) label.textContent = `MANCHE 04 / DÉFI ${game.gps.index + 1} SUR 3`;
   else if (id === 'gps-bonus') label.textContent = 'Manche 4 · Le GPS a perdu la boule ! / Défi découverte · Collectif · Sans points';
   else if (id.startsWith('passport-') && game?.passport) label.textContent = game.passport.phase === 'bonus' ? 'MANCHE 05 / DÉFI · COLLECTIF · SANS POINTS' : `MANCHE 05 / ÉNIGME ${game.passport.puzzleIndex + 1} SUR 3`;
+  else if (id.startsWith('world-') && game?.world) label.textContent = `MANCHE 06 / DÉFI ${game.world.index + 1} SUR 6`;
   else if (id === 'world-transition') label.textContent = 'Le grand final';
   else if (round >= 0) label.textContent = `Manche ${round + 1} · ${rounds[round]}`;
   else if (id === 'career-pause') label.textContent = `Pause métier ${currentCareerIndex + 1} · ${['Serveuse','Cuisinier','Réceptionniste','Entretien hôtelier','Équipier polyvalent en restauration rapide'][currentCareerIndex]} / Collectif · Sans points`;
