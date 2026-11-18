@@ -93,7 +93,7 @@ function renderSpicySetup(){
  $('spicy-question-options').replaceChildren(...SpicyGame.questions.map(q=>{
   const label=document.createElement('label');label.className='spicy-choice';
   const input=document.createElement('input');input.type='radio';input.name='spicy-question-choice';input.value=q.id;input.disabled=used.includes(q.id);input.checked=state.questionId===q.id;
-  input.addEventListener('change',()=>{state.questionId=q.id;updateSpicyPreview()});label.append(input,spicyLabel(q.topic+(input.disabled?' · déjà utilisée':'')));return label;
+  input.addEventListener('change',()=>{state.questionId=q.id;updateSpicyPreview()});label.append(input,spicyLabel(SpicyGame.choiceName(game,q.id)+(input.disabled?' · déjà utilisée':'')));return label;
  }));$('spicy-setup-status').textContent='Le piment est dépensé uniquement au lancement de la question.';updateSpicyPreview();
 }
 function updateSpicyPreview(){

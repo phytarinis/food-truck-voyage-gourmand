@@ -9,7 +9,9 @@
  ];
  const normalScreens=new Set(['world-challenge','passport-location','gps-placement','sauce-correction','delivery-correction','france-location','spicy-break','journey','apero-intro','apero-end','sauce-intro','sauce-end','france-intro','france-end','gps-intro','gps-end','passport-intro','passport-end','world-intro','world-end','world-transition']);
  const roundKeys=['apero','sauce','france','gps','passport','world'];let nextSession=1;
- function state(game){if(!game.spicy)game.spicy={id:nextSession++,serial:0,seen:[],window:null,used:[],active:null,history:[],finale:null};return game.spicy;}
+ const choiceNames={spiders:'Piment Tornade',cuy:'Piment Volcan',eggs:'Piment Panique',scorpions:'Piment Bazooka'};
+ function choiceName(game,id){return state(game).choiceNames[id];}
+ function state(game){if(!game.spicy)game.spicy={id:nextSession++,serial:0,seen:[],window:null,used:[],active:null,history:[],finale:null};if(!game.spicy.choiceNames)game.spicy.choiceNames={...choiceNames};return game.spicy;}
  function allComplete(game){return Boolean(game&&roundKeys.every(key=>game[key]?.phase==='complete'));}
  function hasQuestion(game){
   if(game.challenge&&!game.challenge.done)return true;
@@ -64,6 +66,6 @@
  }
  function finish(game,stamp){const s=game?.spicy,a=s?.active;if(!a?.revealed||stamp!==activeToken(game))return false;if(a.kind==='finale')s.finale.lastOwner=a.owner;s.active=null;return true;}
  function closeFinale(game){const s=game?.spicy;if(!s||s.finale?.phase!=='open'||s.active||!allComplete(game)||hasQuestion(game))return false;s.finale.phase='closed';s.finale.scores=game.teams.map(t=>({name:t.name,score:t.score,jokers:t.jokers}));return true;}
- const api={questions,roundKeys,state,observe,allComplete,hasQuestion,release,available,canNormal,windowToken,beginFinale,finaleOwners,finaleToken,willing,start,activeToken,choose,reveal,finish,closeFinale};
+ const api={choiceName,questions,roundKeys,state,observe,allComplete,hasQuestion,release,available,canNormal,windowToken,beginFinale,finaleOwners,finaleToken,willing,start,activeToken,choose,reveal,finish,closeFinale};
  if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.SpicyGame=api;
 })(globalThis);
