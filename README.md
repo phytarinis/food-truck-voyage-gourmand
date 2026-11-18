@@ -82,7 +82,7 @@ Vérifications : `node --test tests/*.test.cjs`. Tests navigateur facultatifs av
 
 Les cinq pauses partagent la composition 60/40 : affirmations verticales à gauche, grand compagnon validé à droite. La réplique humoristique n’apparaît qu’après la révélation. Les corrections et les trois repères métier sont conservés, sans modification du moteur ni des textes validés.
 
-Aucune déclinaison de tenue n’est disponible dans les ressources validées : le même compagnon de l’accueil est donc réutilisé fidèlement, sans fabriquer de nouveaux personnages ou de tenues approximatives. `career-illustrations.js` prévoit cinq emplacements `src` pour des illustrations approuvées : service avec plateau, cuisine, réception, entretien et restauration rapide. Tant que `src` est vide, le SVG reprend exactement le personnage de l’accueil. Pour intégrer un visuel validé, renseigner seulement son chemin local et son texte alternatif dans cette configuration.
+Le lot 2 fournit désormais cinq variantes professionnelles de la même héroïne dans `assets/careers/`, référencées par `career-illustrations.js`. Les tenues et accessoires identifient le métier ; les affirmations et réponses du composant restent inchangées. Voir [le compte rendu du lot 2](docs/LOT2.md).
 
 Logos officiels utilisés dans l’en-tête :
 - `assets/Logo sans fond.png` — Labo Épicé, PNG RGBA 500×500.
@@ -386,3 +386,14 @@ Les règles présentent les quatre blocs demandés avec pictogrammes et la phras
 Le carnet conserve son tracé, ses illustrations, ses six étapes et les coordonnées du camion. Cinq petites flèches suivent la chaussée dans l’ordre 01 → 06 ; le panneau entre 04 et 05 est orienté vers la gauche sur ordinateur. « PROCHAINE ESCALE » signale la première manche non terminée, à partir des phases existantes. Aucun nouvel état de progression n’est stocké et le repère disparaît après les six manches. Son placement à la dernière étape évite de se confondre avec l’étape 03.
 
 Vérifications : `node --test tests/*.test.cjs`, `GAME_TEST_URL=http://127.0.0.1:8008 node tests/lot1.browser.cjs`, et la suite réelle des transitions. La suite du lot vérifie la grille 2 × 2, les textes, les boutons, les cinq pauses, le camion, le repère et les sauvegardes à 1280 × 720 et 1366 × 768. Les parcours navigateur historiques se relancent avec le préchargement `tests/helpers/legacy-rounds.cjs` documenté ci-dessus, sans remplacer les moteurs ou les sauvegardes.
+
+
+## Lot 2 — Contenus, cartes et illustrations
+
+Branche `feat/lot-2-contenus-visuels`, issue de `main` au commit `2e42263`. Le [compte rendu détaillé](docs/LOT2.md) précise les pages concernées, les nouvelles ressources, les vérifications géographiques et la formulation roumaine proposée à validation pédagogique.
+
+Le lot intègre une retouche fidèle de l’accueil, les logos encadrant l’héroïne à la création des équipes, les accents pédagogiques rendus sans injection HTML, la comparaison géographique avant/depuis 2016, l’illustration de population, le schéma Garonne–Dordogne–Gironde et les cinq variantes professionnelles. Les six transitions et les harmonisations du lot 1 sont conservées.
+
+Les quatre photographies demandées (Pyrénées, gâteau à la broche, Alpes, tartiflette) restent à fournir avec droits vérifiables. Elles ne sont remplacées ni par des images douteuses ni par des illustrations présentées comme des photographies. Le tracé interactif de la Garonne n’englobe pas l’estuaire ; il reste inchangé, comme les repères de validation, tandis que l’explication et le schéma clarifient la confluence au bec d’Ambès.
+
+`node --test tests/*.test.cjs` et `GAME_TEST_URL=http://127.0.0.1:8008 node tests/lot2.browser.cjs` couvrent les changements, notamment les trois niveaux d’indices, l’absence de dévoilement anticipé, les cartes et les corrections, ainsi que les cinq métiers aux résolutions 1280 × 720 et 1366 × 768. Les suites réelles des transitions et du lot 1 se lancent sans préchargement ; les suites historiques utilisent le préchargement documenté `tests/helpers/legacy-rounds.cjs`.

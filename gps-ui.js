@@ -29,8 +29,9 @@ function renderGpsPlacement(){
  $('gps-correction').hidden=!corrected;$('gps-next').hidden=!corrected;$('gps-next').textContent=s.index===2?'Défi découverte →':'Défi suivant →';
  $('gps-facts').replaceChildren();$('gps-tolerance').textContent='';
  if(corrected){
-  const facts=s.index===1?['Garonne : Toulouse, Bordeaux, puis l’estuaire de la Gironde.','Seine : Paris, Rouen, puis la Manche.','Rhin : frontière franco-allemande, puis mer du Nord.']:data.facts;
-  facts.forEach(fact=>{const li=document.createElement('li');li.textContent=fact;$('gps-facts').append(li)});
+  highlightText($('gps-correction').querySelector('h2'),s.index===1?'Trois fleuves, trois noms !':'Le GPS retrouve ses repères !',['fleuves']);
+  const facts=s.index===1?['Garonne : Toulouse, Bordeaux, puis Dordogne au bec d’Ambès → estuaire de la Gironde → Atlantique.','Seine : Paris, Rouen, puis la Manche.','Rhin : frontière franco-allemande, puis mer du Nord.']:data.facts;
+  facts.forEach(fact=>{const li=document.createElement('li');highlightText(li,fact,s.index===0?['Pyrénées']:s.index===2?['Alpes']:['fleuves']);$('gps-facts').append(li)});
   $('gps-tolerance').textContent=s.index===1?'Repères ponctuels : Toulouse, Bordeaux, Paris, Rouen et Strasbourg.':'Validation pédagogique : zone du massif, avec une marge de 25 km. Pour les Alpes, la zone reste limitée au territoire français.';
  }
  $('gps-turn').hidden=!active;
@@ -141,6 +142,7 @@ $('gps-map').addEventListener('pointerup',event=>{
 $('gps-map').addEventListener('pointercancel',()=>{gpsDrag=null;if(game?.gps?.phase==='placement')renderGpsPlacement();});
 function renderGpsBonus() {
   const state = game.gps.bonus, data = GpsGame.bonus;
+  $('gps-bonus-diagram').hidden=!state.revealed;
   $('gps-bonus-question').textContent = data.question;
   $('gps-bonus-options').replaceChildren(...data.options.map((text, index) => {
     const item = document.createElement('li');
@@ -164,7 +166,7 @@ function renderGpsBonus() {
   $('gps-bonus-discovery').hidden = !state.revealed;
   $('gps-bonus-finish').hidden = !state.revealed;
   $('gps-bonus-solution').textContent = state.revealed ? 'B. ' + data.options[data.correctIndex] : '';
-  $('gps-bonus-explanation').textContent = state.revealed ? data.explanation : '';
+  highlightText('gps-bonus-explanation',state.revealed?data.explanation:'',['fleuve','rivière']);
   $('gps-bonus-quote').textContent = state.revealed ? data.quote : '';
 }
 

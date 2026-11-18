@@ -10,6 +10,7 @@
   <script defer src="apero.js"></script>
   <script defer src="app.js"></script>
   <script defer src="culture-photos.js"></script>
+  <script defer src="pedagogical-highlights.js"></script>
   <script defer src="apero-ui.js"></script>
   <script defer src="careers.js"></script>
   <script defer src="career-illustrations.js"></script>
@@ -69,13 +70,13 @@
     <section id="welcome" class="screen welcome" aria-labelledby="welcome-title">
       <h1 id="welcome-title" class="visually-hidden">Le grand voyage gourmand</h1>
       <div class="welcome-scene">
-        <img class="welcome-illustration" src="assets/Le%20grand%20voyage%20gourmand%20en%20van.png" width="1672" height="941" fetchpriority="high" alt="Une cuisinière devant le food truck rouge, le logo Labo Épicé et le titre Le grand voyage gourmand, dans un paysage de campagne.">
+        <img class="welcome-illustration" src="assets/accueil-retouche.png" width="1672" height="941" fetchpriority="high" alt="Une cuisinière devant le food truck rouge, le logo Labo Épicé et le titre Le grand voyage gourmand, dans un paysage de campagne.">
         <button id="onward" class="welcome-start" type="button"><span class="visually-hidden">En route ! Préparer les deux équipes</span></button>
       </div>
     </section>
 
     <section id="setup" class="screen compact" hidden aria-labelledby="setup-title">
-      <aside class="companion setup-companion"><svg role="img" aria-label="Notre personnage féminin, extrait de l’illustration validée"><use href="#companion-art"/></svg><div class="setup-partners" aria-label="Labo Épicé et E2C Coutras"><img src="assets/Logo%20sans%20fond.png" width="80" height="80" alt="Le Labo Épicé"><svg viewBox="500 440 1370 1510" width="72" height="80" role="img" aria-label="E2C Gironde, Coutras"><image href="assets/Copie%20de%20Gironde_1%20(1).png" width="2363" height="2363"/></svg></div></aside>
+      <aside class="companion setup-companion"><div class="setup-partners"><img src="assets/Logo%20sans%20fond.png" width="80" height="80" alt="Le Labo Épicé"><svg class="setup-heroine" viewBox="0 0 380 696" role="img" aria-label="Notre héroïne, extraite de l’illustration validée"><use href="#companion-art"/></svg><svg class="setup-e2c" viewBox="500 440 1370 1510" width="72" height="80" role="img" aria-label="E2C Gironde, Coutras"><image href="assets/Copie%20de%20Gironde_1%20(1).png" width="2363" height="2363"/></svg></div></aside>
       <p class="eyebrow">AVANT DE TOURNER LA CLÉ</p>
       <h1 id="setup-title" tabindex="-1">Qui monte <em>à bord ?</em></h1>
       <p class="intro">Formez deux équipes, choisissez un nom et préparez-vous à relever les défis !</p>
@@ -140,7 +141,7 @@
     </section>
 
     <section id="apero-bonus" class="screen compact apero-screen" hidden aria-labelledby="apero-bonus-title">
-      <div class="scoreboard"></div><h1 id="apero-bonus-title" tabindex="-1">Comment les numéros des départements français ont-ils été attribués à l'origine ?</h1>
+      <div class="scoreboard"></div><h1 id="apero-bonus-title" tabindex="-1">Comment les <span class="pedagogical-key">numéros des départements</span> français ont-ils été attribués à l'origine ?</h1>
       <div class="bonus-layout"><div class="bonus-discussion"><fieldset id="apero-discovery-choices"><legend class="visually-hidden">La réponse collective des deux équipes</legend><ol class="bonus-options"><li><label><span aria-hidden="true">A.</span><input type="radio" name="apero-discovery-choice" value="0">Selon leur superficie.</label></li><li><label><span aria-hidden="true">B.</span><input type="radio" name="apero-discovery-choice" value="1">Selon l'ordre alphabétique de leurs noms.</label></li><li><label><span aria-hidden="true">C.</span><input type="radio" name="apero-discovery-choice" value="2">Selon leur nombre d’habitants.</label></li></ol></fieldset>
       <button id="bonus-reveal" class="primary" disabled>RÉVÉLER LA RÉPONSE</button><div id="bonus-answer" class="bonus-answer" hidden><h2>B. Selon l’ordre alphabétique de leurs noms.</h2><p>À l’origine, les départements ont été numérotés principalement selon l’ordre alphabétique de leurs noms. Il existe aujourd’hui quelques exceptions liées aux évolutions administratives.</p></div>
       <div class="result-actions"><button id="apero-finish" class="primary" hidden>TERMINER LA MANCHE <span>→</span></button><button class="text-button apero-back">Le carnet de route</button></div>
@@ -166,7 +167,7 @@
       <div class="bonus-layout"><div class="bonus-discussion"><form id="sauce-bonus-form"><fieldset><legend class="visually-hidden">Choisissez collectivement une proposition</legend><ol id="sauce-bonus-options" class="bonus-options" type="A"></ol></fieldset><p id="sauce-bonus-status" class="visually-hidden" role="status"></p><button class="primary" id="sauce-bonus-reveal" type="submit" disabled>RÉVÉLER LA RÉPONSE</button></form>
       <div id="sauce-bonus-answer" class="bonus-answer" hidden tabindex="-1"><h2 id="sauce-bonus-solution"></h2><p id="sauce-bonus-explanation"></p></div>
       <div class="result-actions"><button id="sauce-bonus-finish" class="primary" hidden>TERMINER LA MANCHE <span>→</span></button><button class="text-button sauce-back">Le carnet de route</button></div></div>
-      <div id="sauce-bonus-discovery" hidden><figure class="bonus-map"><a href="assets/maps/bonus-nouvelle-aquitaine.svg" target="_blank" rel="noopener" aria-label="Agrandir la carte des anciennes régions dans un nouvel onglet"><img src="assets/maps/bonus-nouvelle-aquitaine.svg" alt="Carte des anciennes régions Aquitaine, Limousin et Poitou-Charentes qui composent la Nouvelle-Aquitaine."></a><figcaption>Limites historiques IGN / france-geojson · <a href="assets/maps/ATTRIBUTION.md" target="_blank" rel="noopener">Source et Licence Ouverte</a></figcaption></figure><aside class="companion"><svg aria-hidden="true"><use href="#companion-art"/></svg><p id="sauce-bonus-quote" class="speech"></p></aside></div></div>
+      <div id="sauce-bonus-discovery" hidden><figure class="bonus-map"><a href="assets/maps/bonus-regions-comparaison.svg" target="_blank" rel="noopener" aria-label="Agrandir la comparaison des régions avant et depuis 2016"><img src="assets/maps/bonus-regions-comparaison.svg" alt="Avant 2016 : Aquitaine, Limousin et Poitou-Charentes. Depuis 2016 : Nouvelle-Aquitaine, avec le même cadrage."></a><figcaption>Limites historiques IGN / france-geojson · <a href="assets/maps/ATTRIBUTION.md" target="_blank" rel="noopener">Source et Licence Ouverte</a></figcaption></figure></div></div>
     </section>
 
     <section id="france-search" class="screen compact france-screen" hidden aria-labelledby="france-search-title">
@@ -190,7 +191,7 @@
       <div class="bonus-layout"><div class="bonus-discussion"><form id="france-bonus-form"><fieldset><legend class="visually-hidden">Choisissez collectivement une proposition</legend><ol id="france-bonus-options" class="bonus-options" type="A"></ol></fieldset><p id="france-bonus-status" role="status"></p><button class="primary" id="france-bonus-reveal" type="submit" disabled>Révéler la réponse</button></form>
       <div id="france-bonus-answer" class="bonus-answer" hidden tabindex="-1"><h2 id="france-bonus-solution"></h2><p id="france-bonus-explanation"></p><p id="france-bonus-reference"></p></div>
       <div class="result-actions"><button id="france-bonus-finish" class="primary" hidden>Terminer la manche <span>→</span></button><button class="text-button france-back">Le carnet de route</button></div></div>
-      <div><figure class="bonus-map"><img src="assets/maps/france-metropolitaine-regions.svg" alt="France métropolitaine avec la Corse et les frontières de ses 13 régions."><figcaption>IGN / france-geojson · <a href="assets/maps/ATTRIBUTION.md" target="_blank" rel="noopener">Sources et licence</a></figcaption></figure><aside id="france-bonus-discovery" class="companion" hidden><svg aria-hidden="true"><use href="#companion-art"/></svg><p id="france-bonus-quote" class="speech"></p></aside></div></div>
+      <div><figure class="bonus-population"><img src="assets/population-france.png" alt="Un groupe diversifié de personnes de plusieurs âges, apparences et professions, dont une personne en fauteuil roulant."><figcaption>Illustration de population créée pour le jeu, sans valeur statistique.</figcaption></figure><aside id="france-bonus-discovery" class="companion" hidden><svg aria-hidden="true"><use href="#companion-art"/></svg><p id="france-bonus-quote" class="speech"></p></aside></div></div>
     </section>
 
     <section id="gps-placement" class="screen compact gps-screen" hidden aria-labelledby="gps-placement-title">
@@ -207,7 +208,7 @@
       <div class="bonus-layout"><div class="bonus-discussion"><form id="gps-bonus-form"><fieldset><legend class="visually-hidden">Choisissez collectivement une proposition</legend><ol id="gps-bonus-options" class="bonus-options" type="A"></ol></fieldset><p id="gps-bonus-status" role="status"></p><button class="primary" id="gps-bonus-reveal" type="submit" disabled>Révéler la réponse</button></form>
       <div id="gps-bonus-answer" class="bonus-answer" hidden tabindex="-1"><h2 id="gps-bonus-solution"></h2><p id="gps-bonus-explanation"></p></div>
       <div class="result-actions"><button id="gps-bonus-finish" class="primary" hidden>Terminer la manche <span>→</span></button><button class="text-button gps-back">Le carnet de route</button></div></div>
-      <div><figure class="bonus-map"><img src="assets/maps/france-metropolitaine-regions.svg" alt="France métropolitaine avec la Corse et les frontières de ses 13 régions."><figcaption>IGN / gps-geojson · <a href="assets/maps/ATTRIBUTION.md" target="_blank" rel="noopener">Sources et licence</a></figcaption></figure><aside id="gps-bonus-discovery" class="companion" hidden><svg aria-hidden="true"><use href="#companion-art"/></svg><p id="gps-bonus-quote" class="speech"></p></aside></div></div>
+      <div><figure id="gps-bonus-diagram" class="bonus-map" hidden><img src="assets/maps/garonne-fleuve-riviere.svg" alt="Schéma pédagogique : les affluents rejoignent la Garonne ; sa confluence avec la Dordogne au bec d’Ambès forme l’estuaire de la Gironde, qui débouche dans l’océan Atlantique."><figcaption>Schéma pédagogique, non cartographique · Garonne, Dordogne et Gironde distinguées</figcaption></figure><aside id="gps-bonus-discovery" class="companion" hidden><svg aria-hidden="true"><use href="#companion-art"/></svg><p id="gps-bonus-quote" class="speech"></p></aside></div></div>
     </section>
     <section id="round-transition" class="screen compact round-transition-screen" hidden aria-labelledby="round-transition-title">
       <figure class="round-transition-art"><img id="round-transition-heroine" width="1024" height="1536" alt=""></figure>
@@ -216,7 +217,7 @@
     <section id="passport-search" class="screen compact passport-screen" hidden aria-labelledby="passport-search-title">
       <div class="scoreboard"></div><h1 id="passport-search-title" tabindex="-1"><span id="passport-destination-title">Destination mystère n° 1</span></h1>
       <p class="sauce-confidential">Discutez ensemble et annoncez votre réponse à l’animateur.</p>
-      <aside id="passport-mystery" class="passport-mystery" hidden><p id="passport-mystery-quote" class="speech"></p><button id="passport-sound" class="text-button" type="button">Ambiance mystère · 1 seconde</button><span id="passport-sound-status" role="status"></span></aside>
+      <div id="passport-mystery" class="passport-audio" hidden><button id="passport-sound" class="text-button" type="button">Ambiance mystère · 1 seconde</button><span id="passport-sound-status" role="status"></span></div>
       <div id="passport-panels" class="sauce-panels"></div>
       <p id="passport-live" class="feedback" role="status"></p><button type="button" class="secondary passport-undo" hidden>Annuler la dernière validation</button><button class="text-button passport-back">Le carnet de route · progression conservée</button>
     </section>

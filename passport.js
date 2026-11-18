@@ -14,10 +14,10 @@
    "Je possède une longue façade sur l'océan Atlantique et je partage ma seule frontière terrestre avec l'Espagne.",
    "Ma capitale est Lisbonne et l'une de mes spécialités sucrées est le pastel de nata."
   ]},
-  {id:'romania',answer:'Roumanie',searchTitle:'Destination mystère n° 3',title:'Direction la Roumanie !',region:'ROU',capital:'Bucarest',heading:'Bienvenue au pays de Dracula !',quote:'Livraison urgente ! Le client a demandé sa viande très, très saignante !',photo:'Photographie du château de Bran à venir',fact:"La Roumanie se situe en Europe de l'Est et sa capitale est Bucarest. La Transylvanie est une région historique associée aux légendes de vampires et au personnage fictif de Dracula.",clues:[
+  {id:'romania',answer:'Roumanie',searchTitle:'Destination mystère n° 3',title:'Direction la Roumanie !',region:'ROU',capital:'Bucarest',heading:'Bienvenue au pays de Dracula !',photo:'Photographie du château de Bran à venir',fact:"La Roumanie se situe en Europe de l'Est et sa capitale est Bucarest. La Transylvanie est une région historique associée aux légendes de vampires et au personnage fictif de Dracula.",clues:[
    "Je suis un pays d'Europe traversé par les montagnes des Carpates.",
    'Une de mes régions les plus célèbres est la Transylvanie, associée à de nombreuses légendes.',
-   'Ma capitale est Bucarest et je suis souvent associé à la légende de Dracula.'
+   'Ma capitale est Bucarest. Livraison urgente : mon client a demandé sa viande très, très saignante… comme dans les histoires de Dracula !'
   ]}
  ];
  const bonus={title:'DÉFI — STRASBOURG, PAS QUE DES SAUCISSES !',question:'Strasbourg est connue pour sa célèbre saucisse… mais pas seulement ! Quelle autre particularité possède cette ville française ?',options:["Elle accueille le Parlement européen.","Elle a été l'ancienne capitale de la France.","Elle accueillera les prochains Jeux olympiques."],correctIndex:0,explanation:"Strasbourg est le siège officiel du Parlement européen. Les députés européens s'y réunissent notamment pour les sessions plénières."};

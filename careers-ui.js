@@ -19,7 +19,8 @@ const careerIcons = {
   stairs: '<path d="M3 29h27M5 27v-7h7v-7h7V6h9M19 6h9v9"/>'
 };
 function renderCareerPause() {
-  $('career-job-label').hidden = currentCareerIndex !== 3;
+  $('career-job-label').hidden = false;
+  $('career-job-label').textContent = CareerIllustrations[currentCareerIndex].title;
   const state = game.careerPauses[currentCareerIndex], job = CareerPauses.jobs[currentCareerIndex];
   scores();
   $('career-quote').hidden = !state.revealed;

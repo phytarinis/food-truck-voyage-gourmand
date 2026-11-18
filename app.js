@@ -56,7 +56,7 @@ function updateHeaderContext(id) {
   else if (id.startsWith('world-') && game?.world) label.textContent = `MANCHE 06 / DÉFI ${game.world.index + 1} SUR 6`;
   else if (id === 'world-transition') label.textContent = 'Le grand final';
   else if (round >= 0) label.textContent = `Manche ${round + 1} · ${rounds[round]}`;
-  else if (id === 'career-pause') label.textContent = `Pause métier ${currentCareerIndex + 1} · ${['Serveuse','Cuisinier','Réceptionniste','Entretien hôtelier','Équipier polyvalent en restauration rapide'][currentCareerIndex]} / Collectif · Sans points`;
+  else if (id === 'career-pause') label.textContent = `Pause métier ${currentCareerIndex + 1} / Collectif · Sans points`;
   else if (id.startsWith('spicy-')) {
     const source = game?.spicy?.finale ? -1 : keys.indexOf(game?.spicy?.window?.key?.split(':')[0]);
     label.textContent = source >= 0 ? `Manche ${source + 1} · ${rounds[source]} · Plat piégé !` : 'Plat piégé !';

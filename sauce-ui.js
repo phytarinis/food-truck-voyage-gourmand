@@ -17,7 +17,7 @@ function renderSauceSearch() {
   $('sauce-photo').replaceChildren();
   const s=game.sauce,puzzle=SauceGame.puzzles[s.puzzleIndex],team=SauceGame.activeTeam(game),stamp=SauceGame.answerToken(game);
   $('sauce-clue-info').textContent=`Indice ${s.clueIndex+1} sur 3 · ${SauceGame.points[s.clueIndex]} points possibles`;
-  $('sauce-clue').textContent=puzzle.clues[s.clueIndex];$('sauce-live').textContent='';
+  highlightText('sauce-clue',puzzle.clues[s.clueIndex],pedagogicalClues.sauce[s.puzzleIndex][s.clueIndex]);$('sauce-live').textContent='';
   $('sauce-team-status').replaceChildren(...s.players.map((player,i)=>{
     const item=document.createElement('li');item.className=`team-${i}`;
     item.textContent=`${game.teams[i].name} · ${player.status==='found'?`Trouvé : ${player.points} points`:player.status==='exhausted'?'Recherche terminée : 0 point':player.status==='waiting'?'Réponse enregistrée':'En recherche'}`;return item;
@@ -32,7 +32,7 @@ function renderSauceSearch() {
 }
 function renderSauceCorrection() {
   const s = game.sauce, puzzle = SauceGame.puzzles[s.puzzleIndex];
-  $('sauce-correction-title').textContent = puzzle.title;
+  highlightText('sauce-correction-title',puzzle.title,['foie gras','Chocolatine','huîtres']);
   $('sauce-facts').replaceChildren(...puzzle.facts.map(fact => { const item = document.createElement('li'); item.textContent = fact; return item; }));
   $('sauce-correction-quote').hidden = !puzzle.quote;
   $('sauce-correction-quote').textContent = puzzle.quote || '';
@@ -64,7 +64,8 @@ function renderSaucePhoto(puzzle) {
 }
 function renderSauceBonus() {
   const state = game.sauce.bonus, data = SauceGame.bonus;
-  $('sauce-bonus-title').textContent = data.question;
+  highlightText('sauce-bonus-title',data.question,['anciennes régions','Nouvelle-Aquitaine']);
+  $('sauce-bonus').classList.toggle('is-revealed',state.revealed);
   $('sauce-bonus-options').replaceChildren(...data.options.map((text, index) => {
     const item = document.createElement('li');
     const label = document.createElement('label');
@@ -86,8 +87,8 @@ function renderSauceBonus() {
   $('sauce-bonus-discovery').hidden = !state.revealed;
   $('sauce-bonus-finish').hidden = !state.revealed;
   $('sauce-bonus-solution').textContent = state.revealed ? 'A. ' + data.options[data.correctIndex] : '';
-  $('sauce-bonus-explanation').textContent = state.revealed ? data.explanation : '';
-  $('sauce-bonus-quote').textContent = state.revealed ? data.quote : '';
+  highlightText('sauce-bonus-explanation',state.revealed?data.explanation:'',['anciennes régions','Nouvelle-Aquitaine']);
+
 }
 $('sauce-bonus-form').addEventListener('submit', event => {
   event.preventDefault();

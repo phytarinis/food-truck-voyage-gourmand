@@ -8,7 +8,7 @@
       'On y retrouve des saucisses, de la charcuterie et des pommes de terre.',
       'Mon ingrédient principal est le chou fermenté.'
     ] },
-    { id: 'galette', answer: 'galette de sarrasin ou galette bretonne', title: "C'était la galette de sarrasin !", region: '53', heading: 'Bienvenue en Bretagne !', fact: 'Les galettes sont préparées avec du sarrasin, également appelé blé noir. On les retrouve notamment dans les crêperies bretonnes, avec de nombreuses garnitures salées.', clues: [
+    { id: 'galette', answer: 'galette de sarrasin ou galette bretonne', title: "C'était la galette bretonne !", region: '53', heading: 'Bienvenue en Bretagne !', fact: 'Les galettes sont préparées avec du sarrasin, également appelé blé noir. On les retrouve notamment dans les crêperies bretonnes, avec de nombreuses garnitures salées.', clues: [
       'Je suis ronde, mais on me replie souvent en carré.',
       'On me déguste salée, avec du jambon, du fromage et parfois un œuf.',
       'Je suis préparée avec de la farine de sarrasin, aussi appelée blé noir.'
