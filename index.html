@@ -40,6 +40,8 @@
   <script defer src="spicy-ui.js"></script>
   <script defer src="final.js"></script>
   <script defer src="final-ui.js"></script>
+  <script defer src="round-transitions.js"></script>
+  <script defer src="round-transitions-ui.js"></script>
   <script defer src="ergonomics.js"></script>
   <script defer src="persistence.js"></script>
 </head>
@@ -205,6 +207,10 @@
       <div id="gps-bonus-answer" class="bonus-answer" hidden tabindex="-1"><h2 id="gps-bonus-solution"></h2><p id="gps-bonus-explanation"></p></div>
       <div class="result-actions"><button id="gps-bonus-finish" class="primary" hidden>Terminer la manche <span>→</span></button><button class="text-button gps-back">Le carnet de route</button></div></div>
       <div><figure class="bonus-map"><img src="assets/maps/france-metropolitaine-regions.svg" alt="France métropolitaine avec la Corse et les frontières de ses 13 régions."><figcaption>IGN / gps-geojson · <a href="assets/maps/ATTRIBUTION.md" target="_blank" rel="noopener">Sources et licence</a></figcaption></figure><aside id="gps-bonus-discovery" class="companion" hidden><svg aria-hidden="true"><use href="#companion-art"/></svg><p id="gps-bonus-quote" class="speech"></p></aside></div></div>
+    </section>
+    <section id="round-transition" class="screen compact round-transition-screen" hidden aria-labelledby="round-transition-title">
+      <figure class="round-transition-art"><img id="round-transition-heroine" width="1024" height="1536" alt=""></figure>
+      <div class="round-transition-copy"><p id="round-transition-number" class="eyebrow"></p><h1 id="round-transition-title" tabindex="-1"></h1><p id="round-transition-dialogue" class="speech"></p><button id="round-start" class="primary" type="button">EN ROUTE !</button></div>
     </section>
     <section id="passport-search" class="screen compact passport-screen" hidden aria-labelledby="passport-search-title">
       <div class="scoreboard"></div><h1 id="passport-search-title" tabindex="-1"><span id="passport-destination-title">Destination mystère n° 1</span></h1>

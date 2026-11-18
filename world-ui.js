@@ -1,5 +1,7 @@
 'use strict';
-function openWorld(){WorldGame.start(game);game.routeCurrent=5;renderWorld();}
+function openWorld(){
+ if(presentRound(5))return;
+ WorldGame.start(game);game.routeCurrent=5;renderWorld();}
 function worldContinentName(code){return WorldMap.continents.find(c=>c.code===code)?.name||'';}
 function renderWorld(){
  const s=game.world;

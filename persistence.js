@@ -5,7 +5,8 @@ function saveProgress(){
   if(!game){localStorage.removeItem(progressKey);return;}
   const pending=spicyPending?.game===game?{button:spicyPending.button.id,label:spicyPending.label}:null;
   const context=spicySetup?.game===game?spicySetup.context:null;
-  localStorage.setItem(progressKey,JSON.stringify({version:1,game,pending,context,savedAt:Date.now(),clock:performance.now()}));
+  const resumeRound=roundResumeIndex(document.querySelector('.screen:not([hidden])')?.id);
+  localStorage.setItem(progressKey,JSON.stringify({version:1,game,pending,context,resumeRound,savedAt:Date.now(),clock:performance.now()}));
  }catch{/* Une restriction du stockage ne doit jamais bloquer le jeu. */}
 }
 function restoreProgress(){
@@ -22,6 +23,11 @@ function restoreProgress(){
  if(game.spicy?.active){spicySetup={game,context:saved.context||'journey'};if(game.spicy.active.revealed)renderSpicyCorrection();else renderSpicyQuestion();}
  else if(game.spicy?.finale?.phase==='open')renderSpicyFinale();
  else if(spicyPending)renderSpicyBreak();
+ else if(Number.isInteger(game.roundTransitions?.pending))renderRoundTransition();
+ else if(Number.isInteger(saved.resumeRound)&&saved.resumeRound>=0&&saved.resumeRound<6&&game.roundTransitions?.seen[saved.resumeRound]){
+  const round=game[RoundTransitions.rounds[saved.resumeRound].key];
+  if(round&&round.phase!=='complete')roundRenderers()[saved.resumeRound]();
+ }
 }
 for(const event of['click','change','submit'])document.addEventListener(event,()=>queueMicrotask(saveProgress));
 window.addEventListener('pagehide',saveProgress);

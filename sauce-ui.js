@@ -1,5 +1,6 @@
 'use strict';
 function openSauce() {
+ if(presentRound(1))return;
   SauceGame.start(game); game.routeCurrent = 1; renderSauce();
 }
 function renderSauce() {

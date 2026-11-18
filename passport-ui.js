@@ -1,6 +1,7 @@
 'use strict';
 let passportSelectedTeam = null;
 function openPassport() {
+ if(presentRound(4))return;
   PassportGame.start(game); game.routeCurrent = 4; renderPassport();
 }
 function renderPassport() {

@@ -8,6 +8,7 @@ function show(id) {
   document.body.classList.toggle('journey-mode', id === 'journey');
   document.body.classList.toggle('delivery-mode', ['delivery','delivery-correction'].includes(id));
   document.body.classList.toggle('france-mode', id.startsWith('france-'));
+  document.body.classList.toggle('round-transition-mode', id === 'round-transition');
   document.body.classList.toggle('world-mode', id.startsWith('world-'));
   document.body.classList.toggle('passport-mode', id.startsWith('passport-'));
   document.body.classList.toggle('gps-mode', id.startsWith('gps-'));
@@ -35,7 +36,7 @@ function show(id) {
 }
 // Présentation uniquement : aucune écriture dans la partie ni changement de navigation.
 function updateHeaderContext(id) {
-  const compact = !['welcome', 'setup'].includes(id);
+  const compact = !['welcome', 'setup','round-transition'].includes(id);
   document.body.classList.toggle('compact-header', compact);
   const label = $('screen-context');
   label.hidden = !compact;
