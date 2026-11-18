@@ -11,7 +11,7 @@ renderGpsMap=function(){
  svg.insertBefore(path,svg.querySelector('.gps-river'));
  if(game.gps.phase==='correction'){
   const facts=$('gps-facts');
-  const item=document.createElement('li');item.textContent='Garonne + Dordogne → bec d’Ambès → estuaire de la Gironde → océan Atlantique. Tracés incomplets à proximité de la confluence : voir le schéma du défi découverte.';
+  const item=document.createElement('li');item.textContent='Garonne + Dordogne → bec d’Ambès → Gironde (estuaire) → Atlantique.';
   facts.firstElementChild.replaceWith(item);
  }
 };
@@ -24,5 +24,4 @@ renderGpsBonus=function(){
  image.alt='Schéma non cartographique : Garonne et Dordogne confluent au bec d’Ambès, puis l’estuaire de la Gironde s’ouvre sur l’océan Atlantique.';
  figure.querySelector('figcaption').textContent='Schéma pédagogique original, non cartographique · flèches : sens de l’écoulement';
  $('gps-bonus-discovery').hidden=true;
- if(game.gps.bonus.revealed)$('gps-bonus-explanation').textContent+=' La Garonne et la Dordogne se rejoignent au bec d’Ambès pour former l’estuaire de la Gironde, ouvert sur l’Atlantique. L’estuaire est distinct des deux cours d’eau.';
 };

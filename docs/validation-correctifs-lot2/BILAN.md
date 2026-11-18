@@ -24,3 +24,15 @@ Pour chacune : fichier accessible, auteur, page source vérifiable, licence et a
 
 ## Validation
 Voir les résultats de livraison ci-dessous. Les anciens tests de parcours sont exécutés avec `tests/helpers/legacy-rounds.cjs`, qui neutralise les seules introductions de manches pour conserver leur scénario historique ; les tests des transitions réelles sont exécutés séparément.
+
+### Résultats de livraison
+- `node --test tests/*.test.cjs` : **831/831 réussis** sur la branche dédiée.
+- Combinaison locale avec la PR #35 : fusion simulée sans conflit, **835/835 tests unitaires réussis**. Aucun commit ni fusion effectué sur `main` ou sur la branche #35.
+- **26 scripts navigateur réussis** : les 25 scripts de régression existants et `targeted-lot2.browser.cjs`. Couverture : six manches, parcours complet, transitions réelles, pauses métier, drapeaux/choix géographiques, scores, jokers, deux modes et quatre questions piégées, non-réutilisation, reprises/sauvegardes et finale.
+- Test ciblé : quatre noms exacts, absence des pays/thèmes/photos dans le menu, révélation après lancement, schéma caché avant réponse collective puis visible ; 1366 × 768 et 1280 × 720.
+- `gps.browser.cjs` : parcours complet avec glisser-déposer, clavier, échanges d'étiquettes, confidentialité des placements, scores uniques, chronomètres et reprise, corrections Pyrénées/fleuves/Alpes, défi collectif ; **sans défilement aux deux résolutions**. Même résultat avec la PR #35 dans la copie de travail d'intégration.
+- Les premiers essais ont détecté un débordement du texte ajouté à 1280 × 720 ; le texte répétitif a été retiré/raccourci, puis le parcours GPS complet a été relancé et passe aux deux formats. Trois scripts ont d'abord pointé un port sans serveur ; relancés avec GAME_TEST_URL/STARTUP_TEST_URL corrects, ils réussissent.
+- `git diff --check` : réussi.
+- Captures du schéma : `gironde-schema-1366.png` et `gironde-schema-1280.png` dans ce dossier. Les tests GPS produisent aussi leurs captures sous `/tmp`.
+
+Ces tests ne valident pas une carte complète de la Gironde ni la disposition de photographies absentes : ces deux demandes restent partiellement/non réalisées, comme décrit ci-dessus.
