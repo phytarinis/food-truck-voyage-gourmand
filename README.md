@@ -374,3 +374,15 @@ Vérifications :
 - `node --test tests/*.test.cjs` : règles, états existants, présentations, migration et validation unique.
 - `GAME_TEST_URL=http://127.0.0.1:8008 node tests/round-transitions.browser.cjs` : six titres/dialogues exacts, six images, démarrage de la bonne manche, rechargement avant/après validation, absence de répétition, camion, pauses, sauvegardes antérieures, grand final et consultation. Dimensions 1280 × 720 et 1366 × 768, sans défilement vertical.
 - Les suites navigateur historiques des mécaniques peuvent se lancer avec `NODE_OPTIONS=--require=./tests/helpers/legacy-rounds.cjs`. Ce préchargement omet uniquement la nouvelle présentation, pour conserver leurs points d’entrée historiques ; il ne remplace ni les moteurs ni la sauvegarde. La suite des présentations ci-dessus s’exécute sans ce préchargement et couvre leur intégration réelle.
+
+## Lot 1 — Harmonisation, règles et carnet
+
+Branche `feat/lot-1-harmonisation`, issue de `main` au commit `86e1794` après fusion des six transitions (#33). Les moteurs, questions, barèmes, illustrations, transitions et mises en page des cartes restent conservés.
+
+`ergonomics.js` applique deux composants de présentation aux boutons existants : `progress-action` pour avancer et `route-back` pour les accès au carnet. Les vans intégrés aux boutons sont retirés ; les retours affichent une petite carte et le libellé « Carnet de route ». Les éléments et leurs gestionnaires de clic restent les mêmes, y compris les chemins existants à la fin des pauses métiers. Les validations bonne/mauvaise réponse et les commandes cartographiques ne reçoivent pas le style de progression. Le grand final donne la priorité visuelle à « Nouvelle partie », avec « Revoir notre voyage » en action secondaire.
+
+Les règles présentent les quatre blocs demandés avec pictogrammes et la phrase sur les casseroles. L’instruction obsolète de réponse écrite dans la manche 5 est également remplacée par l’annonce orale, sans modifier la question ni la validation.
+
+Le carnet conserve son tracé, ses illustrations, ses six étapes et les coordonnées du camion. Cinq petites flèches suivent la chaussée dans l’ordre 01 → 06 ; le panneau entre 04 et 05 est orienté vers la gauche sur ordinateur. « PROCHAINE ESCALE » signale la première manche non terminée, à partir des phases existantes. Aucun nouvel état de progression n’est stocké et le repère disparaît après les six manches. Son placement à la dernière étape évite de se confondre avec l’étape 03.
+
+Vérifications : `node --test tests/*.test.cjs`, `GAME_TEST_URL=http://127.0.0.1:8008 node tests/lot1.browser.cjs`, et la suite réelle des transitions. La suite du lot vérifie la grille 2 × 2, les textes, les boutons, les cinq pauses, le camion, le repère et les sauvegardes à 1280 × 720 et 1366 × 768. Les parcours navigateur historiques se relancent avec le préchargement `tests/helpers/legacy-rounds.cjs` documenté ci-dessus, sans remplacer les moteurs ou les sauvegardes.

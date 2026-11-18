@@ -112,6 +112,7 @@ $('rules-next').addEventListener('click', () => show('journey'));
 // Seules les manches terminées font progresser le camion.
 function renderRoute({ current = null, completed = [] } = {}) {
   $('rounds').replaceChildren();
+  const nextIndex=rounds.findIndex((_,index)=>!completed.includes(index));
   rounds.forEach((title, index) => {
     const state = completed.includes(index) ? 'complete' : current === index ? 'active' : 'pending';
     const card = document.createElement('li');
@@ -127,6 +128,9 @@ function renderRoute({ current = null, completed = [] } = {}) {
       open.addEventListener('click', () => { if(typeof finalIsClosed==='function'&&finalIsClosed()){openFinalReview(index);return;} game.routeCurrent = index; if (index === 0) openApero(); else if (index === 1) openSauce(); else if (index === 2) openFrance(); else if (index === 3) openGps(); else if (index === 4) openPassport(); else openWorld(); }); name.append(open);
     } else name.textContent = title;
     const status = document.createElement('small'); status.textContent = { pending: 'À venir', active: 'En cours', complete: 'Terminée' }[state];
+    if(index===nextIndex){
+      const next=document.createElement('span');next.className='next-stop-label';next.textContent='PROCHAINE ESCALE';card.classList.add('is-next');card.append(next);
+    }
     card.append(number, name, status); $('rounds').append(card);
   });
   const truck = $('route-truck');
