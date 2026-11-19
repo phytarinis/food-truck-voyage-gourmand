@@ -1168,3 +1168,16 @@ body.compact-header>footer{padding-top:6px;padding-bottom:6px}
  #journey .board-beach{left:69%;top:1%;width:103px;height:75px}
  #journey .board-sign{top:76%}
 }
+/* Manche 4, défi des fleuves : aucun repère de réponse avant la correction. */
+.gps-ocean{fill:#e5eff0;stroke:none;fill-rule:evenodd;pointer-events:none}
+.gps-hydro-line{fill:none;stroke:#237d9b;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+.gps-river-water{fill:#237d9b;stroke:#237d9b;stroke-width:1;fill-rule:evenodd;pointer-events:none}
+.gps-estuary{fill:#afd6d7;stroke:#397d83;stroke-width:1;fill-rule:evenodd;pointer-events:none}
+.gps-hydro-name{font-size:21px;fill:#1d555f}
+.gps-gironde-inset>rect{fill:#fffaf0;stroke:#859b91;stroke-width:1}
+.gps-gironde-inset text{fill:#173943;font-family:Arial,sans-serif;font-weight:bold;paint-order:stroke;stroke:#fffaf0;stroke-width:2.5px;stroke-linejoin:round}
+.gps-confluence{fill:#ad4f2d;stroke:#fffaf0;stroke-width:1}
+#gps-placement.gps-hydro-challenge #gps-correction ul{font-size:16px;line-height:1.4}
+#gps-placement.gps-hydro-challenge #gps-map{overflow:hidden}
+#gps-placement.gps-hydro-challenge .gps-river-piece text{font-size:22px}
+.gps-inset-callout{stroke:#4c625e;stroke-width:1;fill:none}

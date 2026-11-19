@@ -1,0 +1,22 @@
+{
+  "source": "Natural Earth",
+  "scale": "1:10,000,000",
+  "crs": "EPSG:4326",
+  "licence": "Public domain",
+  "revision": "ca96624a56bd078437bca8184e78163e5039ad19",
+  "upstream": [
+    {
+      "file": "ne_10m_rivers_lake_centerlines.geojson",
+      "sha256": "bb854a900ecbd3b408df46d5e16e3e0f974ba55993f9d8b5c26e855273c0905a"
+    },
+    {
+      "file": "ne_10m_ocean.geojson",
+      "sha256": "f9696a1337c746a0f6c8c13bc60d0f230d2ef8d105198d5657726c8f8e763fc2"
+    }
+  ],
+  "extracts": {
+    "coastal-water.geojson": "06a35d2e63177bc65c55be4d1acb517db0e1816fbcb43f8a52d3bd183252fc7e",
+    "rivers.geojson": "bfe6626d407b8386a64a15afab7e2ff71328ce16f32f22763c90575059f15580",
+    "marine-context.geojson": "d8581a844624edfbd2ecd63cdcdb0d857ad3da785813feee49dfd08320a30018"
+  }
+}

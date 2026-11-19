@@ -17,6 +17,7 @@ function renderGps(){
 }
 function renderGpsPlacement(){
  const s=game.gps,data=GpsGame.challenges[s.index],active=s.phase==='placement',corrected=s.phase==='correction',stamp=GpsGame.token(game);
+ $('gps-placement').classList.toggle('gps-hydro-challenge',s.index===1);
  $('gps-placement-title').textContent=data.title;$('gps-instruction').textContent=data.instruction;
  $('gps-turn').textContent=active?`${game.teams[s.team].name} · placement ${s.team===0?'corail':'sauge'}`:corrected?'La correction du GPS':'Les deux propositions sont visibles';
  $('gps-turn').className=`gps-turn${active?` team-${s.team}`:''}`;
@@ -29,15 +30,15 @@ function renderGpsPlacement(){
  $('gps-correction').hidden=!corrected;$('gps-next').hidden=!corrected;$('gps-next').textContent=s.index===2?'Défi découverte →':'Défi suivant →';
  $('gps-facts').replaceChildren();$('gps-tolerance').textContent='';
  if(corrected){
-  const facts=s.index===1?['Garonne : Toulouse, Bordeaux, puis l’estuaire de la Gironde.','Seine : Paris, Rouen, puis la Manche.','Rhin : frontière franco-allemande, puis mer du Nord.']:data.facts;
+  const facts=s.index===1?["La Garonne rejoint la Dordogne au bec d'Ambès. Leur confluence forme l'estuaire de la Gironde, qui débouche dans l'océan Atlantique."]:data.facts;
   facts.forEach(fact=>{const li=document.createElement('li');li.textContent=fact;$('gps-facts').append(li)});
-  $('gps-tolerance').textContent=s.index===1?'Repères ponctuels : Toulouse, Bordeaux, Paris, Rouen et Strasbourg.':'Validation pédagogique : zone du massif, avec une marge de 25 km. Pour les Alpes, la zone reste limitée au territoire français.';
+  $('gps-tolerance').textContent=s.index===1?'Les six cours d’eau sont nommés sur la carte. Les contours de la Gironde sont distincts des fleuves. Tracés généralisés Natural Earth (1:10 millions).':'Validation pédagogique : zone du massif, avec une marge de 25 km. Pour les Alpes, la zone reste limitée au territoire français.';
  }
  $('gps-turn').hidden=!active;
  $('gps-choice-status').hidden=!active;
- $('gps-choice-status').textContent=active?(GpsGame.ready(game)?'Placement prêt. Vous pouvez encore le modifier.':s.index===1?'Placez les trois étiquettes avant de valider.':'Saisissez l’objet et déplacez-le sur la carte.'):'Les choix sont verrouillés. Ils restent visibles pendant la correction.';
+ $('gps-choice-status').textContent=active?(GpsGame.ready(game)?'Placement prêt. Vous pouvez encore le modifier.':s.index===1?'Déposez chaque étiquette sur un cours d’eau bleu avant de valider.':'Saisissez l’objet et déplacez-le sur la carte.'):'Les choix sont verrouillés. Ils restent visibles pendant la correction.';
  $('gps-help').hidden=!active;$('gps-manipulation').hidden=!active;
- $('gps-help').textContent=s.index===1?'Glissez chaque étiquette sur un fleuve ou son repère A, B ou C. Si une zone est occupée, les étiquettes sont échangées. Autre possibilité : sélectionnez une étiquette puis cliquez sur un repère. Clavier : Tab, Entrée ou Espace.':'Glissez l’objet, sans rotation. Autre possibilité : cliquez sur la carte pour le placer. Clavier : Tab sur l’objet, puis flèches (Maj pour aller plus vite).';
+ $('gps-help').textContent=s.index===1?'Glissez chaque étiquette sur un tracé bleu, ou sélectionnez-la puis cliquez sur la carte. Clavier : Tab pour choisir une étiquette, flèches pour la déplacer, Maj pour accélérer.':'Glissez l’objet, sans rotation. Autre possibilité : cliquez sur la carte pour le placer. Clavier : Tab sur l’objet, puis flèches (Maj pour aller plus vite).';
  renderGpsMap();
 }
 function updateGpsTimer(){
@@ -53,6 +54,7 @@ setInterval(()=>{if(!$('gps-placement').hidden)updateGpsTimer()},200);
 function renderGpsMap(){
  const s=game.gps,active=s.phase==='placement',corrected=s.phase==='correction',stamp=GpsGame.token(game),svg=$('gps-map');svg.replaceChildren();gpsDrag=null;
  svg.append(gpsElement('rect',{x:0,y:0,width:660,height:560,rx:10,class:'gps-map-background'}));
+ if(s.index===1)svg.append(gpsElement('path',{d:GpsHydrography.oceanPath,class:'gps-ocean','aria-hidden':'true'}));
  for(const r of FranceRegions.filter(r=>r.mainland))svg.append(gpsElement('path',{d:r.path,class:'gps-land','aria-hidden':'true'}));
  const visibleTeams=active?[s.team]:[0,1];
  if(corrected&&s.index!==1){
@@ -60,22 +62,7 @@ function renderGpsMap(){
   const p=GpsGame.project(s.index===0?[0.5,42.3]:[6.3,44.5]);const label=gpsElement('text',{x:p[0],y:p[1]+24,class:'gps-correct-label','text-anchor':'middle'});label.textContent=s.index===0?'PYRÉNÉES':'ALPES FRANÇAISES';svg.append(label);
  }
  if(s.index===1){
-  for(const river of GpsGeography.rivers){
-   svg.append(gpsElement('path',{d:river.path,class:'gps-river','aria-hidden':'true'}));
-   svg.append(gpsElement('path',{d:river.path,class:'gps-river-hit','data-slot':river.id,'aria-hidden':'true'}));
-   const [x,y]=river.anchor,zone=gpsElement('g',{transform:`translate(${x},${y})`,class:'gps-drop-zone','data-slot':river.id,role:'button',tabindex:active?0:-1,'aria-disabled':String(!active),'aria-label':`Déposer l’étiquette sélectionnée sur le repère ${river.id.toUpperCase()}`});
-   zone.append(gpsElement('rect',{x:-76,y:-46,width:152,height:92,rx:12}));const letter=gpsElement('text',{'text-anchor':'middle',y:-25});letter.textContent=`REPÈRE ${river.id.toUpperCase()}`;zone.append(letter);
-   zone.addEventListener('keydown',event=>{if(active&&(event.key==='Enter'||event.key===' ')){event.preventDefault();if(GpsGame.placeRiver(game,gpsSelectedLabel,river.id,stamp))renderGpsPlacement()}});svg.append(zone);
-   if(corrected){const text=gpsElement('text',{x,y:y-55,class:'gps-correct-label','text-anchor':'middle'});text.textContent=river.name;svg.append(text);}
-  }
-  for(const team of visibleTeams){
-   s.placements[team].forEach((slot,label)=>{
-    const anchor=GpsGeography.rivers.find(r=>r.id===slot)?.anchor;
-    const [x,y]=anchor?[Math.max(75,anchor[0]-110),anchor[1]+(slot==='b'?50:0)+(active?0:team===0?-18:19)]:[90+label*240,48];
-    if(anchor){svg.append(gpsElement('path',{d:`M${anchor[0]},${anchor[1]}L${x},${y}`,class:`gps-placement-link team-${team}`}));svg.append(gpsElement('circle',{cx:anchor[0],cy:anchor[1],r:4,class:`gps-anchor team-${team}`}));}
-    const piece=gpsRiverPiece(x,y,team,label,active);svg.append(piece);
-   });
-  }
+  renderGpsHydroMap(svg,s,active,corrected);
  }else{
   const positions=visibleTeams.map(team=>s.placements[team]?GpsGame.project(s.placements[team]):[95,85]);
   const close=!active&&Math.hypot(positions[0][0]-positions[1][0],positions[0][1]-positions[1][1])<118;
@@ -88,7 +75,7 @@ function renderGpsMap(){
   });
  }
  if(corrected){
-  const landmarks=GpsGeography.landmarks.filter(l=>s.index===1?l.name!=='Mont-Blanc':s.index===2?l.name==='Mont-Blanc':false);
+  const landmarks=GpsGeography.landmarks.filter(l=>s.index===2&&l.name==='Mont-Blanc');
   for(const landmark of landmarks){const dot=gpsElement('circle',{cx:landmark.position[0],cy:landmark.position[1],r:4,class:'gps-landmark'});const title=gpsElement('title');title.textContent=landmark.name;dot.append(title);svg.append(dot);}
  }
 }
@@ -106,10 +93,19 @@ function gpsPointPiece(x,y,team,index,active){
  });return g;
 }
 function gpsRiverPiece(x,y,team,label,active){
- const g=gpsElement('g',{transform:`translate(${x},${y})`,'data-x':x,'data-y':y,'data-kind':'river','data-label':label,class:`gps-piece gps-river-piece team-${team}${active&&gpsSelectedLabel===label?' is-selected':''}`,role:'button',tabindex:active?0:-1,'aria-disabled':String(!active),'aria-pressed':String(active&&gpsSelectedLabel===label),'aria-label':`${GpsGame.riverLabels[label]}, équipe ${team===0?'corail':'sauge'}${active?' : sélectionner puis choisir un repère':''}`});
+ const g=gpsElement('g',{transform:`translate(${x},${y})`,'data-x':x,'data-y':y,'data-kind':'river','data-label':label,class:`gps-piece gps-river-piece team-${team}${active&&gpsSelectedLabel===label?' is-selected':''}`,role:'button',tabindex:active?0:-1,'aria-disabled':String(!active),'aria-pressed':String(active&&gpsSelectedLabel===label),'aria-label':`${GpsGame.riverLabels[label]}, équipe ${team===0?'corail':'sauge'}${active?' : flèches pour déplacer, Maj pour accélérer':''}`});
  g.append(gpsElement('rect',{x:-74,y:-42,width:148,height:84,rx:8,class:'gps-piece-hit'}));g.append(gpsElement('rect',{x:-67,y:-16,width:134,height:32,rx:5,class:'gps-label-card'}));
  const text=gpsElement('text',{'text-anchor':'middle',y:6});text.textContent=GpsGame.riverLabels[label];g.append(text);
- g.addEventListener('keydown',event=>{if(active&&(event.key==='Enter'||event.key===' ')){event.preventDefault();gpsSelectedLabel=label;renderGpsPlacement();$('gps-choice-status').textContent=`${GpsGame.riverLabels[label]} sélectionné : choisissez un repère.`;$('gps-map').querySelector('.gps-drop-zone').focus({preventScroll:true});}});return g;
+ g.addEventListener('keydown',event=>{
+  if(!active)return;
+  if(['Enter',' '].includes(event.key)){event.preventDefault();gpsSelectedLabel=label;renderGpsPlacement();$('gps-map').querySelector(`[data-label="${label}"]`).focus({preventScroll:true});}
+  if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)){
+   event.preventDefault();const delta=event.shiftKey?20:6;
+   const point=[x+(event.key==='ArrowLeft'?-delta:event.key==='ArrowRight'?delta:0),y+(event.key==='ArrowUp'?-delta:event.key==='ArrowDown'?delta:0)];
+   point[0]=Math.max(0,Math.min(660,point[0]));point[1]=Math.max(0,Math.min(560,point[1]));
+   gpsSelectedLabel=label;GpsGame.placeRiverAt(game,label,GpsGame.unproject(point),GpsGame.token(game));renderGpsPlacement();$('gps-map').querySelector(`[data-label="${label}"]`).focus({preventScroll:true});
+  }
+ });return g;
 }
 function gpsLocalPoint(event){const matrix=$('gps-map').getScreenCTM();if(!matrix)return null;const p=new DOMPoint(event.clientX,event.clientY).matrixTransform(matrix.inverse());return [p.x,p.y];}
 $('gps-map').addEventListener('pointerdown',event=>{
@@ -132,8 +128,7 @@ $('gps-map').addEventListener('pointerup',event=>{
  const point=drag.piece&&drag.moved?[drag.origin[0]+raw[0]-drag.start[0],drag.origin[1]+raw[1]-drag.start[1]]:raw;
  if(game.gps.index===1){
   if(!drag.piece||drag.moved){
-   const hit=GpsGeography.rivers.find(r=>Math.abs(point[0]-r.anchor[0])<=76&&Math.abs(point[1]-r.anchor[1])<=46)||GpsGeography.rivers.find(r=>$('gps-map').querySelector(`.gps-river-hit[data-slot="${r.id}"]`).isPointInStroke(new DOMPoint(...point)));
-   if(hit)GpsGame.placeRiver(game,gpsSelectedLabel,hit.id,drag.stamp);
+   GpsGame.placeRiverAt(game,gpsSelectedLabel,GpsGame.unproject(point),drag.stamp);
   }
  }else if(!drag.piece||drag.moved)GpsGame.placePoint(game,GpsGame.unproject([Math.max(0,Math.min(660,point[0])),Math.max(0,Math.min(560,point[1]))]),drag.stamp);
  renderGpsPlacement();
