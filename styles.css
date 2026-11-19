@@ -945,7 +945,7 @@ body.journey-mode main{min-height:0}
  #gps-bonus .bonus-options li{padding-top:8px;padding-bottom:8px}
  #gps-bonus .bonus-answer{padding-top:10px;padding-bottom:10px}
 }
-/* Seule la pause Entretien hôtelier reçoit le libellé de métier supplémentaire. */
+/* Les cinq pauses affichent leur métier et conservent une disposition compacte. */
 @media(min-width:851px){
  body:has(#career-pause:not([hidden]) #career-job-label:not([hidden])) main{min-height:0}
  body:has(#career-pause:not([hidden]) #career-job-label:not([hidden])) footer{padding-top:8px;padding-bottom:8px}
@@ -957,7 +957,7 @@ body.journey-mode main{min-height:0}
  #career-pause:has(#career-job-label:not([hidden])) .career-card{padding:9px 12px}
  #career-pause:has(#career-job-label:not([hidden])) .career-card:has(input:checked){padding:8.5px 11.5px}
  #career-pause:has(#career-job-label:not([hidden])) .career-portrait{height:180px}
- #career-pause:has(#career-job-label:not([hidden])) .career-revelation{margin-top:6px;padding-top:6px}
+ #career-pause:has(#career-job-label:not([hidden])) .career-revelation{margin-top:4px;padding-top:4px}
 }
 #career-pause:has(#career-job-label:not([hidden])) .career-card input{inset:0;width:100%;height:100%;margin:0;z-index:1;cursor:pointer}
 

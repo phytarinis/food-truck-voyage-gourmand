@@ -27,3 +27,11 @@ test('choix changeable avant révélation, valeurs invalides refusées', () => {
   assert.equal(p.selected,2);
   for(const index of [-1,5,NaN,'0'])assert.throws(()=>C.createPause(index),RangeError);
 });
+test('les quinze affirmations et les cinq corrections correspondent aux textes validés',()=>{
+ const expected=require('./fixtures/career-pedagogy.json');
+ assert.deepEqual(C.jobs.map(({name,statements,falseIndex,explanation})=>({name,statements,falseIndex,explanation})),expected);
+ // C organise désormais le travail : l'évolution est discutée en B et expliquée après révélation.
+ assert.doesNotMatch(C.jobs[3].statements[2],/évoluer|coordination/);
+ assert.match(C.jobs[3].explanation,/l'évolution n'est pas automatique, mais elle existe/);
+ assert.doesNotMatch(C.jobs.map(j=>j.quote).join(' '),/Cinq assiettes|Un an de patates|unique destination/);
+});

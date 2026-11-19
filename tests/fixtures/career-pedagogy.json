@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Serveur / Serveuse",
+    "statements": [
+      "On peut débuter dans certains établissements sans diplôme et apprendre sur le terrain.",
+      "La préparation de la salle et le suivi des demandes des clients sont généralement confiés à d'autres salariés.",
+      "Le métier permet de travailler en saison, à la mer, à la montagne et parfois à l'étranger."
+    ],
+    "falseIndex": 1,
+    "explanation": "Le service ne se limite pas à prendre les commandes et apporter les plats. Selon l'établissement, le serveur participe aussi à la mise en place, accueille les clients, répond à leurs demandes et veille au bon déroulement du repas."
+  },
+  {
+    "name": "Cuisinier / Cuisinière",
+    "statements": [
+      "Un cuisinier peut évoluer vers des postes comme chef de partie ou chef de cuisine.",
+      "La créativité et l'adaptation des recettes sont des compétences utiles.",
+      "Quand on débute en cuisine, on passe d'abord par les corvées d'épluchage avant de pouvoir préparer de vrais plats."
+    ],
+    "falseIndex": 2,
+    "explanation": "Les débutants participent souvent aux préparations de base, dont l'épluchage. Mais leur apprentissage ne se limite pas à ces tâches : ils peuvent progressivement réaliser des préparations, cuisiner et gagner en autonomie selon leur formation et leur poste."
+  },
+  {
+    "name": "Réceptionniste",
+    "statements": [
+      "Les réservations, la facturation et le suivi administratif sont généralement gérés par d'autres services.",
+      "Le réceptionniste accueille les clients, les renseigne et les aide à trouver des solutions.",
+      "L'anglais est utile et les compétences linguistiques peuvent se développer avec la formation et l'expérience."
+    ],
+    "falseIndex": 0,
+    "explanation": "La réception ne se limite pas à l'accueil. Selon l'établissement, le réceptionniste peut gérer les réservations, les arrivées et départs, la facturation, les demandes des clients et différentes tâches administratives."
+  },
+  {
+    "name": "Entretien hôtelier",
+    "statements": [
+      "Ce métier contribue directement au confort et à la satisfaction des clients.",
+      "En entretien hôtelier, les possibilités d'évolution sont limitées : même avec de l'expérience, on reste généralement au même poste.",
+      "Le personnel d'entretien hôtelier doit organiser son travail en tenant compte des départs et des arrivées des clients."
+    ],
+    "falseIndex": 1,
+    "explanation": "Le personnel d'entretien hôtelier assure la propreté et le confort des chambres et des espaces communs. Avec de l'expérience, et parfois une formation complémentaire, il peut évoluer vers des fonctions de référent, gouvernant ou gouvernante, responsable d'étage ou d'équipe. Les possibilités varient selon les établissements : l'évolution n'est pas automatique, mais elle existe."
+  },
+  {
+    "name": "Équipier polyvalent en restauration rapide",
+    "statements": [
+      "Certains postes permettent de débuter sans diplôme et d'être formé sur place.",
+      "En restauration rapide, les équipiers sont principalement affectés au service ; la préparation des produits est réservée aux cuisiniers.",
+      "L'expérience peut permettre d'évoluer vers des fonctions de formateur, chef d'équipe ou responsable."
+    ],
+    "falseIndex": 1,
+    "explanation": "La polyvalence est une caractéristique importante du métier. Selon l'établissement et son organisation, les équipiers peuvent participer à la préparation des produits, au service, à l'encaissement, à l'accueil et à l'entretien des espaces."
+  }
+]
