@@ -25,6 +25,9 @@ function renderGpsHydroMap(svg,s,active,corrected){
    let [x,y]=anchor||[100+label*230,45];
    if(!active){
     const offsets=[[0,team===0?-23:23],[0,team===0?-60:60],[-90,0],[90,0],[-90,-55],[90,55],[0,-100],[0,100],[-170,0],[170,0]];
+    // Repli pour les six propositions au même endroit : chercher le plus proche espace libre.
+    const grid=[];for(let nx=76;nx<=584;nx+=16)for(let ny=24;ny<=536;ny+=16)grid.push([nx-x,ny-y]);
+    grid.sort((a,b)=>a[0]*a[0]+a[1]*a[1]-b[0]*b[0]-b[1]*b[1]);offsets.push(...grid);
     for(const [dx,dy] of offsets){
      const nx=Math.max(76,Math.min(584,x+dx)),ny=Math.max(24,Math.min(536,y+dy)),rect={x:nx-72,y:ny-20,w:144,h:40};
      if(!reserved.some(r=>overlaps(rect,r))){x=nx;y=ny;reserved.push(rect);break;}

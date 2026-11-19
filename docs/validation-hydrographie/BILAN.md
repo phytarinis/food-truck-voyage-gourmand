@@ -8,7 +8,7 @@ Branche dédiée : `feat/manche-4-carte-hydrographique`, issue de `main`, actual
 - Glisser-déposer direct avec souris et tactile. Une sélection suivie d'un clic est aussi possible. Alternative clavier : Tab sur une étiquette, flèches pour la déplacer, Maj pour accélérer. Validation possible lorsque les trois étiquettes sont déposées sur des cours d'eau ; les fleuves leurres ne sont pas signalés comme erreurs avant correction.
 - Les détections utilisent la distance aux segments géographiques (12 unités SVG de tolérance, environ 8 à 9 pixels affichés aux deux résolutions) ou l'intérieur des surfaces aval. Aucune détection basée sur un rectangle de réponse ou un repère central. La Gironde demeure une réponse distincte, donc incorrecte pour GARONNE.
 - Les positions libres sont sauvegardées avec leurs coordonnées et le cours d'eau identifié. Les anciennes sauvegardes `a/b/c` restent lisibles et scorables. Plusieurs étiquettes peuvent être déposées sur un même cours d'eau, pour ne pas empêcher une proposition erronée.
-- Corail valide → ses placements sont masqués → Sauge place et valide → comparaison et correction immédiates. Les propositions restent colorées par équipe et reliées à leur position réelle ; leurs cartouches sont espacés lors de la comparaison.
+- Corail valide → ses placements sont masqués → Sauge place et valide → comparaison et correction immédiates. Les propositions restent colorées par équipe et reliées à leur position réelle ; leurs cartouches sont espacés lors de la comparaison, même si les six étiquettes ont été déposées au même endroit.
 - Noms des six cours d'eau après correction ; explication demandée sur la Garonne reproduite. Le barème reste 5 points par bonne réponse, 15 maximum, avec attribution unique et scores cumulés conservés.
 - Présentation générale, chronomètre, jokers, Pyrénées, Alpes et défi collectif préservés. Aucun changement dans les autres manches.
 
@@ -28,9 +28,11 @@ Les captures de correction montrent volontairement Corail juste (+15) et Sauge s
 ## Tests
 - Génération hors ligne : contrôles géométriques réussis (validité, contiguïté, vertices source, sections, distance aux surfaces) ; sources complètes vérifiées contre la révision épinglée, empreintes identiques.
 - `node --test tests/*.test.cjs` : **859 tests réussis**, dont 28 nouveaux tests sur les six tracés, les placements corrects/incorrects, les bras aval et l'estuaire, la tolérance, les anciennes sauvegardes, les positions libres, les jetons périmés et l'attribution unique.
-- `tests/gps-hydrography.browser.cjs` : **réussi aux deux résolutions**, sans défilement. Six tracés sans noms prématurés, dépôts sur les leurres puis correction du placement, souris, vrai événement tactile via Chromium, trois étiquettes au clavier, masquage, comparaison, +15/+0, reprise avant et après correction.
+- `tests/gps-hydrography.browser.cjs` : **réussi aux deux résolutions**, sans défilement. Six tracés sans noms prématurés, dépôts sur les leurres puis correction du placement, souris, vrai événement tactile via Chromium, trois étiquettes au clavier avec reprise avant validation, masquage, comparaison, +15/+0, reprise avant et après correction, et comparaison sans chevauchement de six propositions identiques.
 - `tests/gps.browser.cjs` (préchargement historique `tests/helpers/legacy-rounds.cjs`) : **réussi aux deux résolutions** ; parcours complet des Pyrénées aux Alpes puis défi collectif et pause métier, chronomètres, points uniques, sauvegarde et actions sans défilement.
 - Régressions navigateur `gps-spicy`, `spicy`, `final` avec le même préchargement historique : **réussies** ; jokers, deux modes, reprise des six manches, finale, scores cumulés et parcours de fin préservés. Le préchargement neutralise uniquement les introductions de manches pour ces scénarios historiques.
+- `tests/carnet-layout.browser.cjs` : réussi aux deux résolutions après actualisation sur `main` ; le carnet de route récemment fusionné reste inchangé et fonctionnel.
+- Régénération hors ligne : SHA-256 du module JavaScript identique avant/après.
 - `git diff --check` : réussi.
 
 Le tactile est testé par événements Chromium ; aucun appareil physique n'a été utilisé.

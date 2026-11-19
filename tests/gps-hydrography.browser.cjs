@@ -44,7 +44,13 @@ const{chromium}=require('playwright'),assert=require('node:assert/strict'),fs=re
   assert.equal(await p.locator('.gps-gironde-inset').count(),1);await fit(`correction ${width}`);
   await p.screenshot({path:`docs/validation-hydrographie/correction-${width}.png`});await reload();assert.deepEqual(await p.evaluate(()=>game.teams.map(t=>t.score)),[115,60]);assert.equal(await p.locator('.gps-river-piece').count(),6);
   // Nouvelle partie : placement des trois étiquettes uniquement au clavier.
-  await fresh();for(const[i,id]of['c','a','b'].entries())await keyboard(i,id);assert.equal(await p.locator('#gps-lock').isEnabled(),true);await p.locator('#gps-lock').click();assert.equal(await p.evaluate(()=>game.gps.team),1);
+  await fresh();for(const[i,id]of['c','a','b'].entries())await keyboard(i,id);assert.equal(await p.locator('#gps-lock').isEnabled(),true);const keyboardSaved=await p.evaluate(()=>game.gps.placements[0]);await reload();assert.deepEqual(await p.evaluate(()=>game.gps.placements[0]),keyboardSaved);await p.locator('#gps-lock').click();assert.equal(await p.evaluate(()=>game.gps.team),1);
+  // Même avec six propositions superposées, les cartouches de comparaison restent distincts.
+  for(const id of ['a','b','c']){
+   await p.evaluate(id=>{const r=GpsHydrography.rivers.find(r=>r.id===id);game.gps.phase='correction';game.gps.placements=Array.from({length:2},()=>Array.from({length:3},()=>({river:id,point:GpsGame.unproject(r.anchor)})));renderGps()},id);
+   const boxes=await p.locator('.gps-label-card').evaluateAll(es=>es.map(e=>e.getBoundingClientRect().toJSON()));
+   for(let i=0;i<6;i++)for(let j=i+1;j<6;j++)assert(!(boxes[i].left<boxes[j].right&&boxes[i].right>boxes[j].left&&boxes[i].top<boxes[j].bottom&&boxes[i].bottom>boxes[j].top),`cartouches superposés ${id} ${width}`);
+  }
   console.log(`Hydrographie ${width}×${height} : 6 tracés, aucun indice, souris/tactile/clavier, leurres, masquage, comparaison, +15/+0 uniques, sauvegardes, correction et actions sans défilement OK`);
  }
  assert.deepEqual(errors,[]);
