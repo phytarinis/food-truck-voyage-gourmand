@@ -135,7 +135,7 @@ function renderRoute({ current = null, completed = [] } = {}) {
   });
   const truck = $('route-truck');
   // Positions près des escales, dépendant exclusivement des manches terminées.
-  const positions = [[7, 20], [39, 15], [92, 20], [68, 52], [43, 90], [94, 90.7]];
+  const positions = [[31, 26], [64, 16], [94, 53], [48, 65], [62, 90], [94, 90.7]];
   const mobilePositions = [[50, 6], [80, 20], [18, 34], [80, 51], [26, 67], [28, 93]];
   if (current !== null) {
     truck.style.setProperty('--truck-x', `${positions[current][0]}%`);
