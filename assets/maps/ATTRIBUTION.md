@@ -75,6 +75,11 @@ Les polygones sont fusionnés sans simplification supplémentaire et le généra
 
 Projection équirectangulaire sur l’intégralité du monde, longitudes −180° à 180°, latitudes −90° à 90°. Elle garde l’Antarctique visible et déforme les surfaces aux hautes latitudes : elle ne permet pas de comparer les superficies. Les coordonnées SVG sont arrondies à 0,001 unité. Le pôle Sud, limite singulière de cette projection, est explicitement classé en Antarctique dans le moteur. Cette carte pédagogique n’est pas un outil de navigation ni un relevé de limites continentales universellement convenues.
 
+## Lot 2 — Comparaison régionale et schéma hydrologique
+
+`bonus-regions-comparaison.svg` est généré hors ligne par `tools/generate-lot2-maps.py` depuis `anciennes-regions-nouvelle-aquitaine.geojson` (IGN / france-geojson, Licence Ouverte, voir les sources historiques ci-dessus). Le panneau « Avant 2016 » reprend les trois géométries et le panneau « Depuis 2016 » leur union. Le cadrage, la projection à latitude de référence 45° et l’échelle sont identiques dans les deux panneaux, avec simple translation horizontale. Aucune limite n’est dessinée à main levée.
+
+`garonne-fleuve-riviere.svg` est un schéma pédagogique original et non une carte : ses positions ne sont pas des coordonnées géographiques. Il montre les relations Garonne/Tarn/Lot, la confluence avec la Dordogne au bec d’Ambès et la Gironde vers l’Atlantique. Les couleurs différencient l’estuaire des cours d’eau. Il ne modifie ni les tracés Natural Earth ni les repères interactifs de la manche GPS.
 ## Carte hydrographique de la manche 4, défi 2
 
 Six cours d'eau et surfaces côtières : Natural Earth 1:10m, domaine public. Sources épinglées, extraits, limites de précision et reproduction : [hydrography/README.md](hydrography/README.md). La Gironde est représentée par une surface distincte des axes et bras de la Garonne et de la Dordogne, ouverte sur les eaux de l'Atlantique.

@@ -62,7 +62,7 @@ function renderDeliveryCorrection() {
   const s = game.apero, d = AperoGame.deliveries[s.index];
 
   $('delivery-correction-title').textContent = d.title;
-  $('delivery-solution').textContent = `Département : ${d.department} (${d.number}).`;
+  highlightText('delivery-solution',`Département : ${d.department} (${d.number}).`,[d.department]);
   $('delivery-awards').replaceChildren(...s.results[s.index].map((r, i) => {
     const card = document.createElement('article'); card.className = `delivery-award team-${i}`;
     const title = document.createElement('h2'); title.textContent = `${game.teams[i].name} : +${r.points} points`;

@@ -1,0 +1,628 @@
+{
+  "main": "930bcfc88135b9c670e5f07d387fff5de0988724",
+  "originalPr35": "ff0b58f79a26220d364833837ec62a00ac2fccc5",
+  "protectedFiles": [
+    {
+      "file": "careers.js",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "25c415a8b2c733bc87385df8946b2d5ae864873797e45d7d9068a499603e2a9b",
+      "identical": true
+    },
+    {
+      "file": "tests/fixtures/career-pedagogy.json",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "2160ebd3d04baa6cdb520a32d8ea079cc654d699cc2df4f93717c0d2a3b08b14",
+      "identical": true
+    },
+    {
+      "file": "game.js",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "14d03b002dc16ebe7f44790af13c7b27ba64c6b2f6d8d46097861d18b82e3e52",
+      "identical": true
+    },
+    {
+      "file": "apero.js",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "824a3c8f44acb28da7768191c657af73524547ce39e0b96e17ccb78c1437d805",
+      "identical": true
+    },
+    {
+      "file": "sauce.js",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "1c0917da100743db7e302500d10cd90cf4d50afda1cb2f66d650dcf65acce432",
+      "identical": true
+    },
+    {
+      "file": "spicy.js",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "5c42cf734eeb17d8f05f4a2d13408349599b1321377844c6dce44ca41a543fb2",
+      "identical": true
+    },
+    {
+      "file": "spicy-ui.js",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "683cbd9997e266a4472adf35ebd7c38d8151836dac2a25b7760400e22603a929",
+      "identical": true
+    },
+    {
+      "file": "spicy-photos.js",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "646b14c7de496b915b91508934af6a9f2ac05e983d8c1539c7c18933042bd8f6",
+      "identical": true
+    },
+    {
+      "file": "persistence.js",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "555bcb3b8d25887e931d68d9b050880cf6ebc2c2838a5f2d8697b2745d9b95d1",
+      "identical": true
+    },
+    {
+      "file": "final.js",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "1e204341084d36ddb88b5b1a31be2491dc6a0067d4a43a663dd4c1a1f3bac76b",
+      "identical": true
+    },
+    {
+      "file": "final-ui.js",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "90af1fc9df5f95a9d038f0d6e4938065f970a36d9040cebf180d5304a3542fda",
+      "identical": true
+    },
+    {
+      "file": "gps.js",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "19eee93cae1c4e45704b4bdc55ef994f940836b86581fd43b6ef7ad871807a2d",
+      "identical": true
+    },
+    {
+      "file": "gps-geography.js",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "4d829453d0db816e58eb1e42433b40dbcc3a7a8c9163049b65d40b79e43148e6",
+      "identical": true
+    },
+    {
+      "file": "gps-hydrography.js",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "ade5b7c3e5c665f4373f1008149dff2c9c8145ae1802eceba345e844c2b474e2",
+      "identical": true
+    },
+    {
+      "file": "gps-hydrography-ui.js",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "d8e6d4863359ccf1141896beaa8d30172ef0283d1031da4dfc0302c822925181",
+      "identical": true
+    },
+    {
+      "file": "gps-river-context.js",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "e87b1136fa2b32fdd834be86abee503b5edc9bee66eafd0cbe0f299f2ba60e51",
+      "identical": true
+    },
+    {
+      "file": "france-regions.js",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "99a6abcdccfefe23934eaf03a4096bcfeeb8e1be34bc8f91b555d26e4b13a9cd",
+      "identical": true
+    },
+    {
+      "file": "europe-map.js",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "33f4063e8c8989c690faf8c7c11c3c9d08e847b41d46b25113b531b4d3056a60",
+      "identical": true
+    },
+    {
+      "file": "world-map.js",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "14e2530fbbe9b56c8c131894646d237dbb1c01fafb77374e747c328a8eccd5b8",
+      "identical": true
+    },
+    {
+      "file": "flag-map.js",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "a5434b54a851284217c39bc6af8722511749e9c049c3379bbe09fd96329e4f19",
+      "identical": true
+    },
+    {
+      "file": "flag-choices.js",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "31aaa886cbf2b14bc6218d0d8c8795ccbb415dd7ce77769fb71f9c6306ea4400",
+      "identical": true
+    },
+    {
+      "file": "clue-flags.js",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "f3674d90ca59b3905f8284e2ffea57e0ffce624acae7efd477e28d63972015cc",
+      "identical": true
+    },
+    {
+      "file": "assets/maps/16.svg",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "7e7b2d6bbc0a85f42b237ad6026ded72d7f952df7b1b5eef3537344a2b4b1e3d",
+      "identical": true
+    },
+    {
+      "file": "assets/maps/17.svg",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "68dd6dffd8e8e65115129d2f47e028115dbc34e8ea5a49cfb1f91b5a9bcdfc26",
+      "identical": true
+    },
+    {
+      "file": "assets/maps/24.svg",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "cb73a1226e155f7df99c4006ec43112baceaa383ec99cdf90571c118262b32f5",
+      "identical": true
+    },
+    {
+      "file": "assets/maps/anciennes-regions-nouvelle-aquitaine.geojson",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "f50a2d814c475b1e71d11a79fe0702182f528b0b6046521b6e844ad1bc7a4aa2",
+      "identical": true
+    },
+    {
+      "file": "assets/maps/arcachon.geojson",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "b37d67fdc265da078a41573aad7553cd951b01a8b419a040ca89eb1cb5bec606",
+      "identical": true
+    },
+    {
+      "file": "assets/maps/bonus-nouvelle-aquitaine.svg",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "73e69105ab3c90683db2a0ad8632505b4cd27e64ee25d46d606e21b5d9c250db",
+      "identical": true
+    },
+    {
+      "file": "assets/maps/dordogne-source.geojson",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "514664fa56a23e6ccb5eeb88b7af41e7515b1c2df62f470cbd39bdee8b689b7d",
+      "identical": true
+    },
+    {
+      "file": "assets/maps/europe-countries.geojson",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "e183cc5182a9240feac7d9eccbb41334c03d9ecb529be8465d00fe9231b383de",
+      "identical": true
+    },
+    {
+      "file": "assets/maps/france-16.svg",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "032bc8a45111aaf0583af36ce8715e3cb53b85fc2dd8e5117a71603b8fe96db4",
+      "identical": true
+    },
+    {
+      "file": "assets/maps/france-17.svg",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "87f61a8d0a691ef8211c618eaa3e9d6492e1034d3b7cd9bd9721a2ff829cd0e7",
+      "identical": true
+    },
+    {
+      "file": "assets/maps/france-24.svg",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "8176ad21113adfc9eb7366dc1677be57f841c8c71da46cddb15b1f7afc702a04",
+      "identical": true
+    },
+    {
+      "file": "assets/maps/france-metropolitaine-regions.svg",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "5822111545e63f3290d2acc7bbe79fd69ea7868e9cc13faf4215aa6ad0d5e0b2",
+      "identical": true
+    },
+    {
+      "file": "assets/maps/france-numeros.svg",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "eb78be8af17d17e79c0de47d8698188d7f2580ae4a44054b7bdc15d8bd27e8cd",
+      "identical": true
+    },
+    {
+      "file": "assets/maps/garonne-fleuve-riviere.svg",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "2f97fd4430bb1eaf229ddf79e21e494e8376c64df4d348727099331a0a935558",
+      "identical": true
+    },
+    {
+      "file": "assets/maps/gps-source.geojson",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "005bbc236365830fb8b266bae6d5fedbe08f8356e2ea27899ba1adea75180df8",
+      "identical": true
+    },
+    {
+      "file": "assets/maps/hydrography/coastal-water.geojson",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "06a35d2e63177bc65c55be4d1acb517db0e1816fbcb43f8a52d3bd183252fc7e",
+      "identical": true
+    },
+    {
+      "file": "assets/maps/hydrography/marine-context.geojson",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "d8581a844624edfbd2ecd63cdcdb0d857ad3da785813feee49dfd08320a30018",
+      "identical": true
+    },
+    {
+      "file": "assets/maps/hydrography/rivers.geojson",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "bfe6626d407b8386a64a15afab7e2ff71328ce16f32f22763c90575059f15580",
+      "identical": true
+    },
+    {
+      "file": "assets/maps/mainland.geojson",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "56c8b455a66b69e6f91a92fbd4e481ae08bd678d4ceeab63dd118d8d0c4b8ebb",
+      "identical": true
+    },
+    {
+      "file": "assets/maps/nouvelle-aquitaine-arcachon.svg",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "aa05b1e58f2bc5f653e399eeb05d560813d1a7f5c02b4cf016508187b4db7431",
+      "identical": true
+    },
+    {
+      "file": "assets/maps/passport-bel.svg",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "3d48271078e2c3e4629686b4fc0024322e69ef44b94f7c9ddb0791d4dca45383",
+      "identical": true
+    },
+    {
+      "file": "assets/maps/passport-cities.geojson",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "307f5f522a134f7b930cb5d6c52a368d0e47e4d7cc07c2a19394943d67b16355",
+      "identical": true
+    },
+    {
+      "file": "assets/maps/passport-prt.svg",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "8b3d732490b0a2daf6733b35d248a6df6a0795a6b40de91418867def87d1a69d",
+      "identical": true
+    },
+    {
+      "file": "assets/maps/passport-rou.svg",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "9e475f894964c2a99164680251481c715bd5a727bc33aa544a83854488a4e7a2",
+      "identical": true
+    },
+    {
+      "file": "assets/maps/passport-strasbourg.svg",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "317179ae7e4486f76b52e0cd8b2999a425bfa56ed077a36a470365a91b8ef44f",
+      "identical": true
+    },
+    {
+      "file": "assets/maps/regions-france.geojson",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "a573b672264184d11a2f98220867653b092fe3a964433e30e3a0a4708d72d167",
+      "identical": true
+    },
+    {
+      "file": "assets/maps/source.geojson",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "af457ee88b8d7c5554db43d571f8339d3afcf7fbc2dac297a57a30cd0d2f6366",
+      "identical": true
+    },
+    {
+      "file": "assets/maps/world-countries.geojson",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "4c16c99b293e2ac00a727ad5a362a45d0218a999d04087040d8e26c5a62cba79",
+      "identical": true
+    },
+    {
+      "file": "assets/maps/world-geographic-regions.geojson",
+      "reference": "930bcfc88135b9c670e5f07d387fff5de0988724",
+      "sha256": "a84c29fc05a8cf626a7659185feabcfe941132a001647182739982f80c5b3769",
+      "identical": true
+    }
+  ],
+  "professionalIllustrations": [
+    {
+      "file": "assets/careers/serveuse.png",
+      "reference": "ff0b58f79a26220d364833837ec62a00ac2fccc5",
+      "sha256": "de7f971edca3db3c98ce64331c2424eb02d6a67843a3e0424b3e33b8bb3651f6",
+      "identical": true
+    },
+    {
+      "file": "assets/careers/cuisiniere.png",
+      "reference": "ff0b58f79a26220d364833837ec62a00ac2fccc5",
+      "sha256": "273012f5614de9bac9c4e9f15d933ace852aa29d274c5f0f81d2c5a2cc9c675d",
+      "identical": true
+    },
+    {
+      "file": "assets/careers/receptionniste.png",
+      "reference": "ff0b58f79a26220d364833837ec62a00ac2fccc5",
+      "sha256": "e5c8f1034ae4c734b6c8035eaaa92d11cdbbe692e807a0f92518abed1637d981",
+      "identical": true
+    },
+    {
+      "file": "assets/careers/entretien.png",
+      "reference": "ff0b58f79a26220d364833837ec62a00ac2fccc5",
+      "sha256": "c3f9c75247c4a98ee44288a58600db07dfe646e80cf829c099f5a21802883973",
+      "identical": true
+    },
+    {
+      "file": "assets/careers/restauration-rapide.png",
+      "reference": "ff0b58f79a26220d364833837ec62a00ac2fccc5",
+      "sha256": "5be94a4fe661628fd06d8be75c3762ef4b10f48a1980cd6626156188c1fb6333",
+      "identical": true
+    }
+  ],
+  "originalImprovements": [
+    {
+      "file": "assets/accueil-retouche.png",
+      "reference": "ff0b58f79a26220d364833837ec62a00ac2fccc5",
+      "sha256": "be1fc769404c8845d83c87fe6d2b5f96542ed87e253299d616d52985d8cb50e5",
+      "identical": true
+    },
+    {
+      "file": "assets/population-france.png",
+      "reference": "ff0b58f79a26220d364833837ec62a00ac2fccc5",
+      "sha256": "26d1a9c13bb58eae088c416b544eff60955dea9b75a63274ba1b8b56dc98b257",
+      "identical": true
+    },
+    {
+      "file": "assets/maps/bonus-regions-comparaison.svg",
+      "reference": "ff0b58f79a26220d364833837ec62a00ac2fccc5",
+      "sha256": "aa15860955f0d6655e2603a9efd47788aa900a150afe92c2c50c143963830b4a",
+      "identical": true
+    },
+    {
+      "file": "assets/maps/garonne-fleuve-riviere.svg",
+      "reference": "ff0b58f79a26220d364833837ec62a00ac2fccc5",
+      "sha256": "2f97fd4430bb1eaf229ddf79e21e494e8376c64df4d348727099331a0a935558",
+      "identical": true
+    },
+    {
+      "file": "career-illustrations.js",
+      "reference": "ff0b58f79a26220d364833837ec62a00ac2fccc5",
+      "sha256": "422418337b49375cd17e6d700eb51ff584fc9574c9da66a9565f0e8c6cae33de",
+      "identical": true
+    },
+    {
+      "file": "pedagogical-highlights.js",
+      "reference": "ff0b58f79a26220d364833837ec62a00ac2fccc5",
+      "sha256": "cda1a98a40e8ba63dcc7ae17fc254df436e2a00f2fd84f6a822e9bd05ac20dbd",
+      "identical": true
+    },
+    {
+      "file": "tools/generate-lot2-maps.py",
+      "reference": "ff0b58f79a26220d364833837ec62a00ac2fccc5",
+      "sha256": "ad7f7d03b27dae466b4f387cad4e54532fc7872d27d3c7630f6f221f955bd32d",
+      "identical": true
+    },
+    {
+      "file": "france.js",
+      "reference": "ff0b58f79a26220d364833837ec62a00ac2fccc5",
+      "sha256": "8a16d12c9789473dd3fef3d21ba71e6ad153bd518d391a15e00f977d81e2e9a3",
+      "identical": true
+    },
+    {
+      "file": "passport.js",
+      "reference": "ff0b58f79a26220d364833837ec62a00ac2fccc5",
+      "sha256": "b89af3f8f65f668d20d9229b98369f7dfa96cae673d6922a9df1d3ad3555ad9f",
+      "identical": true
+    },
+    {
+      "file": "world.js",
+      "reference": "ff0b58f79a26220d364833837ec62a00ac2fccc5",
+      "sha256": "6f24d74a1f5fc9f8b0f4725c634f91fc32ce41c0f49654c5223f96499da80f55",
+      "identical": true
+    },
+    {
+      "file": "sauce-ui.js",
+      "reference": "ff0b58f79a26220d364833837ec62a00ac2fccc5",
+      "sha256": "7ecf76c8a0fc6a55d694ee2569e78d27b295219b3e2610e7c3d4591ecc7a8c7c",
+      "identical": true
+    },
+    {
+      "file": "france-ui.js",
+      "reference": "ff0b58f79a26220d364833837ec62a00ac2fccc5",
+      "sha256": "8181beb9211809201f7e29bc722f655c505c13b455e3438b7c6c870e02db036a",
+      "identical": true
+    },
+    {
+      "file": "passport-ui.js",
+      "reference": "ff0b58f79a26220d364833837ec62a00ac2fccc5",
+      "sha256": "692dfa3df596f2f1b2a25a501e658634a70a5b637d735b935a10b38cf05bdbab",
+      "identical": true
+    },
+    {
+      "file": "world-ui.js",
+      "reference": "ff0b58f79a26220d364833837ec62a00ac2fccc5",
+      "sha256": "f49f41dfdd3c8226a7cb53e6703c9a733ea6fdaceb421dfa18cda7163ee3933a",
+      "identical": true
+    },
+    {
+      "file": "apero-ui.js",
+      "reference": "ff0b58f79a26220d364833837ec62a00ac2fccc5",
+      "sha256": "6d88d916d9c874d9449bbc585d76498a83c502964c0486af51a97a5551eaba1c",
+      "identical": true
+    }
+  ],
+  "engineFunctions": [
+    {
+      "file": "game.js",
+      "functions": [
+        "createGame",
+        "startChallenge",
+        "answer"
+      ],
+      "identical": true
+    },
+    {
+      "file": "apero.js",
+      "functions": [
+        "entry",
+        "entryToken",
+        "pick",
+        "record",
+        "edit",
+        "entriesReady",
+        "start",
+        "begin",
+        "choose",
+        "ready",
+        "validate",
+        "next",
+        "chooseBonus",
+        "revealBonus",
+        "finish",
+        "totals"
+      ],
+      "identical": true
+    },
+    {
+      "file": "sauce.js",
+      "functions": [
+        "activeTeam",
+        "answerToken",
+        "respond",
+        "start",
+        "begin",
+        "token",
+        "validate",
+        "canRevealNextClue",
+        "nextClueToken",
+        "revealNextClue",
+        "next",
+        "chooseBonus",
+        "revealBonus",
+        "finish",
+        "totals"
+      ],
+      "identical": true
+    },
+    {
+      "file": "france.js",
+      "functions": [
+        "startLocation",
+        "locationToken",
+        "chooseRegion",
+        "lockFlag",
+        "revealLocation",
+        "discover",
+        "start",
+        "begin",
+        "token",
+        "validate",
+        "canRevealNextClue",
+        "nextClueToken",
+        "revealNextClue",
+        "next",
+        "chooseBonus",
+        "revealBonus",
+        "finish",
+        "totals"
+      ],
+      "identical": true
+    },
+    {
+      "file": "gps.js",
+      "functions": [
+        "start",
+        "begin",
+        "token",
+        "project",
+        "unproject",
+        "placePoint",
+        "placeRiver",
+        "placeRiverAt",
+        "riverAt",
+        "riverId",
+        "ready",
+        "startTimer",
+        "remaining",
+        "lock",
+        "inZone",
+        "reveal",
+        "next",
+        "chooseBonus",
+        "revealBonus",
+        "finish",
+        "totals"
+      ],
+      "identical": true
+    },
+    {
+      "file": "passport.js",
+      "functions": [
+        "startLocation",
+        "locationToken",
+        "chooseRegion",
+        "lockFlag",
+        "revealLocation",
+        "discover",
+        "start",
+        "begin",
+        "token",
+        "validate",
+        "canRevealNextClue",
+        "nextClueToken",
+        "revealNextClue",
+        "next",
+        "chooseBonus",
+        "revealBonus",
+        "finish",
+        "totals",
+        "undoValidation"
+      ],
+      "identical": true
+    },
+    {
+      "file": "world.js",
+      "functions": [
+        "project",
+        "unproject",
+        "continentAt",
+        "isOcean",
+        "inPollutionZone",
+        "start",
+        "begin",
+        "token",
+        "choose",
+        "lock",
+        "reveal",
+        "next",
+        "finish",
+        "totals"
+      ],
+      "identical": true
+    },
+    {
+      "file": "careers.js",
+      "functions": [
+        "createPause",
+        "select",
+        "reveal"
+      ],
+      "identical": true
+    },
+    {
+      "file": "spicy.js",
+      "functions": [
+        "choiceName",
+        "state",
+        "observe",
+        "allComplete",
+        "hasQuestion",
+        "release",
+        "available",
+        "canNormal",
+        "windowToken",
+        "beginFinale",
+        "finaleOwners",
+        "finaleToken",
+        "willing",
+        "start",
+        "activeToken",
+        "choose",
+        "reveal",
+        "finish",
+        "closeFinale"
+      ],
+      "identical": true
+    },
+    {
+      "file": "final.js",
+      "functions": [
+        "snapshot",
+        "outcome"
+      ],
+      "identical": true
+    }
+  ]
+}

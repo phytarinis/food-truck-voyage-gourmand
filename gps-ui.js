@@ -30,8 +30,11 @@ function renderGpsPlacement(){
  $('gps-correction').hidden=!corrected;$('gps-next').hidden=!corrected;$('gps-next').textContent=s.index===2?'Défi découverte →':'Défi suivant →';
  $('gps-facts').replaceChildren();$('gps-tolerance').textContent='';
  if(corrected){
-  const facts=s.index===1?["La Garonne rejoint la Dordogne au bec d'Ambès. Leur confluence forme l'estuaire de la Gironde, qui débouche dans l'océan Atlantique."]:data.facts;
-  facts.forEach(fact=>{const li=document.createElement('li');li.textContent=fact;$('gps-facts').append(li)});
+  highlightText($('gps-correction').querySelector('h2'),'Le GPS retrouve ses repères !',['repères']);
+  const facts=s.index===1?["La Garonne rejoint la Dordogne au bec d'Ambès. Leur confluence forme l'estuaire de la Gironde, qui débouche dans l'océan Atlantique."]:data.facts.slice();
+  if(s.index===0)facts[0]+=' Le gâteau à la broche est une spécialité associée à ces montagnes.';
+  if(s.index===2)facts[0]+=' La tartiflette est une spécialité associée aux Alpes.';
+  facts.forEach(fact=>{const li=document.createElement('li');highlightText(li,fact,s.index===0?['Pyrénées']:s.index===2?['Alpes']:['Garonne']);$('gps-facts').append(li)});
   $('gps-tolerance').textContent=s.index===1?'Les six cours d’eau sont nommés sur la carte. Les contours de la Gironde sont distincts des fleuves. Tracés généralisés Natural Earth (1:10 millions).':'Validation pédagogique : zone du massif, avec une marge de 25 km. Pour les Alpes, la zone reste limitée au territoire français.';
  }
  $('gps-turn').hidden=!active;
@@ -136,6 +139,7 @@ $('gps-map').addEventListener('pointerup',event=>{
 $('gps-map').addEventListener('pointercancel',()=>{gpsDrag=null;if(game?.gps?.phase==='placement')renderGpsPlacement();});
 function renderGpsBonus() {
   const state = game.gps.bonus, data = GpsGame.bonus;
+  $('gps-bonus-diagram').hidden=!state.revealed;
   $('gps-bonus-question').textContent = data.question;
   $('gps-bonus-options').replaceChildren(...data.options.map((text, index) => {
     const item = document.createElement('li');
@@ -159,7 +163,7 @@ function renderGpsBonus() {
   $('gps-bonus-discovery').hidden = !state.revealed;
   $('gps-bonus-finish').hidden = !state.revealed;
   $('gps-bonus-solution').textContent = state.revealed ? 'B. ' + data.options[data.correctIndex] : '';
-  $('gps-bonus-explanation').textContent = state.revealed ? data.explanation : '';
+  highlightText('gps-bonus-explanation',state.revealed?data.explanation:'',['fleuve','rivière']);
   $('gps-bonus-quote').textContent = state.revealed ? data.quote : '';
 }
 

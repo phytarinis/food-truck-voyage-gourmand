@@ -4,7 +4,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict');
  const p=await browser.newPage({reducedMotion:'reduce'}),errors=[];p.on('pageerror',e=>errors.push(e.message));
  for(const [width,height] of [[1366,768],[1280,720]]){
   await p.setViewportSize({width,height});await p.goto(process.env.GAME_TEST_URL||'http://127.0.0.1:8010');await p.evaluate(()=>{game=null;localStorage.clear()});await p.reload();
-  await p.locator('.welcome-illustration').evaluate(i=>i.decode());assert.match(await p.locator('.welcome-illustration').getAttribute('src'),/en%20van/);
+  await p.locator('.welcome-illustration').evaluate(i=>i.decode());assert.match(await p.locator('.welcome-illustration').getAttribute('src'),/accueil-retouche/);
   const noScroll=async()=>assert.equal(await p.evaluate(()=>document.documentElement.scrollHeight<=innerHeight&&document.documentElement.scrollWidth<=innerWidth),true);
   await noScroll();assert.equal(await p.locator('.topbar').isVisible(),false);
   await p.screenshot({path:`/tmp/accueil-${width}.png`});

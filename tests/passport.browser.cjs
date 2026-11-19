@@ -90,7 +90,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict');
   assert.equal(await p.locator('#passport-bonus-photo img').count(),1);assert.deepEqual(await score(),before);
   await fit(`défi corrigé ${width}`);await reopen();assert.equal(await p.locator('#passport-bonus-answer').isVisible(),true);await fit(`défi repris ${width}`);
   await p.locator('#passport-bonus-finish').click();assert.equal(await p.locator('#career-pause').isVisible(),true);
-  assert.match(await p.locator('#screen-context').innerText(),/Équipier polyvalent en restauration rapide/);
+  assert.match(await p.locator('#career-job-label').innerText(),/ÉQUIPIER POLYVALENT EN RESTAURATION RAPIDE/);
   assert.equal(await p.evaluate(()=>game.passport.phase),'complete');
   console.log(`Parcours complet, annulation, sauvegarde, carte et affichage ${width}×${height} : OK`);
  }

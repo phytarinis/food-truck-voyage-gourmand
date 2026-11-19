@@ -17,7 +17,7 @@ function renderFrance() {
   const s = game.france;
   if (s.phase === 'search') { renderFranceSearch(); show('france-search'); return; }
   if (s.phase === 'answer') {
-    $('france-answer-title').textContent = FranceGame.puzzles[s.puzzleIndex].title;
+    highlightText('france-answer-title',FranceGame.puzzles[s.puzzleIndex].title,['choucroute','galette bretonne','rougail saucisse']);
     renderFrancePhoto(); show('france-answer'); return;
   }
   if (['location', 'correction'].includes(s.phase)) { renderFranceLocation(); show('france-location'); return; }
@@ -40,7 +40,7 @@ function renderFranceSearch() {
   const index = document.createElement('span'); index.textContent = `Indice ${s.clueIndex + 1} / 3`;
   const value = document.createElement('strong'); value.textContent = `${FranceGame.points[s.clueIndex]} points possibles`;
   info.append(index, value);
-  const clue = document.createElement('p'); clue.className = 'sauce-current-clue'; clue.textContent = puzzle.clues[s.clueIndex];
+  const clue = document.createElement('p'); clue.className = 'sauce-current-clue'; highlightText(clue,puzzle.clues[s.clueIndex],pedagogicalClues.france[s.puzzleIndex][s.clueIndex]);
   const turn = document.createElement('h2'); turn.id = 'france-active-team'; turn.tabIndex = -1;
   turn.textContent = `À ${game.teams[team].name} de répondre`;
   const controls = document.createElement('div'); controls.className = 'sauce-controls';
@@ -108,7 +108,7 @@ document.querySelectorAll('.france-back').forEach(button => button.addEventListe
 function renderFranceLocation() {
   const s = game.france, l = s.location, puzzle = FranceGame.puzzles[s.puzzleIndex];
   const bothLocked = l.locked.every(Boolean), stamp = FranceGame.locationToken(game);
-  $('france-location-specialty').textContent = puzzle.title;
+  highlightText('france-location-specialty',puzzle.title,['choucroute','galette bretonne','rougail saucisse']);
   $('france-map-turn').textContent = bothLocked ? 'Les deux drapeaux sont plantés !' : `${game.teams[l.activeTeam].name} · drapeau ${l.activeTeam === 0 ? 'corail' : 'sauge'}`;
   $('france-map-turn').className = `france-map-turn${bothLocked ? '' : ` team-${l.activeTeam}`}`;
   $('france-map-choice').replaceChildren();

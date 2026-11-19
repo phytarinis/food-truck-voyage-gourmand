@@ -1161,6 +1161,62 @@ body.round-transition-mode footer>span:first-child{display:none}
 
 body.compact-header>footer{padding-top:6px;padding-bottom:6px}
 
+/* Lot 2 : accents pédagogiques explicites, uniquement dans les textes déjà affichés. */
+.pedagogical-key{color:#9c440b;font-weight:800}
+#delivery .delivery-team .delivery-field-department{background:#fffaf0;border-top-color:#c96b26}
+#delivery .delivery-team .delivery-field-number{background:#e8eddd;border-top-color:#5f7d50}
+#setup .setup-companion{width:390px;max-width:44%;margin:10px 0 10px 24px}
+#setup .setup-partners{display:grid;grid-template-columns:80px minmax(100px,1fr) 80px;align-items:center;gap:10px;width:100%}
+#setup .setup-partners .setup-heroine{width:100%;height:240px;border:0;border-radius:0;background:none;box-shadow:none}
+#setup .setup-partners .setup-e2c{width:72px;height:80px}
+#sauce-bonus.is-revealed .bonus-layout{display:flex;flex-direction:column;gap:10px}
+#sauce-bonus.is-revealed .bonus-discussion{display:contents}
+#sauce-bonus.is-revealed #sauce-bonus-form{display:none}
+#sauce-bonus.is-revealed #sauce-bonus-answer{order:0;margin:0;padding:10px 14px}
+#sauce-bonus.is-revealed #sauce-bonus-solution{font-size:20px;margin:0 0 6px}
+#sauce-bonus.is-revealed #sauce-bonus-explanation{font-size:17px;line-height:1.4;margin:0}
+#sauce-bonus.is-revealed #sauce-bonus-discovery{order:1;width:100%}
+#sauce-bonus.is-revealed .result-actions{order:2;margin-top:0}
+#sauce-bonus.is-revealed .bonus-map img{display:block;width:100%;height:255px;max-height:255px;object-fit:contain}
+#sauce-bonus.is-revealed .bonus-map figcaption{font-size:11px;line-height:1.4}
+#sauce-bonus.is-revealed>h1{font-size:28px;line-height:1.2;margin:8px 0 12px}
+.bonus-population{margin:0}
+.bonus-population img{width:100%;height:280px;object-fit:contain}
+.bonus-population figcaption{font-size:12px;line-height:1.4;color:#53615a}
+#france-bonus #france-bonus-discovery{display:none}
+#gps-bonus .bonus-map img{width:100%;height:295px;object-fit:contain}
+.passport-audio{display:flex;align-items:center;gap:12px;margin:6px 0;font-size:12px}
+#career-pause .career-layout{grid-template-columns:minmax(0,1fr) 240px;gap:20px}
+#career-pause #career-job-label{font-size:23px;line-height:1.2;font-weight:800;letter-spacing:0;margin:0 0 10px;color:var(--ink)}
+#career-pause .career-portrait{width:200px;height:280px;max-width:100%}
+#career-pause .career-portrait img{display:block;width:100%;height:100%;object-fit:contain}
+@media(min-width:801px){
+ #career-pause{padding:10px 5%}
+ #career-pause .career-revelation{margin-top:8px;padding-top:8px}
+ #career-pause .career-card{padding:10px 12px}
+ #career-pause .career-content>h1{font-size:30px}
+ #career-pause .career-statement{font-size:19px}
+ #career-pause .career-fact{font-size:15px}
+}
+@media(max-width:700px){
+ #setup .setup-companion{max-width:100%;width:100%;margin:10px 0}
+ #setup .setup-partners .setup-heroine{height:200px}
+ #career-pause .career-layout{grid-template-columns:1fr}
+ #career-pause .career-portrait{width:140px;height:210px}
+ #sauce-bonus.is-revealed .bonus-map img{height:auto;max-height:none}
+}
+#gps-bonus #gps-bonus-discovery{display:none}
+#sauce-bonus.is-revealed{padding:10px 5% 12px}
+#career-pause:has(#career-job-label:not([hidden])) .career-portrait{width:210px;height:240px}
+#career-pause .career-companion{gap:8px}
+#career-pause .career-companion>.speech{font-size:16px;line-height:1.3;padding:8px}
+#sauce-bonus.is-revealed #sauce-bonus-solution{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%)}
+#career-pause:has(#career-job-label:not([hidden])):has(#career-revelation:not([hidden])) .career-portrait{height:220px}
+@media(min-width:801px){#delivery-correction.apero-screen{padding-bottom:12px}}
+@media(max-width:700px){
+ #career-pause .career-companion{flex-direction:column;align-items:center;min-width:0}
+ #career-pause .career-companion>.speech{max-width:100%;width:100%;overflow-wrap:anywhere}
+}
 /* Espaces du carnet : les cartouches restent solidaires et le camion les évite. */
 @media(min-width:901px){
  #journey .board-eiffel{left:20%}
@@ -1181,3 +1237,6 @@ body.compact-header>footer{padding-top:6px;padding-bottom:6px}
 #gps-placement.gps-hydro-challenge #gps-map{overflow:hidden}
 #gps-placement.gps-hydro-challenge .gps-river-piece text{font-size:22px}
 .gps-inset-callout{stroke:#4c625e;stroke-width:1;fill:none}
+
+/* Raccord lot 2 / PR 39 : conserver le texte intégral avec les portraits professionnels. */
+@media(min-width:801px){#career-pause .career-bottom{margin-top:2px}}

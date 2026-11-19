@@ -26,13 +26,13 @@ const{chromium}=require('playwright'),assert=require('node:assert/strict'),fs=re
   assert.equal(await p.evaluate(label=>GpsGame.riverId(game.gps.placements[game.gps.team][label]),label),id,`clavier ${label}`);
  };
  const reload=async()=>{await p.reload();await p.locator('.route-round-open').nth(3).click()};
- fs.mkdirSync('docs/validation-hydrographie',{recursive:true});
+ const captureDir=process.env.GPS_CAPTURE_DIR||'docs/validation-hydrographie';fs.mkdirSync(captureDir,{recursive:true});
  for(const[width,height]of[[1366,768],[1280,720]]){
   await p.setViewportSize({width,height});await fresh();
   assert.equal(await p.locator('.gps-hydro-line').count(),6);assert.equal(await p.locator('.gps-drop-zone,.gps-river-hit,.gps-correct-label,.gps-gironde-inset').count(),0);
   assert.deepEqual(await p.locator('#gps-map text').allTextContents(),['GARONNE','SEINE','RHIN']);
   assert.doesNotMatch(await p.locator('#gps-map').textContent(),/Loire|Dordogne|Rhône|Bec|Gironde|REPÈRE/);
-  await fit(`placement ${width}`);await p.screenshot({path:`docs/validation-hydrographie/placement-${width}.png`});
+  await fit(`placement ${width}`);await p.screenshot({path:`${captureDir}/placement-${width}.png`});
   await drag(0,'e');const wrong=await p.evaluate(()=>game.gps.placements[0][0]);await drag(0,'c');assert.notDeepEqual(await p.evaluate(()=>game.gps.placements[0][0]),wrong);
   await drag(1,'a');await drag(2,'b');const saved=await p.evaluate(()=>game.gps.placements[0]);await reload();assert.deepEqual(await p.evaluate(()=>game.gps.placements[0]),saved);
   await p.locator('#gps-lock').click();assert.equal(await p.locator('.gps-river-piece.team-0').count(),0);assert.equal(await p.locator('.gps-river-piece.team-1').count(),3);assert.equal(await p.evaluate(()=>game.gps.team),1);
@@ -42,7 +42,7 @@ const{chromium}=require('playwright'),assert=require('node:assert/strict'),fs=re
   assert.match(await p.locator('#gps-correction').innerText(),/La Garonne rejoint la Dordogne au bec d'Ambès.*estuaire de la Gironde.*océan Atlantique/s);
   assert.deepEqual(await p.evaluate(()=>game.teams.map(t=>t.score)),[115,60]);assert.equal(await p.evaluate(()=>GpsGame.reveal(game)),false);
   assert.equal(await p.locator('.gps-gironde-inset').count(),1);await fit(`correction ${width}`);
-  await p.screenshot({path:`docs/validation-hydrographie/correction-${width}.png`});await reload();assert.deepEqual(await p.evaluate(()=>game.teams.map(t=>t.score)),[115,60]);assert.equal(await p.locator('.gps-river-piece').count(),6);
+  await p.screenshot({path:`${captureDir}/correction-${width}.png`});await reload();assert.deepEqual(await p.evaluate(()=>game.teams.map(t=>t.score)),[115,60]);assert.equal(await p.locator('.gps-river-piece').count(),6);
   // Nouvelle partie : placement des trois étiquettes uniquement au clavier.
   await fresh();for(const[i,id]of['c','a','b'].entries())await keyboard(i,id);assert.equal(await p.locator('#gps-lock').isEnabled(),true);const keyboardSaved=await p.evaluate(()=>game.gps.placements[0]);await reload();assert.deepEqual(await p.evaluate(()=>game.gps.placements[0]),keyboardSaved);await p.locator('#gps-lock').click();assert.equal(await p.evaluate(()=>game.gps.team),1);
   // Même avec six propositions superposées, les cartouches de comparaison restent distincts.

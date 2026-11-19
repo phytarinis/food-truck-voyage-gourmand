@@ -7,7 +7,7 @@ const{chromium}=require('playwright'),assert=require('node:assert/strict'),fs=re
  const fit=async label=>assert.equal(await p.evaluate(()=>document.documentElement.scrollHeight<=innerHeight&&document.documentElement.scrollWidth<=innerWidth),true,label);
  const portraitReady=()=>p.evaluate(async()=>{const image=document.querySelector('#career-portrait img');if(image)await image.decode();else{const decoded=new Image();decoded.src=document.querySelector('#companion-art image').getAttribute('href');await decoded.decode();}await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))});
  const score=()=>p.evaluate(()=>game.teams.map(t=>[t.score,t.jokers]));
- fs.mkdirSync('docs/validation-pauses-metiers',{recursive:true});
+ const captureDir=process.env.CAREER_CAPTURE_DIR||'docs/validation-pauses-metiers';fs.mkdirSync(captureDir,{recursive:true});
  for(const[width,height]of[[1366,768],[1280,720]]){
   await p.setViewportSize({width,height});await p.goto(url);
   for(let i=0;i<5;i++){
@@ -19,14 +19,14 @@ const{chromium}=require('playwright'),assert=require('node:assert/strict'),fs=re
    assert.deepEqual(await p.locator('.career-letter').allTextContents(),['A','B','C']);
    assert.equal(await p.locator('.career-verdict,.career-card.is-myth').count(),0);assert.equal(await p.locator('#career-explanation').textContent(),'');assert.equal(await p.locator('#career-quote').isVisible(),false);
    const illustration=await p.evaluate(i=>({expected:CareerIllustrations[i].src,actual:document.querySelector('#career-portrait img')?.getAttribute('src')}),i);if(illustration.expected){assert.equal(illustration.actual,illustration.expected);await p.locator('#career-portrait img').evaluate(e=>e.decode());}else{assert.equal(await p.locator('#career-portrait use').getAttribute('href'),'#companion-art');}
-   await portraitReady();await fit(`question ${i+1} ${width}`);await p.screenshot({path:`docs/validation-pauses-metiers/pause-${i+1}-question-${width}.png`});
+   await portraitReady();await fit(`question ${i+1} ${width}`);await p.screenshot({path:`${captureDir}/pause-${i+1}-question-${width}.png`});
    // Un choix collectif se conserve avant révélation ; reprise par la manche terminée.
    await p.locator('input[name=career-choice]').nth(expected[i].falseIndex).check();await p.reload();await p.locator('.route-round-open').nth(i).click();
    assert.equal(await p.locator('#career-pause').isVisible(),true);assert.equal(await p.locator('input[name=career-choice]:checked').inputValue(),String(expected[i].falseIndex));assert.equal(await p.locator('.career-verdict').count(),0);
    await p.locator('#career-reveal').focus();await p.keyboard.press('Enter');
    assert.equal(await p.locator('.career-card.is-myth input').inputValue(),String(expected[i].falseIndex));assert.equal(await p.locator('.career-card.is-truth').count(),2);
    assert.equal(await p.locator('#career-explanation').innerText(),expected[i].explanation);assert.equal(await p.locator('#career-instruction').isVisible(),false);assert.equal(await p.locator('#career-quote').isVisible(),true);
-   assert.deepEqual(await score(),[[85,1],[70,2]]);await portraitReady();await fit(`correction ${i+1} ${width}`);await p.screenshot({path:`docs/validation-pauses-metiers/pause-${i+1}-correction-${width}.png`});
+   assert.deepEqual(await score(),[[85,1],[70,2]]);await portraitReady();await fit(`correction ${i+1} ${width}`);await p.screenshot({path:`${captureDir}/pause-${i+1}-correction-${width}.png`});
    await p.reload();await p.locator('.route-round-open').nth(i).click();assert.equal(await p.locator('#career-revelation').isVisible(),true);assert.deepEqual(await score(),[[85,1],[70,2]]);
    await p.locator('#career-continue').click();
    if(i>=2){assert.equal(await p.locator('#journey').isVisible(),true);await p.locator('.route-round-open').nth(i+1).click();}

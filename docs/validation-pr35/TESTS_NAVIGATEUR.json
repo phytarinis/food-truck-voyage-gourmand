@@ -1,0 +1,127 @@
+{
+  "scripts": 30,
+  "passed": 30,
+  "failed": 0,
+  "results": [
+    {
+      "file": "tests/accueil-carnet.browser.cjs",
+      "exit": 0
+    },
+    {
+      "file": "tests/apero-auto-correction.browser.cjs",
+      "exit": 0
+    },
+    {
+      "file": "tests/apero-discovery.browser.cjs",
+      "exit": 0
+    },
+    {
+      "file": "tests/apero-final-adjustments.browser.cjs",
+      "exit": 0
+    },
+    {
+      "file": "tests/apero-visual.browser.cjs",
+      "exit": 0
+    },
+    {
+      "file": "tests/apero.browser.cjs",
+      "exit": 0
+    },
+    {
+      "file": "tests/careers-pedagogy.browser.cjs",
+      "exit": 0
+    },
+    {
+      "file": "tests/careers.browser.cjs",
+      "exit": 0
+    },
+    {
+      "file": "tests/carnet-layout.browser.cjs",
+      "exit": 0
+    },
+    {
+      "file": "tests/ergonomics.browser.cjs",
+      "exit": 0
+    },
+    {
+      "file": "tests/ergonomie-integration.browser.cjs",
+      "exit": 0
+    },
+    {
+      "file": "tests/final.browser.cjs",
+      "exit": 0
+    },
+    {
+      "file": "tests/france-spicy.browser.cjs",
+      "exit": 0
+    },
+    {
+      "file": "tests/france.browser.cjs",
+      "exit": 0
+    },
+    {
+      "file": "tests/gps-hydrography.browser.cjs",
+      "exit": 0
+    },
+    {
+      "file": "tests/gps-spicy.browser.cjs",
+      "exit": 0
+    },
+    {
+      "file": "tests/gps.browser.cjs",
+      "exit": 0
+    },
+    {
+      "file": "tests/header.browser.cjs",
+      "exit": 0
+    },
+    {
+      "file": "tests/lot1.browser.cjs",
+      "exit": 0
+    },
+    {
+      "file": "tests/lot2.browser.cjs",
+      "exit": 0
+    },
+    {
+      "file": "tests/passport-spicy.browser.cjs",
+      "exit": 0
+    },
+    {
+      "file": "tests/passport.browser.cjs",
+      "exit": 0
+    },
+    {
+      "file": "tests/round-transitions.browser.cjs",
+      "exit": 0
+    },
+    {
+      "file": "tests/sauce.browser.cjs",
+      "exit": 0
+    },
+    {
+      "file": "tests/spicy.browser.cjs",
+      "exit": 0
+    },
+    {
+      "file": "tests/startup-careers.browser.cjs",
+      "exit": 0
+    },
+    {
+      "file": "tests/targeted-lot2.browser.cjs",
+      "exit": 0
+    },
+    {
+      "file": "tests/world-finale.browser.cjs",
+      "exit": 0
+    },
+    {
+      "file": "tests/world-spicy.browser.cjs",
+      "exit": 0
+    },
+    {
+      "file": "tests/world.browser.cjs",
+      "exit": 0
+    }
+  ]
+}

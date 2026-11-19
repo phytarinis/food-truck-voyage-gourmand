@@ -40,7 +40,7 @@ function renderWorldChallenge(){
  $('world-photo-note').hidden=true;$('world-photo-note').textContent='';$('world-zone-note').hidden=true;$('world-zone-note').textContent='';
  if(corrected){
   $('world-discovery-title').textContent=s.index===5?'Pacifique Nord · Une zone d’accumulation de déchets':`${data.destination} · ${worldContinentName(data.continent)}`;
-  $('world-fact').textContent=data.fact;renderWorldPhoto(data);
+  highlightText('world-fact',data.fact,['sushis','kangourous','tacos','couscous','XIXe et XXe siècles','microplastiques']);renderWorldPhoto(data);
   if(data.photoNote){$('world-photo-note').hidden=false;$('world-photo-note').textContent=data.photoNote;$('world-zone-note').hidden=false;$('world-zone-note').textContent='Contour approximatif : repère pédagogique, sans frontière scientifique.';}
  }
  $('world-map-help').hidden=bothLocked;

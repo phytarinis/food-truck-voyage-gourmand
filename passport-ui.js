@@ -34,13 +34,12 @@ function renderPassportSearch() {
     node.textContent = `${game.teams[t].score - (pending ? player.points : 0)} pts`;
   });
   $('passport-destination-title').textContent = puzzle.searchTitle;
-  $('passport-mystery').hidden = !puzzle.quote;
-  $('passport-mystery-quote').textContent = puzzle.quote || '';
+  $('passport-mystery').hidden = s.puzzleIndex !== 2;
   $('passport-sound-status').textContent = '';
   const panel = document.createElement('article'); panel.className = 'passport-common-clue';
   const info = document.createElement('div'); info.className = 'sauce-clue-info';
   info.textContent = `INDICE ${s.clueIndex + 1} / 3 · ${PassportGame.points[s.clueIndex]} points possibles`;
-  const clue = document.createElement('p'); clue.className = 'sauce-current-clue'; clue.textContent = puzzle.clues[s.clueIndex];
+  const clue = document.createElement('p'); clue.className = 'sauce-current-clue'; highlightText(clue,puzzle.clues[s.clueIndex],pedagogicalClues.passport[s.puzzleIndex][s.clueIndex]);
   const selector = document.createElement('div'); selector.className = 'passport-team-selector'; selector.setAttribute('aria-label', 'Équipe à valider');
   for (const t of available) {
     const button = document.createElement('button'); button.type = 'button'; button.className = `secondary team-${t}`;
@@ -123,9 +122,9 @@ function renderPassportLocation() {
   const s=game.passport,l=s.location,puzzle=PassportGame.puzzles[s.puzzleIndex],bothLocked=l.locked.every(Boolean),stamp=PassportGame.locationToken(game);
   const viewKey=`${s.id}:${s.puzzleIndex}:${bothLocked?'compare':l.activeTeam}`;
   if(passportView.key!==viewKey)passportView={key:viewKey,zoom:1,x:450,y:340};
-  $('passport-location-title').textContent=puzzle.title;
+  highlightText('passport-location-title',puzzle.title,puzzle.id==='belgium'?['Belgique']:[]);
   $('passport-cultural-title').textContent=puzzle.heading;
-  $('passport-fact').textContent=puzzle.fact;
+  highlightText('passport-fact',puzzle.fact,['Belgique','pastéis de nata','Transylvanie']);
   renderPassportPhoto($('passport-photo'),PassportPhotos[puzzle.id]);
   syncPassportUndo();
   $('passport-next').hidden=s.phase!=='correction';
