@@ -61,17 +61,17 @@ body:not(.welcome-mode) h1 em{background:linear-gradient(transparent 85%,#e9b44b
 #journey .road-edge{stroke:#a2ad94;stroke-width:39;stroke-linejoin:round}
 #journey .road-dashes{stroke:#fff9e7;stroke-width:3;stroke-dasharray:12 12}
 #journey .route-stops{position:absolute;inset:0;display:block;padding:0;margin:0;background:none}
-#journey .route-stop{position:absolute;left:var(--node-x);top:calc(var(--node-y) - 23px);width:180px;transform:translateX(-50%);text-align:center}
+#journey .route-stop{position:absolute;left:var(--node-x);top:var(--node-y);width:220px;transform:translate(-50%,-50%);display:grid;grid-template-columns:46px minmax(0,1fr);column-gap:10px;row-gap:4px;align-items:center;padding:10px;background:#fffaf0;border:1.5px solid #88967f;border-radius:8px;box-shadow:0 3px 0 #172e3922;text-align:left}
 #journey .route-stop:nth-child(1){--node-x:13.33%;--node-y:25.45%}
 #journey .route-stop:nth-child(2){--node-x:45.42%;--node-y:23.86%}
 #journey .route-stop:nth-child(3){--node-x:83.75%;--node-y:29.55%}
 #journey .route-stop:nth-child(4){--node-x:63.75%;--node-y:59.09%}
 #journey .route-stop:nth-child(5){--node-x:28.33%;--node-y:63.64%}
-#journey .route-stop:nth-child(6){--node-x:84.17%;--node-y:85.23%;top:calc(var(--node-y) - 100px)}
-#journey .stop-number{width:46px;height:46px;font-size:20px;border:2px solid var(--ink);background:var(--paper);box-shadow:0 3px 0 #172e3922}
-#journey .route-stop h2{background:#fffaf0;border:1.5px solid #88967f;border-radius:6px;padding:8px 9px;margin:7px 0 6px;font-size:17px;line-height:1.25}
-#journey .route-stop small{font-size:11px;background:#fffaf0;padding:3px 9px;border-radius:8px}
-#journey .route-stop:nth-child(6) .stop-number{position:absolute;top:77px;left:50%;transform:translateX(-50%)}
+#journey .route-stop:nth-child(6){--node-x:78%;--node-y:87%}
+#journey .stop-number{grid-row:1 / 3;width:46px;height:46px;font-size:20px;border:2px solid var(--ink);background:var(--paper);box-shadow:0 3px 0 #172e3922}
+#journey .route-stop h2{padding:0;margin:0;font-size:16px;line-height:1.25}
+#journey .route-stop small{grid-column:2;justify-self:start;font-size:11px;padding:2px 7px;border-radius:8px;background:#eef0e0}
+
 #journey .route-stop.active .stop-number,#journey .route-stop.active small{background:#d94532;color:#fffaf0}
 #journey .route-stop.complete .stop-number,#journey .route-stop.complete small{background:#b4c5a4}
 #journey .board-landmark{position:absolute;pointer-events:none}
@@ -85,7 +85,7 @@ body:not(.welcome-mode) h1 em{background:linear-gradient(transparent 85%,#e9b44b
 #journey .route-truck span{font-size:10px;padding:3px;border-radius:3px}
 #journey .route-truck.on-route{left:var(--truck-x);top:var(--truck-y)}
 @media(min-width:901px) and (max-width:1050px){#journey .route-map{height:420px}#journey .route-stop{width:148px}#journey .route-stop h2{font-size:15px}#journey .board-eiffel{width:55px}#journey .board-mountains{width:115px}#journey .board-beach{width:90px;left:65%;top:32%}#journey .route-truck{width:95px}#journey .route-truck svg{height:75px}}
-@media(max-width:900px){#journey .route-map{height:850px}#journey .board-art{display:none}#journey .mobile-road{display:block}#journey .route-stop{width:min(155px,45%);top:calc(var(--mobile-y) - 23px);left:var(--mobile-x)}#journey .route-stop h2{font-size:16px}#journey .route-stop:nth-child(1){--mobile-x:25%;--mobile-y:10%}#journey .route-stop:nth-child(2){--mobile-x:72%;--mobile-y:27%}#journey .route-stop:nth-child(3){--mobile-x:28%;--mobile-y:43%}#journey .route-stop:nth-child(4){--mobile-x:72%;--mobile-y:60%}#journey .route-stop:nth-child(5){--mobile-x:25%;--mobile-y:76%}#journey .route-stop:nth-child(6){--mobile-x:72%;--mobile-y:91%;top:calc(var(--mobile-y) - 100px)}#journey .board-eiffel{left:65%;top:5%;width:53px;height:75px}#journey .board-mountains{left:7%;top:23%;width:85px;height:65px}#journey .board-beach{left:65%;top:42%;width:85px;height:70px}#journey .board-sign{left:6%;top:60%;width:60px;height:55px}#journey .route-truck{left:45%;top:5%;width:85px;transform:translate(-50%,-50%) rotate(-8deg)}#journey .route-truck svg{height:67px}#journey .route-truck.on-route{left:var(--truck-mobile-x);top:var(--truck-mobile-y);transform:translate(-50%,-50%) rotate(-8deg)}}
+@media(max-width:900px){#journey .route-map{height:850px}#journey .board-art{display:none}#journey .mobile-road{display:block}#journey .route-stop{width:min(155px,45%);top:calc(var(--mobile-y) - 23px);left:var(--mobile-x);transform:translateX(-50%);grid-template-columns:1fr;text-align:center;padding:8px}#journey .stop-number{grid-row:auto;justify-self:center}#journey .route-stop small{grid-column:1;justify-self:center}#journey .route-stop h2{font-size:16px}#journey .route-stop:nth-child(1){--mobile-x:25%;--mobile-y:10%}#journey .route-stop:nth-child(2){--mobile-x:72%;--mobile-y:27%}#journey .route-stop:nth-child(3){--mobile-x:28%;--mobile-y:43%}#journey .route-stop:nth-child(4){--mobile-x:72%;--mobile-y:60%}#journey .route-stop:nth-child(5){--mobile-x:25%;--mobile-y:76%}#journey .route-stop:nth-child(6){--mobile-x:72%;--mobile-y:91%;top:calc(var(--mobile-y) - 70px)}#journey .board-eiffel{left:65%;top:5%;width:53px;height:75px}#journey .board-mountains{left:7%;top:23%;width:85px;height:65px}#journey .board-beach{left:65%;top:42%;width:85px;height:70px}#journey .board-sign{left:6%;top:60%;width:60px;height:55px}#journey .route-truck{left:45%;top:5%;width:85px;transform:translate(-50%,-50%) rotate(-8deg)}#journey .route-truck svg{height:67px}#journey .route-truck.on-route{left:var(--truck-mobile-x);top:var(--truck-mobile-y);transform:translate(-50%,-50%) rotate(-8deg)}}
 
 @media(min-width:901px){#journey .route-truck.on-route{width:95px}#journey .route-truck.on-route svg{height:75px}}
 
@@ -945,7 +945,7 @@ body.journey-mode main{min-height:0}
  #gps-bonus .bonus-options li{padding-top:8px;padding-bottom:8px}
  #gps-bonus .bonus-answer{padding-top:10px;padding-bottom:10px}
 }
-/* Seule la pause Entretien hôtelier reçoit le libellé de métier supplémentaire. */
+/* Les cinq pauses affichent leur métier et conservent une disposition compacte. */
 @media(min-width:851px){
  body:has(#career-pause:not([hidden]) #career-job-label:not([hidden])) main{min-height:0}
  body:has(#career-pause:not([hidden]) #career-job-label:not([hidden])) footer{padding-top:8px;padding-bottom:8px}
@@ -957,7 +957,7 @@ body.journey-mode main{min-height:0}
  #career-pause:has(#career-job-label:not([hidden])) .career-card{padding:9px 12px}
  #career-pause:has(#career-job-label:not([hidden])) .career-card:has(input:checked){padding:8.5px 11.5px}
  #career-pause:has(#career-job-label:not([hidden])) .career-portrait{height:180px}
- #career-pause:has(#career-job-label:not([hidden])) .career-revelation{margin-top:6px;padding-top:6px}
+ #career-pause:has(#career-job-label:not([hidden])) .career-revelation{margin-top:4px;padding-top:4px}
 }
 #career-pause:has(#career-job-label:not([hidden])) .career-card input{inset:0;width:100%;height:100%;margin:0;z-index:1;cursor:pointer}
 
@@ -1158,7 +1158,7 @@ body.round-transition-mode footer>span:first-child{display:none}
  #rules>h1{font-size:36px;margin:6px 0 22px;letter-spacing:-1px}
 }
 @media(max-width:700px){#rules .rules-grid{grid-template-columns:1fr}#rules .rule-card{padding:18px 18px 18px 64px}#rules .rule-icon{left:16px}}
-#journey .route-stop:nth-child(6) .next-stop-label{top:132px}
+
 body.compact-header>footer{padding-top:6px;padding-bottom:6px}
 
 /* Lot 2 : accents pédagogiques explicites, uniquement dans les textes déjà affichés. */
@@ -1217,3 +1217,26 @@ body.compact-header>footer{padding-top:6px;padding-bottom:6px}
  #career-pause .career-companion{flex-direction:column;align-items:center;min-width:0}
  #career-pause .career-companion>.speech{max-width:100%;width:100%;overflow-wrap:anywhere}
 }
+/* Espaces du carnet : les cartouches restent solidaires et le camion les évite. */
+@media(min-width:901px){
+ #journey .board-eiffel{left:20%}
+ #journey .board-mountains{left:42%;top:36%;width:130px;height:76px}
+ #journey .board-beach{left:69%;top:1%;width:103px;height:75px}
+ #journey .board-sign{top:76%}
+}
+/* Manche 4, défi des fleuves : aucun repère de réponse avant la correction. */
+.gps-ocean{fill:#e5eff0;stroke:none;fill-rule:evenodd;pointer-events:none}
+.gps-hydro-line{fill:none;stroke:#237d9b;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+.gps-river-water{fill:#237d9b;stroke:#237d9b;stroke-width:1;fill-rule:evenodd;pointer-events:none}
+.gps-estuary{fill:#afd6d7;stroke:#397d83;stroke-width:1;fill-rule:evenodd;pointer-events:none}
+.gps-hydro-name{font-size:21px;fill:#1d555f}
+.gps-gironde-inset>rect{fill:#fffaf0;stroke:#859b91;stroke-width:1}
+.gps-gironde-inset text{fill:#173943;font-family:Arial,sans-serif;font-weight:bold;paint-order:stroke;stroke:#fffaf0;stroke-width:2.5px;stroke-linejoin:round}
+.gps-confluence{fill:#ad4f2d;stroke:#fffaf0;stroke-width:1}
+#gps-placement.gps-hydro-challenge #gps-correction ul{font-size:16px;line-height:1.4}
+#gps-placement.gps-hydro-challenge #gps-map{overflow:hidden}
+#gps-placement.gps-hydro-challenge .gps-river-piece text{font-size:22px}
+.gps-inset-callout{stroke:#4c625e;stroke-width:1;fill:none}
+
+/* Raccord lot 2 / PR 39 : conserver le texte intégral avec les portraits professionnels. */
+@media(min-width:801px){#career-pause .career-bottom{margin-top:2px}}

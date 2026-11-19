@@ -1,6 +1,6 @@
 # Lot 2 — Compte rendu pédagogique et ressources
 
-Base : `main` au commit `2e42263`, après fusion du lot 1 (#34). Les moteurs de score, objets de placement, coordonnées de validation, transitions et contenus des cinq pauses métiers sont conservés.
+Branche mise à jour depuis `main` au commit `930bcfc` (PR #39 fusionnée), en conservant les améliorations du lot 2. Les quinze affirmations, cinq corrections, bulles et indices B/C/A/B/B de la PR #39 sont conservés intégralement. Les moteurs de score, cartes interactives, sauvegardes et grand final restent ceux de ce `main`. Voir le [bilan de réconciliation](validation-pr35/BILAN.md).
 
 ## Modifications intégrées
 
@@ -25,9 +25,9 @@ Il reste exactement trois indices, avec le barème 20 / 15 / 10. Aucune quatriè
 
 ## Vérification de la Garonne
 
-Le tracé Natural Earth déjà conservé dans `assets/maps/gps-source.geojson` se termine près de Bordeaux (extrémité simplifiée : longitude −0,541697 ; latitude 44,898017). Il n’attribue pas l’estuaire de la Gironde à la Garonne et n’est pas prolongé jusqu’à l’océan. Il s’agit d’une donnée généralisée qui ne représente pas en détail la portion aval jusqu’au bec d’Ambès.
+La carte interactive de la PR #38, désormais dans `main`, est conservée : six cours d'eau vectoriels, bras aval, Gironde distincte et ouverte sur l'Atlantique, placement direct sans repères A/B/C visibles. Les données, zones de détection et gestionnaires d'interaction ne sont pas remplacés par l'ancienne carte du lot 2. Le schéma collectif original reste disponible après révélation.
 
-**Aucun tracé interactif ni repère de validation n’a été déplacé.** La relation au bec d’Ambès est explicitée par le texte et le schéma, sans inventer un prolongement géographique à partir de coordonnées approximatives. Les tracés de la Seine et du Rhin restent identiques.
+Les sources, limites de précision et contrôles géométriques restent ceux de [la carte hydrographique](../assets/maps/hydrography/README.md). Les mentions culinaires du lot 2 et les accents colorés sont conservés dans le seul rendu de correction, sans mutation des données du moteur GPS.
 
 ## Photographies encore à fournir
 
@@ -54,10 +54,10 @@ Aucune illustration professionnelle ne reste manquante. Les quatre ressources ph
 
 ## Validation réalisée
 
-- 834 tests unitaires réussis, dont les trois indices roumains, les nouveaux titres, la comparaison régionale et la distinction Garonne/estuaire.
+- 864 tests unitaires réussis, dont les trois indices roumains, les nouveaux titres, la comparaison régionale et la distinction Garonne/estuaire.
 - Suite dédiée du lot 2 : six manches, trois niveaux d’indices, corrections et accents, comparatif, schéma masqué avant réponse, population et cinq métiers ; absence de défilement aux résolutions 1280 × 720 et 1366 × 768.
-- Suites réelles des six transitions et du lot 1 réussies, sans préchargement.
-- 23 suites navigateur historiques réussies avec leur préchargement de présentation documenté, sans substitution des moteurs ni des sauvegardes. Les attentes des tests ont été actualisées uniquement pour les nouveaux visuels, les logos encadrant le personnage et le nom du métier placé dans le contenu.
+- Sept scripts navigateur réussis sans préchargement : transitions réelles, lot 1, lot 2, pédagogie métiers, hydrographie, carnet et piments sans indices. Les 23 autres scripts historiques réussissent avec le préchargement documenté, soit 30 scripts au total.
+- 23 suites navigateur historiques réussies avec leur préchargement de présentation documenté, sans substitution des moteurs ni des sauvegardes. Les attentes des tests sont alignées sur les textes validés de la PR #39 et sur les nouveaux visuels ; aucune ancienne question métier n’est réintroduite.
 - Les contrôles des métiers couvrent aussi 320 × 640, 390 × 844, 1024 × 768 et 1920 × 1080. Les parcours des cartes, les deux modes de piment, les sauvegardes, le grand final et ses conclusions restent fonctionnels.
 
 Les seuls éléments non intégrés sont les quatre photographies à droits vérifiables listées ci-dessus. Aucun test ne reste en échec à la livraison.

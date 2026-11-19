@@ -48,3 +48,10 @@ test('clôture sans piment utilisé : scores inchangés et photographie jamais r
 test('les quatre photographies et licences correspondent aux fichiers fournis, avec le recadrage historique documenté',()=>{
  const fs=require('node:fs'),vm=require('node:vm'),c={window:{}};vm.runInNewContext(fs.readFileSync('spicy-photos.js','utf8'),c);assert.deepEqual(Object.keys(c.window.SpicyPhotos),S.questions.map(q=>q.id));for(const p of Object.values(c.window.SpicyPhotos)){assert.ok(fs.existsSync(p.src));assert.ok(p.author);assert.match(p.source,/commons.wikimedia.org\/wiki\/File:/);assert.ok(p.licenseUrl)}assert.match(c.window.SpicyPhotos.scorpions.changes,/déjà recadrée/);assert.equal(c.window.SpicyPhotos.scorpions.license,'CC BY 2.0');
 });
+test('noms fantaisistes fixes, persistants et migration des sauvegardes existantes',()=>{
+ const g=fresh(),ids=S.questions.map(q=>q.id),names=['Piment Tornade','Piment Volcan','Piment Panique','Piment Bazooka'];
+ assert.deepEqual(ids.map(id=>S.choiceName(g,id)),names);
+ boundary(g);const token=launch(g);answer(g);S.finish(g,token);
+ const restored=JSON.parse(JSON.stringify(g));assert.deepEqual(ids.map(id=>S.choiceName(restored,id)),names);assert.equal(S.available(restored).some(q=>q.id==='spiders'),false);
+ delete restored.spicy.choiceNames;assert.deepEqual(ids.map(id=>S.choiceName(restored,id)),names);assert.deepEqual(restored.spicy.used,['spiders']);
+});

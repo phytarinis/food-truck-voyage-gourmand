@@ -41,7 +41,7 @@ const {chromium}=require('playwright'),assert=require('node:assert/strict');
   }
   for(let index=0;index<5;index++){
    await p.evaluate(index=>{game=FoodTruckGame.createGame(['A','B']);openCareerPause(index)},index);await p.locator('#career-portrait img').evaluate(i=>i.decode());await fit(`métier ${index} ${width}`);
-   assert.equal(await p.locator('#career-job-label').innerText(),await p.evaluate(index=>CareerIllustrations[index].title,index));
+   assert.equal(await p.locator('#career-job-label').innerText(),await p.evaluate(index=>`PAUSE MÉTIER ${index+1} — ${CareerPauses.jobs[index].name.toLocaleUpperCase('fr')}`,index));
    const before=await p.evaluate(()=>game.teams.map(t=>[t.score,t.jokers]));await p.locator('input[name=career-choice]').first().check();await p.locator('#career-reveal').click();await fit(`métier corrigé ${index} ${width}`);assert.deepEqual(await p.evaluate(()=>game.teams.map(t=>[t.score,t.jokers])),before);
   }
   console.log(`Lot 2 : six manches, comparatif, schéma, population, cinq métiers et lisibilité ${width}×${height} OK`);

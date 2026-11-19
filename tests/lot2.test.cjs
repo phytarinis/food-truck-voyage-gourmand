@@ -8,9 +8,11 @@ test('titres et traitement historique de la sixième manche',()=>{
  assert.equal(W.challenges[1].title,'Un steak qui fait des bonds !');assert.equal(W.challenges[4].title,'Une ancienne escale de chasse à la baleine');
  assert.match(W.challenges[4].fact,/XIXe et XXe siècles/);assert.match(W.challenges[4].fact,/ni une tradition culinaire actuelle ni une chasse pratiquée dans le jeu/);
 });
-test('Garonne : tracé source arrêté avant l’estuaire ; pas de modification des repères',()=>{
- const r=Geo.rivers.find(r=>r.name==='Garonne'),coordinates=[...r.path.matchAll(/(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/g)].map(m=>G.unproject([+m[1],+m[2]]));
- assert.ok(Math.max(...coordinates.map(p=>p[1]))<45);assert.match(G.challenges[1].facts[0],/Dordogne.*bec d’Ambès.*estuaire de la Gironde/);
+test('hydrographie actuelle conservée et schéma collectif distinct',()=>{
+ const H=require('../gps-hydrography.js');
+ assert.deepEqual(H.rivers.map(r=>r.name),['Seine','Rhin','Garonne','Dordogne','Loire','Rhône']);
+ assert.equal(G.riverAt([-.55,44.92]),'c');assert.equal(G.riverAt([-.54,45.023]),'d');assert.equal(G.riverAt([-.72,45.25]),'gironde');
+ for(const old of Geo.rivers)assert.deepEqual(H.rivers.find(r=>r.id===old.id).anchor,old.anchor);
  const svg=fs.readFileSync('assets/maps/garonne-fleuve-riviere.svg','utf8');for(const name of['Garonne','Dordogne','Gironde','Atlantique','Tarn','Lot'])assert.ok(svg.includes(name));assert.match(svg,/non cartographique/);
 });
 test('cartes comparatives : trois régions historiques et contour actuel identifié',()=>{
