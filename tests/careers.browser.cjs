@@ -10,7 +10,7 @@ const assert = require('node:assert/strict');
     // Test du composant réutilisable, sans simuler l’achèvement d’une manche.
     await p.evaluate(index=>{game=FoodTruckGame.createGame(['Corail','Sauge']);game.teams[0].score=30;game.teams[1].score=15;openCareerPause(index)},job);
     assert.equal(await p.locator('.career-card').count(),3);
-    assert.equal(await p.locator('#career-job-label').isVisible(),job===3);
+    assert.equal(await p.locator('#career-job-label').isVisible(),true);
     assert.equal(await p.locator('#career-quote').isVisible(),false);
     assert.equal(await p.locator('#career-quote').innerText(),'');
     assert.equal(await p.locator('.partners .partner-logo').count(),2);
