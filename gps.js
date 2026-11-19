@@ -2,9 +2,10 @@
 (function(root){
  'use strict';
  const geography=typeof module!=='undefined'&&module.exports?require('./gps-geography.js'):root.GpsGeography;
+ const hydro=typeof module!=='undefined'&&module.exports?require('./gps-hydrography.js'):root.GpsHydrography;
  const challenges=[
   {id:'pyrenees',title:'Mais où sont passées les Pyrénées ?',instruction:"Déplacez la chaîne de montagnes à l'endroit où se trouvent les Pyrénées.",quote:"Il me dit que les Pyrénées sont au nord de la France… Vous êtes sûrs qu'il fonctionne, ce truc ?",duration:0,reveal:'Révéler les Pyrénées',facts:["Les Pyrénées forment une chaîne de montagnes entre la France et l'Espagne. Elles s'étendent de l'océan Atlantique à la mer Méditerranée."]},
-  {id:'rivers',title:"Le GPS s'emmêle les fleuves !",instruction:'Placez les trois noms sur les bons fleuves.',quote:"La Garonne, la Seine, le Rhin… Il me donne trois noms et il ne sait même plus où ils coulent !",duration:45,reveal:'Révéler les fleuves',facts:["Garonne : traverse notamment Toulouse et Bordeaux avant de rejoindre l'estuaire de la Gironde.","Seine : traverse notamment Paris et Rouen avant de se jeter dans la Manche.","Rhin : longe notamment une partie de la frontière entre la France et l'Allemagne, avant de poursuivre vers la mer du Nord."]},
+  {id:'rivers',title:"Le GPS s'emmêle les fleuves !",instruction:'Retrouvez les trois fleuves parmi les cours d’eau : glissez chaque étiquette sur son tracé.',quote:"La Garonne, la Seine, le Rhin… Il me donne trois noms et il ne sait même plus où ils coulent !",duration:45,reveal:'Révéler les fleuves',facts:["Garonne : traverse notamment Toulouse et Bordeaux avant de rejoindre l'estuaire de la Gironde.","Seine : traverse notamment Paris et Rouen avant de se jeter dans la Manche.","Rhin : longe notamment une partie de la frontière entre la France et l'Allemagne, avant de poursuivre vers la mer du Nord."]},
   {id:'alps',title:'Livraison urgente dans les Alpes !',instruction:'Placez les montagnes à l’emplacement des Alpes.',quote:"Alerte fondue ! Si on n'arrive pas rapidement, le fromage va figer ! Et une fondue solide, ça va être compliqué à servir…",duration:30,reveal:'Révéler les Alpes',facts:["Les Alpes se situent dans l'est et le sud-est de la France, notamment près des frontières suisse et italienne. Elles abritent le massif du Mont-Blanc."]}
  ];
  const riverLabels=['GARONNE','SEINE','RHIN'];
@@ -24,12 +25,33 @@
  }
  function placeRiver(game,label,slot,stamp){
   const current=token(game),s=game?.gps;
-  if(!current||current!==stamp||s.index!==1||!Number.isInteger(label)||label<0||label>2||!geography.rivers.some(r=>r.id===slot))return false;
+  if(!current||current!==stamp||s.index!==1||!Number.isInteger(label)||label<0||label>2||!hydro.rivers.some(r=>r.id===slot))return false;
   const placements=s.placements[s.team],previous=placements[label],occupant=placements.indexOf(slot);
   if(occupant>=0&&occupant!==label)placements[occupant]=previous;
   placements[label]=slot;return true;
  }
- function ready(game){const s=game?.gps;return Boolean(token(game)&&(s.index===1?s.placements[s.team].every(Boolean):s.placements[s.team]));}
+ function riverId(placement){return typeof placement==='string'?placement:placement?.river;}
+ function segmentDistance(p,a,b){
+  const dx=b[0]-a[0],dy=b[1]-a[1],length=dx*dx+dy*dy,t=length?Math.max(0,Math.min(1,((p[0]-a[0])*dx+(p[1]-a[1])*dy)/length)):0;
+  return Math.hypot(p[0]-a[0]-t*dx,p[1]-a[1]-t*dy);
+ }
+ function inPolygons(point,polygons){return polygons.some(poly=>inRing(point,poly[0])&&!poly.slice(1).some(r=>inRing(point,r)));}
+ function riverAt(point){
+  const p=project(point);if(p.some(n=>!Number.isFinite(n)))return null;
+  if(inPolygons(point,hydro.estuary.polygons))return 'gironde';
+  for(const river of hydro.rivers)if(inPolygons(point,river.waterPolygons))return river.id;
+  let closest=null,distance=hydro.tolerance;
+  for(const river of hydro.rivers)for(const line of river.lines)for(let i=1;i<line.length;i++){
+   const d=segmentDistance(p,project(line[i-1]),project(line[i]));if(d<distance){distance=d;closest=river.id;}
+  }
+  return closest;
+ }
+ function placeRiverAt(game,label,point,stamp){
+  const s=game?.gps;if(!token(game)||stamp!==token(game)||s.index!==1||!Number.isInteger(label)||label<0||label>2||!Array.isArray(point)||point.length!==2||!point.every(Number.isFinite))return false;
+  const p=project(point);if(p[0]<0||p[0]>660||p[1]<0||p[1]>560)return false;
+  s.placements[s.team][label]={river:riverAt(point),point:point.slice()};return true;
+ }
+ function ready(game){const s=game?.gps;return Boolean(token(game)&&(s.index===1?s.placements[s.team].every(p=>Boolean(riverId(p))):s.placements[s.team]));}
  function startTimer(game,stamp,now){
   const s=game?.gps;if(!token(game)||stamp!==token(game)||!Number.isFinite(now)||!challenges[s.index].duration||s.timers[s.team]!==null)return false;
   s.timers[s.team]={startedAt:now};return true;
@@ -47,7 +69,7 @@
  function inRing(point,ring){let inside=false;const [x,y]=point;for(let i=0,j=ring.length-1;i<ring.length;j=i++){const a=ring[i],b=ring[j];if(((a[1]>y)!==(b[1]>y))&&(x<(b[0]-a[0])*(y-a[1])/(b[1]-a[1])+a[0]))inside=!inside;}return inside;}
  function inZone(point,zone){return geography.zones[zone].tolerance.some(polygon=>inRing(point,polygon[0])&&!polygon.slice(1).some(ring=>inRing(point,ring)));}
  function awarded(index,placement){
-  if(index===1)return riverLabels.reduce((sum,label,i)=>sum+(geography.rivers.find(r=>r.id===placement[i])?.name.toLocaleUpperCase('fr')===label?5:0),0);
+  if(index===1)return riverLabels.reduce((sum,label,i)=>sum+(hydro.rivers.find(r=>r.id===riverId(placement[i]))?.name.toLocaleUpperCase('fr')===label?5:0),0);
   return inZone(placement,index===0?'pyrenees':'alps')?15:0;
  }
  function reveal(game){
@@ -60,6 +82,6 @@
  function revealBonus(game){const s=game?.gps;if(s?.phase!=='bonus'||s.bonus.revealed||s.bonus.selected===null)return false;s.bonus.revealed=true;return true;}
  function finish(game){const s=game?.gps;if(s?.phase!=='bonus'||!s.bonus.revealed)return false;s.phase='complete';return true;}
  function totals(game){return [0,1].map(team=>(game.gps?.results||[]).reduce((sum,r)=>sum+r.awards[team],0));}
- const api={challenges,riverLabels,bonus,start,begin,token,project,unproject,placePoint,placeRiver,ready,startTimer,remaining,lock,inZone,reveal,next,chooseBonus,revealBonus,finish,totals};
+ const api={challenges,riverLabels,bonus,start,begin,token,project,unproject,placePoint,placeRiver,placeRiverAt,riverAt,riverId,ready,startTimer,remaining,lock,inZone,reveal,next,chooseBonus,revealBonus,finish,totals};
  if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.GpsGame=api;
 })(globalThis);

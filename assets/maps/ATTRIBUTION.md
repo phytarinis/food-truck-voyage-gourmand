@@ -74,3 +74,7 @@ Projection de l’Europe : Lambert azimutale équivalente centrée sur 10°E / 5
 Les polygones sont fusionnés sans simplification supplémentaire et le générateur vérifie que l’union des terres n’a perdu aucune surface ni introduit de doublon. Le Mexique est en Amérique du Nord ; l’Australie en Océanie. Les contours du Japon, de l’Australie, du Mexique et du Maroc utilisés en correction proviennent des mêmes géométries de pays. Les repères de ces destinations sont des points intérieurs, pas des positions de villes.
 
 Projection équirectangulaire sur l’intégralité du monde, longitudes −180° à 180°, latitudes −90° à 90°. Elle garde l’Antarctique visible et déforme les surfaces aux hautes latitudes : elle ne permet pas de comparer les superficies. Les coordonnées SVG sont arrondies à 0,001 unité. Le pôle Sud, limite singulière de cette projection, est explicitement classé en Antarctique dans le moteur. Cette carte pédagogique n’est pas un outil de navigation ni un relevé de limites continentales universellement convenues.
+
+## Carte hydrographique de la manche 4, défi 2
+
+Six cours d'eau et surfaces côtières : Natural Earth 1:10m, domaine public. Sources épinglées, extraits, limites de précision et reproduction : [hydrography/README.md](hydrography/README.md). La Gironde est représentée par une surface distincte des axes et bras de la Garonne et de la Dordogne, ouverte sur les eaux de l'Atlantique.
